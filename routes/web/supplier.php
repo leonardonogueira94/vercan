@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\Supplier\CreateSupplier;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Supplier\ListSuppliers;
 
@@ -16,4 +17,5 @@ Route::get('/atendimentos', 'AtendimentoController@index')->name('atendimentos.l
 
 Route::prefix('fornecedor')->group(function () {
     Route::get('/', ListSuppliers::class)->name('supplier.list');
+    Route::get('/cadastrar', CreateSupplier::class)->name('supplier.create');
 });

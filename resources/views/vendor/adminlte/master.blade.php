@@ -40,7 +40,11 @@
 
     {{-- Livewire Styles --}}
     @if(config('adminlte.livewire'))
-        @livewireStyles
+        @if(app()->version() >= 7)
+            @livewireStyles
+        @else
+            <livewire:styles />
+        @endif
     @endif
 
     {{-- Custom Stylesheets (post AdminLTE) --}}
@@ -91,7 +95,11 @@
 
     {{-- Livewire Script --}}
     @if(config('adminlte.livewire'))
-        @livewireScripts
+        @if(app()->version() >= 7)
+            @livewireScripts
+        @else
+            <livewire:scripts />
+        @endif
     @endif
 
     {{-- Custom Scripts --}}

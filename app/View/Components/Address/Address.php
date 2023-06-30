@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\Endereco;
+namespace App\View\Components\Address;
 
 use App\Models\Address as AddressModel;
 use Closure;
@@ -21,6 +21,6 @@ class Address extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.endereco');
+        return view('components.address');
     }
 }

@@ -10,11 +10,11 @@ class ListSuppliers extends Component
 {
     public $teste;
 
-    //use WithPagination;
+    use WithPagination;
 
-    //protected $paginationTheme = 'bootstrap';
+    protected $paginationTheme = 'bootstrap';
 
-   /*  public array $headers = [
+    public array $headers = [
         'Razão Social/Nome',
         'Nome Fantasia/Apelido',
         'CNPJ/CPF',
@@ -26,14 +26,14 @@ class ListSuppliers extends Component
         'trading_name',
         'cnpj',
         'is_active',
-    ]; */
+    ];
 
-    /* public $search = ''; */
+    public $search = '';
 
-    /* public function updatingSearch()
+    public function updatingSearch()
     {
         $this->resetPage();
-    } */
+    }
 
     public function funcao()
     {
@@ -42,6 +42,6 @@ class ListSuppliers extends Component
 
     public function render()
     {
-        return view('livewire.supplier.list-suppliers');//, ['suppliers' => Person::paginate(10)]);
+        return view('livewire.supplier.list-suppliers', ['suppliers' => Person::paginate(10)]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\Contato;
+namespace App\View\Components\Contact;
 
 use App\Enums\Contact\ContactChannel;
 use App\Enums\Contact\ContactType;
