@@ -1,0 +1,23 @@
+.content-wrapper > .content{
+    padding: .5rem;
+}
+
+.card-header {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.per-page {
+    margin: 0 5px;
+    max-width: 125px;
+}
+
+.filter {
+    margin-left: 5px;
+    max-width: 250px;
+}
+
+.datatable-body {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
