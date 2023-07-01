@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Supplier;
 
-use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Models\LegalPerson;
 use App\Models\NaturalPerson;

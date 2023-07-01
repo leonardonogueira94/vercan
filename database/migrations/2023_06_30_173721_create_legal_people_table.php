@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('ie_category', StateRegistrationCategory::toArray());
             $table->string('ie')->nullable();
             $table->string('im')->nullable();
+            $table->string('cnpj_status')->nullable();
             $table->enum('tax_type', TaxCollectionType::toArray());
             $table->timestamps();
         });

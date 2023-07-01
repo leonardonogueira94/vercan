@@ -33,3 +33,7 @@ sup {
     font-size: 18px;
     top: -4px;
 }
+
+.field-set > .row {
+    padding-bottom: 15px;
+}

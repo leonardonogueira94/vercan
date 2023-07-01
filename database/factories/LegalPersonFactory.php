@@ -25,6 +25,7 @@ class LegalPersonFactory extends Factory
             'ie_category' => fake()->randomElement(StateRegistrationCategory::toArray()),
             'ie' => fake()->numerify('#########'),
             'im' => fake()->numerify('###########'),
+            'cnpj_status' => 'ATIVA',
             'tax_type' => fake()->randomElement(TaxCollectionType::toArray()),
             'created_at' => now(),
         ];
