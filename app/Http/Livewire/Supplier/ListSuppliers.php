@@ -14,19 +14,9 @@ class ListSuppliers extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public array $headers = [
-        'Razão Social/Nome',
-        'Nome Fantasia/Apelido',
-        'CNPJ/CPF',
-        'Ativo',
-    ];
+    public array $headers = ['Razão Social/Nome', 'Nome Fantasia/Apelido', 'CNPJ/CPF', 'Ativo'];
 
-    public array $columns = [
-        'company_name',
-        'trading_name',
-        'cnpj',
-        'is_active',
-    ];
+    public array $columns = ['company_name' => 'name','trading_name' => 'alias','cnpj' => 'cpf', 'is_active'];
 
     public $search = '';
 
@@ -35,13 +25,8 @@ class ListSuppliers extends Component
         $this->resetPage();
     }
 
-    public function funcao()
-    {
-        dd('testee');
-    }
-
     public function render()
     {
-        return view('livewire.supplier.list-suppliers', ['suppliers' => Person::paginate(10)]);
+        return view('livewire.supplier.list-suppliers', ['people' => Person::paginate(10)]);
     }
 }

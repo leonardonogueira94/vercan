@@ -39,13 +39,7 @@
     @include('adminlte::plugins', ['type' => 'css'])
 
     {{-- Livewire Styles --}}
-    @if(config('adminlte.livewire'))
-        @if(app()->version() >= 7)
-            @livewireStyles
-        @else
-            <livewire:styles />
-        @endif
-    @endif
+    @livewireStyles
 
     {{-- Custom Stylesheets (post AdminLTE) --}}
     @yield('adminlte_css')
@@ -94,13 +88,7 @@
     @include('adminlte::plugins', ['type' => 'js'])
 
     {{-- Livewire Script --}}
-    @if(config('adminlte.livewire'))
-        @if(app()->version() >= 7)
-            @livewireScripts
-        @else
-            <livewire:scripts />
-        @endif
-    @endif
+    @livewireScripts
 
     {{-- Custom Scripts --}}
     @yield('adminlte_js')

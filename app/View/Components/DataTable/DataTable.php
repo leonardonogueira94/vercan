@@ -3,7 +3,7 @@
 namespace App\View\Components\DataTable;
 
 use Closure;
-use Countable;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
@@ -13,9 +13,9 @@ class DataTable extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public array $headers,
-        public array $columns,
-        public array|Countable $rows
+        public LengthAwarePaginator $rows,
+        public array $headers = [],
+        public array $columns = [],
     ){}
 
     /**

@@ -1,5 +1,3 @@
-@section('content')
 <div>
-    <x-datatable.datatable :headers="$headers" :columns="$columns" :rows="$suppliers"/>
+    <x-datatable.person-datatable :rows="$people"/>
 </div>
-@endsection

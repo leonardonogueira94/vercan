@@ -6,7 +6,7 @@
                 <select class="form-control form-control-sm per-page">
                     
                 </select>
-                 Resultados
+                resultados
             </div>
             <div class="col-md-6 d-flex justify-content-end">
                     Filtro: <input type="text" class="form-control form-control-sm filter">
@@ -17,21 +17,32 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            @foreach($headers as $header)
-                                <td>{{ $header }}</td>
-                            @endforeach
+                            <td>Razão Social/Nome</td>
+                            <td>Nome Fantasia/Apelido</td>
+                            <td>CNPJ/CPF</td>
+                            <td>Ativo</td>
+                            <td>Ação</td>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($rows as $row)
-                            <tr wire:key="row-{{ $row->id }}">
-                                @foreach($columns as $column)
-                                    <td>{{ $row->$column }}</td>
-                                @endforeach
+                        @foreach($rows as $person)
+                            <tr wire:key="row-{{ $person->id }}">
+                                <td>{{ $person->personable->company_name ?? $person->personable->name }}</td>
+                                <td>{{ $person->personable->trading_name ?? $person->personable->alias }}</td>
+                                <td>{{ $person->personable->cnpj ?? $person->personable->cpf }}</td>
+                                <td>{{ $person->is_active }}</td>
+                                <td></td>
                             </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
+                        <tr>
+                            <td>Razão Social/Nome</td>
+                            <td>Nome Fantasia/Apelido</td>
+                            <td>CNPJ/CPF</td>
+                            <td>Ativo</td>
+                            <td>Ação</td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>
