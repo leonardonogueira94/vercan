@@ -31,7 +31,11 @@
                                     <td>{{ $person->personable->cnpj ?? $person->personable->cpf }}</td>
                                     <td>{{ $person->is_active }}</td>
                                     <td>
-                                        <x-datatable.actions-button showRoute="{{ route('supplier.show', ['id' => $person->id]) }}" editRoute="" deleteRoute="" />
+                                        <x-datatable.actions-button 
+                                            showRoute="{{ route('supplier.show', ['id' => $person->id]) }}" 
+                                            editRoute="{{ route('supplier.edit', ['id' => $person->id]) }}" 
+                                            deleteRoute="{{ route('supplier.delete', ['id' => $person->id]) }}"
+                                        />
                                     </td>
                                 </tr>
                             @endforeach

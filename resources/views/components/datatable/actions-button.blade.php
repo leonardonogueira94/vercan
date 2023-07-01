@@ -7,6 +7,7 @@
       <div class="dropdown-divider"></div>
       <form class="dropdown-item" method="POST" action="{{ $deleteRoute }}">
         @csrf
+        @method('DELETE')
         <button class="btn btn-link">Excluir</button>
       </form>
     </div>

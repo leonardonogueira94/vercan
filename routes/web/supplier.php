@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Livewire\Supplier\CreateSupplier;
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Supplier\CreateSupplier;
+use App\Http\Livewire\Supplier\DeleteSupplier;
+use App\Http\Livewire\Supplier\EditSupplier;
 use App\Http\Livewire\Supplier\ListSuppliers;
 use App\Http\Livewire\Supplier\ShowSupplier;
 
@@ -20,4 +22,6 @@ Route::prefix('fornecedor')->group(function () {
     Route::get('/', ListSuppliers::class)->name('supplier.list');
     Route::get('/cadastrar', CreateSupplier::class)->name('supplier.create');
     Route::get('/{id}/ver', ShowSupplier::class)->name('supplier.show');
+    Route::get('/{id}/editar', EditSupplier::class)->name('supplier.edit');
+    Route::delete('/{id}/deletar', DeleteSupplier::class)->name('supplier.delete');
 });
