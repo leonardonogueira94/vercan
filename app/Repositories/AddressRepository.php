@@ -20,11 +20,18 @@ class AddressRepository
 
     public function createCity(string $state, string $city): City
     {
+        $state = State::where('acronym', $state)->firstOrFail();
 
+        $city = City::create([
+            'state_id' => $state->id,
+            'name' => $city,
+        ]);
+
+        return $city;
     }
 
-    public function createState(string $state): State
+    public function cityAlreadyRegistered(string $name): bool
     {
-
+        return City::where('name', $name)->exists();
     }
 }

@@ -11,6 +11,7 @@ use App\Models\LegalPerson;
 use App\Models\NaturalPerson;
 use App\Models\Person;
 use App\Models\Phone;
+use App\Services\ReceitaService;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
