@@ -3,6 +3,7 @@
 namespace App\Concerns;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Schema;
 
 trait HasFilter
 {
@@ -10,8 +11,17 @@ trait HasFilter
 
     public function applyQueryFilter(string $filter, Builder $query): Builder
     {
-        //$query->where($filter, 'LIKE', "%$filter%");
+        if(!$filter)
+            return $query;
 
+        $columns = Schema::getColumnListing($query->from);
+
+        foreach($columns as $key => $column)
+            if($key == 0)
+                $query->where($column, 'LIKE', "%$filter%");
+            else
+                $query->orWhere($column, 'LIKE', "%$filter%");
+        
         return $query;
     }
 
