@@ -18,13 +18,17 @@
                 @foreach($this->phones as $index => $phone)
                     <x-phone :phone="$phone" index="{{ $index }}"/>
                 @endforeach
-                <button wire:click="createPhone" class="btn btn-link">Adicionar</button>
+                @if(request()->route()->getName() != 'supplier.show')
+                    <button wire:click="createPhone" class="btn btn-link">Adicionar</button>
+                @endif
             </div>
             <div class="col-md-6 emails">
                 @foreach($this->emails as $index => $email)
                     <x-email :email="$email" index="{{ $index }}"/>
                 @endforeach
-                <button wire:click="createEmail" class="btn btn-link">Adicionar</button>
+                @if(request()->route()->getName() != 'supplier.show')
+                    <button wire:click="createEmail" class="btn btn-link">Adicionar</button>
+                @endif
             </div>
         </div>
     </x-card.card>
@@ -38,4 +42,10 @@
     <x-card.card title="Observação">
 
     </x-card.card>
+
+    @if(request()->route()->getName() == 'supplier.show')
+        <a href="{{ route('supplier.edit', ['person' => $person]) }}" class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Editar</a>
+    @elseif(request()->route()->getName() == 'supplier.create')
+        <button class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Cadastrar</button>
+    @endif
 </div>

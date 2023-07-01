@@ -22,6 +22,6 @@ Route::prefix('fornecedor')->group(function () {
     Route::get('/', ListSuppliers::class)->name('supplier.list');
     Route::get('/cadastrar', CreateSupplier::class)->name('supplier.create');
     Route::get('/{person}/ver', ShowSupplier::class)->name('supplier.show');
-    Route::get('/{id}/editar', EditSupplier::class)->name('supplier.edit');
-    Route::delete('/{id}/deletar', DeleteSupplier::class)->name('supplier.delete');
+    Route::get('/{person}/editar', EditSupplier::class)->name('supplier.edit');
+    Route::delete('/{person}/deletar', DeleteSupplier::class)->name('supplier.delete');
 });

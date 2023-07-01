@@ -12,6 +12,7 @@ use App\Models\NaturalPerson;
 use App\Models\Person;
 use App\Models\Phone;
 use App\Services\ReceitaService;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -61,11 +62,22 @@ class ShowSupplier extends Component
     }
 
     public function mount(Person $person)
-    {        
+    {
         $this->person = $person;
         $this->personable = $this->person->personable;
-        $this->phones = $this->person->phones;
-        $this->emails = $this->person->emails;
+        $this->phones = $this->renameIdKeys($this->person->phones);
+        $this->emails = $this->renameIdKeys($this->person->emails);
+        if($this->phones->count() == 0)
+            $this->phones->add(new Phone());
+    }
+
+    public function renameIdKeys(Collection $models)
+    {
+        return Phone::hydrate(array_map(function($model){
+            $model['hiddenId'] = $model['id'];
+            $model['id'] = null;
+            return $model;
+        }, $models->toArray()));
     }
 
     public function createEmail()

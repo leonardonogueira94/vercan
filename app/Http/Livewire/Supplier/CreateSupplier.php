@@ -88,8 +88,12 @@ class CreateSupplier extends Component
         $this->person = new Person();
         $this->person->personable_type = LegalPerson::class;
         $this->personable = new LegalPerson();
-        $this->phones = $this->person?->phones;
-        $this->emails = $this->person?->emails;
+        $this->phones = $this->person->phones;
+        $this->emails = $this->person->emails;
+        if($this->phones->count() == 0)
+            $this->phones->add(new Phone());
+        if($this->emails->count() == 0)
+            $this->emails->add(new Email());
     }
 
     public function render()
