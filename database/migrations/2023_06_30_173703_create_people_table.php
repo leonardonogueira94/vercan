@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('people', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('address_id')->constrained();
             $table->morphs('personable');
             $table->boolean('is_active');
             $table->timestamps();

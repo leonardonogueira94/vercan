@@ -23,8 +23,8 @@ class EmailFactory extends Factory
         $emailTypes = ContactType::toCollection()->filter(fn($case) => in_array(ContactChannel::EMAIL, $case->canais()));
 
         return [
-            'contact_id' => fake()->unique()->randomElement($contactIds),
-            'email' => fake()->unique()->email(),
+            'contact_id' => fake()->randomElement($contactIds),
+            'email' => fake()->email(),
             'type' => fake()->randomElement($emailTypes),
         ];
     }

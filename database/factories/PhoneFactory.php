@@ -22,8 +22,8 @@ class PhoneFactory extends Factory
         $phoneTypes = ContactType::toCollection()->filter(fn($case) => in_array(ContactChannel::TELEFONE, $case->canais()));
 
         return [
-            'contact_id' => fake()->unique()->randomElement($contactIds),
-            'phone' => fake()->unique()->numerify('############'),
+            'contact_id' => fake()->randomElement($contactIds),
+            'phone' => fake()->numerify('############'),
             'type' => fake()->randomElement($phoneTypes),
         ];
     }

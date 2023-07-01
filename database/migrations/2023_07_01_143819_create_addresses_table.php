@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('city_id')->constrained();
+            $table->foreignId('person_id')->constrained();
             $table->string('cep', 10);
             $table->string('address');
             $table->string('building_number', 7);
@@ -30,6 +31,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('addresses');
+        Schema::enableForeignKeyConstraints();
     }
 };

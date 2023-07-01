@@ -14,4 +14,9 @@ class Address extends Model
     {
         return $this->hasOne(City::class);
     }
+
+    public function person(): HasOne
+    {
+        return $this->hasOne(Person::class);
+    }
 }

@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('person_id')->constrained();
             $table->string('contact_name')->nullable();
             $table->string('company_name')->nullable();
-            $table->string('role')->nullable();
+            $table->string('job_title')->nullable();
             $table->boolean('is_default')->default(false);
             $table->timestamps();
         });
@@ -26,8 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('emails');
-        Schema::dropIfExists('phones');
         Schema::dropIfExists('contacts');
     }
 };
