@@ -2,12 +2,16 @@
 
 namespace App\Http\Livewire\Supplier;
 
+use App\Enums\Contact\ContactType;
 use App\Enums\Person\PersonStatus;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Enums\Person\TaxCollectionType;
+use App\Models\Email;
 use App\Models\LegalPerson;
 use App\Models\NaturalPerson;
 use App\Models\Person;
+use App\Models\Phone;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Livewire\Component;
@@ -18,12 +22,16 @@ class ShowSupplier extends Component
 
     public Person $personable;
 
+    public Collection $emails;
+
+    public Collection $phones;
+
     protected function rules(): array 
     {
         return [
             'person.personable_type' => 'required|in:'.LegalPerson::class.','.NaturalPerson::class,
             'person.is_active' => ['required', new Enum(PersonStatus::class)],
-            
+
             'personable.cnpj' => 'required|digits:14',
             'personable.company_name' => 'required|max:255',
             'personable.ie_category' => ['required', new Enum(StateRegistrationCategory::class)],
@@ -34,6 +42,12 @@ class ShowSupplier extends Component
             'personable.name' => 'required|max:255',
             'personable.alias' => 'max:255',
             'personable.rg' => 'rquired|max:9',
+
+            'emails.*.type' => [new Enum(ContactType::class)],
+            'emails.*.email' => 'email',
+
+            'phones.*.type' => [new Enum(ContactType::class)],
+            'phones.*.phone' => 'digits:13',
         ];
     }
 
@@ -45,11 +59,24 @@ class ShowSupplier extends Component
             $this->personable = new ($this->person->personable_type);
     }
 
-    public function mount()
+    public function mount(Person $person)
+    {        
+        $this->person = $person;
+        $this->personable = $this->person->personable;
+        $this->phones = $this->person->phones;
+        $this->emails = $this->person->emails;
+    }
+
+    public function createEmail()
     {
-        $this->person = new Person();
-        $this->person->personable_type = LegalPerson::class;
-        $this->personable = new LegalPerson();
+        $this->newEmails->push(Email::make());
+    }
+
+    public function createPhone()
+    {
+        $phone = new Phone();
+
+        $this->phones->push($phone);
     }
 
     public function render()

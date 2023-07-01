@@ -20,7 +20,7 @@ class NaturalPersonFactory extends Factory
             'cpf' => fake()->unique()->cpf(false),
             'name' => fake()->name(),
             'alias' => explode(' ', fake()->name())[0],
-            'rg' => fake()->unique()->rg(),
+            'rg' => fake()->unique()->rg(false),
         ];
     }
 }

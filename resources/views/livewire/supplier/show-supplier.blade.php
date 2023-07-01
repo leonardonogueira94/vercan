@@ -11,9 +11,24 @@
             <x-form.form-natural-person/>
         @endif
     </x-card.card>
-    <x-card.card title="Contato Principal">
 
+    <x-card.card title="Contato Principal">
+        <div class="row">
+            <div class="col-md-6 phones">
+                @foreach($this->phones as $index => $phone)
+                    <x-phone :phone="$phone" index="{{ $index }}"/>
+                @endforeach
+                <button wire:click="createPhone" class="btn btn-link">Adicionar</button>
+            </div>
+            <div class="col-md-6 emails">
+                @foreach($this->emails as $index => $email)
+                    <x-email :email="$email" index="{{ $index }}"/>
+                @endforeach
+                <button wire:click="createEmail" class="btn btn-link">Adicionar</button>
+            </div>
+        </div>
     </x-card.card>
+
     <x-card.card title="Contatos Adicionais">
 
     </x-card.card>

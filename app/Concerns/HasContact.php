@@ -17,11 +17,11 @@ trait HasContact
 
     public function emails(): HasManyThrough
     {
-        return $this->hasManyThrough(Email::class, App\Concerns\Contact::class);
+        return $this->hasManyThrough(Email::class, Contact::class);
     }
 
     public function phones(): HasManyThrough
     {
-        return $this->hasManyThrough(Phone::class, App\Concerns\Contact::class);
+        return $this->hasManyThrough(Phone::class, Contact::class);
     }
 }

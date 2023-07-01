@@ -25,4 +25,15 @@ enum ContactType: string
             self::COMERCIAL => [ContactChannel::EMAIL, ContactChannel::TELEFONE],
         };
     }
+
+    public function label()
+    {
+        return match($this){
+            self::RESIDENCIAL => 'Residencial',
+            self::COMERCIAL => 'Comercial',
+            self::CELULAR => 'Celular',
+            self::PESSOAL => 'Pessoal',
+            self::OUTRO => 'Outro',
+        };
+    }
 }
