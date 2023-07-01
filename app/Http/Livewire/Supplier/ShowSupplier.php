@@ -20,6 +20,12 @@ class ShowSupplier extends Component
         ];
     }
 
+    public function updated($propertyName)
+    {
+        if($propertyName == 'person.personable_type')
+            $this->personable = new (PersonType::tryFrom($this->person->personable_type)?->class());
+    }
+
     public function mount()
     {
         $this->person = new Person();
