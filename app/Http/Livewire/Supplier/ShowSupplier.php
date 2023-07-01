@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Supplier;
 
 use App\Enums\Person\StateRegistrationCategory;
+use App\Enums\Person\TaxCollectionType;
 use App\Models\LegalPerson;
 use App\Models\NaturalPerson;
 use App\Models\Person;
@@ -20,6 +21,7 @@ class ShowSupplier extends Component
         return [
             'person.personable_type' => 'required|in:'.LegalPerson::class.','.NaturalPerson::class,
             'personable.ie_category' => ['required', new Enum(StateRegistrationCategory::class)],
+            'personable.tax_type' => ['required', new Enum(TaxCollectionType::class)],
         ];
     }
 
