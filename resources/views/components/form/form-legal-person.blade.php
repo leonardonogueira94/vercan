@@ -58,12 +58,13 @@
         </div>
         <div class="col-lg-3 col-12">
             <label class="control-label">Ativo</label><sup>•</sup>
-            <select wire:model="personable.is_active" class="form-control form-control-sm" required>
+            <select wire:model="person.is_active" class="form-control form-control-sm" required>
                 <option value="">Selecione</option>
                 @foreach(App\Enums\Person\PersonStatus::cases() as $case)
                     <option value="{{ $case->value }}">{{ $case->label() }}</option>
                 @endforeach
             </select>
+            @error('personable.is_active') <span class="error">{{ $message }}</span>@enderror
         </div>
     </div>
 </div>
