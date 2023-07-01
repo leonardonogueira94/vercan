@@ -3,8 +3,9 @@
 namespace App\Http\Livewire\Supplier;
 
 use App\Enums\Person\PersonType;
+use App\Models\LegalPerson;
+use App\Models\NaturalPerson;
 use App\Models\Person;
-use Illuminate\Validation\Rules\Enum;
 use Livewire\Component;
 
 class ShowSupplier extends Component
@@ -16,19 +17,20 @@ class ShowSupplier extends Component
     protected function rules(): array 
     {
         return [
-            'person.personable_type' => ['required', new Enum(PersonType::class)],
+            'person.personable_type' => 'required|in:'.LegalPerson::class.','.NaturalPerson::class,
         ];
     }
 
     public function updated($propertyName)
     {
         if($propertyName == 'person.personable_type')
-            $this->personable = new (PersonType::tryFrom($this->person->personable_type)?->class());
+            $this->personable = new ($this->person->personable_type);
     }
 
     public function mount()
     {
         $this->person = new Person();
+        $this->person->personable_type = LegalPerson::class;
     }
 
     public function render()

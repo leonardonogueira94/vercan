@@ -6,7 +6,7 @@
             type="radio" 
             name="{{ $name }}" 
             id="{{ "$case->name-$case->value" }}" 
-            value="{{ $case->value }}"> {{ $case->label() }}
+            value="{{ $case->class() }}"> {{ $case->label() }}
         </label>
     @endforeach
 </div>

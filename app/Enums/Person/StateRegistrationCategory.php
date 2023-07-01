@@ -23,6 +23,14 @@ enum StateRegistrationCategory: string
         };
     }
 
+    public function required(): bool
+    {
+        return match($this){
+            self::CONTRIBUINTE, self::NAO_CONTRIBUINTE => true,
+            self::ISENTO => false,
+        };
+    }
+
     public static function labels(): array
     {
         return array_map(fn($case) => $case->label(), static::cases());
