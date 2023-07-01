@@ -1,6 +1,8 @@
 <div>
     <x-card.card title="Dados do Fornecedor">
-        <x-input.radio-group-from-enum wired="true" name="person.personable_type" :values="App\Enums\Person\PersonType::cases()"/>
+        <div class="col-12">
+            <x-input.radio-group-from-enum wired="true" name="person.personable_type" :values="App\Enums\Person\PersonType::cases()"/>
+        </div>
     </x-card.card>
     <x-card.card title="Contato Principal">
 
