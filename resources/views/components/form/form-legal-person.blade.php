@@ -26,7 +26,7 @@
         </div>
         <div class="col-lg-3 col-12">
             <label class="control-label">Inscrição Estadual @if(App\Enums\Person\StateRegistrationCategory::tryFrom($this->personable?->ie_category)?->required())</label><sup>•</sup>@endif
-            <input class="form-control form-control-sm" required>
+            <input class="form-control form-control-sm" @if(App\Enums\Person\StateRegistrationCategory::tryFrom($this->personable?->ie_category)?->required()) {{ 'required' }} @else {{ 'disabled '}} @endif>
         </div>
         <div class="col-lg-3 col-12">
             <label class="control-label">Inscrição Municipal </label><sup>•</sup>
