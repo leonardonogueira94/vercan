@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Person\StateRegistrationCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
@@ -12,6 +13,14 @@ class LegalPerson extends Person
     public function person(): MorphOne
     {
         return $this->morphOne(Person::class, 'personable');
+    }
+
+    public function getIeCategoryAttribute($value)
+    {
+        if(!$value)
+            return null;
+
+        return StateRegistrationCategory::tryFrom($value);
     }
 
     public function getCnpjAttribute($value)

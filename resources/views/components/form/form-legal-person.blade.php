@@ -18,15 +18,15 @@
         <div class="col-lg-3 col-12">
             <label class="control-label">Indicador de Inscrição Estadual</label><sup>•</sup>
             <select wire:model="personable.ie_category" class="form-control form-control-sm" required>
-                <option>Selecione</option>
+                <option value="">Selecione</option>
                 @foreach(App\Enums\Person\StateRegistrationCategory::cases() as $case)
                     <option value="{{ $case->value }}">{{ $case->label() }}</option>
                 @endforeach
             </select>
         </div>
         <div class="col-lg-3 col-12">
-            <label class="control-label">Inscrição Estadual @if(App\Enums\Person\StateRegistrationCategory::tryFrom($this->personable?->ie_category)?->required())</label><sup>•</sup>@endif
-            <input class="form-control form-control-sm" @if(App\Enums\Person\StateRegistrationCategory::tryFrom($this->personable?->ie_category)?->required()) {{ 'required' }} @else {{ 'disabled '}} @endif>
+            <label class="control-label">Inscrição Estadual @if($this->personable?->ie_category?->required())</label><sup>•</sup>@endif
+            <input class="form-control form-control-sm" @if($this->personable?->ie_category?->required()) {{ 'required' }} @else {{ 'disabled '}} @endif>
         </div>
         <div class="col-lg-3 col-12">
             <label class="control-label">Inscrição Municipal </label><sup>•</sup>
