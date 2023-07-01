@@ -3,9 +3,11 @@
 namespace App\Http\Livewire\Supplier;
 
 use App\Enums\Person\PersonType;
+use App\Enums\Person\StateRegistrationCategory;
 use App\Models\LegalPerson;
 use App\Models\NaturalPerson;
 use App\Models\Person;
+use Illuminate\Validation\Rules\Enum;
 use Livewire\Component;
 
 class ShowSupplier extends Component
@@ -18,6 +20,7 @@ class ShowSupplier extends Component
     {
         return [
             'person.personable_type' => 'required|in:'.LegalPerson::class.','.NaturalPerson::class,
+            'personable.ie_category' => ['required', new Enum(StateRegistrationCategory::class)],
         ];
     }
 
@@ -31,6 +34,7 @@ class ShowSupplier extends Component
     {
         $this->person = new Person();
         $this->person->personable_type = LegalPerson::class;
+        $this->personable = new LegalPerson();
     }
 
     public function render()
