@@ -12,4 +12,9 @@ trait Enumerable
 
         return array_combine($keys, $values);
     }
+
+    public static function commaSeparated(): string
+    {
+        return implode(', ', array_column(static::cases(), 'value'));
+    }
 }

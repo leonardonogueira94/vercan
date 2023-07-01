@@ -2,7 +2,7 @@
     @foreach($values as $case)
         <label class="radio-inline">
             <input 
-            @if($wired) wire:model="{{ $name }}" wire:click="teste" @endif 
+            @if($wired) wire:model="{{ $name }}" @endif 
             type="radio" 
             name="{{ $name }}" 
             id="{{ "$case->name-$case->value" }}" 
