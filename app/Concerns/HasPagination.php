@@ -10,6 +10,6 @@ trait HasPagination
 
     protected $paginationTheme = 'bootstrap';
 
-    public int $perPage = 100;
+    public int $perPage = 10;
 
 }

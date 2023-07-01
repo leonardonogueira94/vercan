@@ -1,5 +1,6 @@
 @props(['value' => 100])
-<select class="form-control form-control-sm per-page">
+<select wire:model="perPage" class="form-control form-control-sm per-page">
+    <option value="10" @if($value == 10) {{ 'selected' }} @endif>10</option>
     <option value="100" @if($value == 100) {{ 'selected' }} @endif>100</option>
     <option value="250" @if($value == 250) {{ 'selected' }} @endif>250</option>
     <option value="500" @if($value == 500) {{ 'selected' }} @endif>500</option>

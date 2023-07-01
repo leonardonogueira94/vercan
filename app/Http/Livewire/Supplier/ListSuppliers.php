@@ -6,7 +6,6 @@ use App\Concerns\HasFilter;
 use App\Concerns\HasPagination;
 use App\Models\Person;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class ListSuppliers extends Component
 {
