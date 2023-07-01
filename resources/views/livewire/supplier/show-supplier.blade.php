@@ -6,35 +6,9 @@
             </div>
         </div>
         @if($person->personable_type == App\Enums\Person\PersonType::JURIDICA->value)
-            <div class="row">
-                <div class="col-lg-3 col-12">
-                    <label class="control-label">CNPJ</label><sup>•</sup>
-                    <input class="form-control form-control-sm" required>
-                </div>
-                <div class="col-lg-6 col-12">
-                    <label class="control-label">Razão Social</label><sup>•</sup>
-                    <input class="form-control form-control-sm" required>
-                </div>
-                <div class="col-lg-3 col-12">
-                    <label class="control-label">Nome Fantasia</label><sup>•</sup>
-                    <input class="form-control form-control-sm" required>
-                </div>
-            </div>
+            <x-form.form-legal-person/>
         @elseif($person->personable_type == App\Enums\Person\PersonType::FISICA->value)
-            <div class="row">
-                <div class="col-lg-3 col-12">
-                    <label class="control-label">CPF</label><sup>•</sup>
-                    <input class="form-control form-control-sm" required>
-                </div>
-                <div class="col-lg-6 col-12">
-                    <label class="control-label">Nome</label><sup>•</sup>
-                    <input class="form-control form-control-sm" required>
-                </div>
-                <div class="col-lg-3 col-12">
-                    <label class="control-label">Apelido
-                    <input class="form-control form-control-sm">
-                </div>
-            </div>
+            <x-form.form-natural-person/>
         @endif
     </x-card.card>
     <x-card.card title="Contato Principal">
