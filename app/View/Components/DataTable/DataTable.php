@@ -14,6 +14,7 @@ class DataTable extends Component
      */
     public function __construct(
         public LengthAwarePaginator $rows,
+        public int $perPage = 100,
         public array $headers = [],
         public array $columns = [],
     ){}

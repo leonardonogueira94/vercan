@@ -3,7 +3,7 @@
         <div class="row datatable-header">
             <div class="col-md-6 d-flex justify-content-start">
                 Mostrando 
-                <x-datatable.per-page/>
+                <x-datatable.per-page value="{{ $perPage }}"/>
                 resultados
             </div>
             <div class="col-md-6 d-flex justify-content-end">
