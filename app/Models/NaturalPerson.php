@@ -14,7 +14,7 @@ class NaturalPerson extends Person
         return $this->morphOne(Person::class, 'personable');
     }
 
-    public function getCpfAttribute($value)
+    /* public function getCpfAttribute($value)
     {
         if (!$value)
             return null;
@@ -22,5 +22,5 @@ class NaturalPerson extends Person
         $cpf = preg_replace('/\D/', '', $value);
         
         return $cpf = substr($cpf, 0, 3) . '.' . substr($cpf, 3, 3) . '.' . substr($cpf, 6, 3) . '-' . substr($cpf, 9, 2);
-    }
+    } */
 }

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('company_name');
             $table->string('trading_name');
             $table->enum('ie_category', StateRegistrationCategory::toArray());
-            $table->string('ie')->nullable();
-            $table->string('im')->nullable();
+            $table->string('ie', 15)->nullable();
+            $table->string('im', 15)->nullable();
             $table->string('cnpj_status')->nullable();
             $table->enum('tax_type', TaxCollectionType::toArray());
             $table->timestamps();

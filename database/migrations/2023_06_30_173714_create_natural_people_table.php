@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('natural_people', function (Blueprint $table) {
             $table->id();
-            $table->string('cpf');
+            $table->string('cpf', 11);
             $table->string('name');
             $table->string('alias');
-            $table->string('rg');
+            $table->string('rg', 9);
             $table->timestamps();
         });
     }

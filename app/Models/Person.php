@@ -14,11 +14,6 @@ class Person extends Model
 {
     use HasFactory, HasContact;
 
-    protected function getIsActiveAttribute($value): string
-    {
-        return PersonStatus::tryFrom($value)->label();
-    }
-
     public function personable(): MorphTo
     {
         return $this->morphTo();
