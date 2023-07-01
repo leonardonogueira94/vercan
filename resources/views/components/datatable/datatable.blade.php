@@ -3,9 +3,7 @@
         <div class="row datatable-header">
             <div class="col-md-6 d-flex justify-content-start">
                 Mostrando 
-                <select class="form-control form-control-sm per-page">
-                    
-                </select>
+                <x-datatable.per-page/>
                  Resultados
             </div>
             <div class="col-md-6 d-flex justify-content-end">
