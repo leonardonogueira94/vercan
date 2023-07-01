@@ -5,10 +5,9 @@ namespace Database\Factories;
 use App\Enums\Contact\ContactChannel;
 use App\Enums\Contact\ContactType;
 use App\Models\Contact;
-use App\Models\Email;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class EmailFactory extends Factory
+class PhoneFactory extends Factory
 {
     
     /**
@@ -20,12 +19,12 @@ class EmailFactory extends Factory
     {
         $contactIds = Contact::pluck('id')->toArray();
 
-        $emailTypes = ContactType::toCollection()->filter(fn($case) => in_array(ContactChannel::EMAIL, $case->canais()));
+        $phoneTypes = ContactType::toCollection()->filter(fn($case) => in_array(ContactChannel::TELEFONE, $case->canais()));
 
         return [
             'contact_id' => fake()->unique()->randomElement($contactIds),
-            'email' => fake()->unique()->email(),
-            'type' => fake()->randomElement($emailTypes),
+            'phone' => fake()->unique()->numerify('############'),
+            'type' => fake()->randomElement($phoneTypes),
         ];
     }
 }
