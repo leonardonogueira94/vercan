@@ -13,7 +13,7 @@
 }
 
 .filter {
-    margin-left: 5px;
+    margin-left: 2px;
     max-width: 250px;
 }
 
@@ -26,4 +26,10 @@
     margin-right: 3px;
     font-size: 18px;
     margin-bottom: -3px;
+}
+
+sup {
+    color: red;
+    font-size: 18px;
+    top: -4px;
 }
