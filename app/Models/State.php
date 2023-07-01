@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Address extends Model
+class State extends Model
 {
     use HasFactory;
 
-    public function city(): HasOne
+    public function cities(): HasMany
     {
-        return $this->hasOne(City::class);
+        return $this->hasMany(City::class);
     }
 }

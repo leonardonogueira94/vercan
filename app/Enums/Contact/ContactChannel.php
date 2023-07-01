@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Enums\Contact;
 
-use App\Concerns\Enumeravel;
+use App\Concerns\Enumerable;
 use App\Enums\Contact\ContactType;
 
 enum ContactChannel: string
 {
-    use Enumeravel;
+    use Enumerable;
     
     case TELEFONE = 'phone';
     case EMAIL = 'email';

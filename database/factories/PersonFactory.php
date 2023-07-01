@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Address;
 use App\Models\LegalPerson;
 use App\Models\NaturalPerson;
 use App\Models\Person;
@@ -33,9 +34,12 @@ class PersonFactory extends Factory
     {
         $personableType = fake()->randomElement($this->personable);
 
+        $addressIds = Address::pluck('id')->toArray();
+
         return [
             'personable_id' => $personableType::factory()->create(),
             'personable_type' => $personableType,
+            'address_id' => fake()->randomElement($addressIds),
             'is_active' => fake()->boolean(85),
         ];
     }

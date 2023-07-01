@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Enums\Contact;
 
+use App\Concerns\Enumerable;
 use App\Enums\Contact\ContactChannel;
 
 enum ContactType: string
 {
+    use Enumerable;
+    
     case RESIDENCIAL = 'residential';
     case COMERCIAL = 'commercial';
     case CELULAR = 'cellphone';
