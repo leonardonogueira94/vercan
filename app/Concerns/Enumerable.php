@@ -24,4 +24,9 @@ trait Enumerable
     {
         return implode(', ', array_column(static::cases(), 'value'));
     }
+
+    public static function labels(): array
+    {
+        return array_map(fn($case) => $case->label(), static::cases());
+    }
 }

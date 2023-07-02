@@ -13,14 +13,6 @@ class Person extends Model
 {
     use HasFactory, HasContact;
 
-    public function getIsActiveAttribute($value): string
-    {
-        if(in_array($value, ['Não', 'Sim']))
-            return array_search($value, ['Não', 'Sim']);
-
-        return PersonStatus::tryFrom($value)->label();
-    }
-
     public function personable(): MorphTo
     {
         return $this->morphTo();

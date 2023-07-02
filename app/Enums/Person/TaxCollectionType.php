@@ -20,9 +20,4 @@ enum TaxCollectionType: string
             self::RETIDO_TOMADOR => 'Retido Pelo Tomador',
         };
     }
-
-    public static function labels(): array
-    {
-        return array_map(fn($case) => $case->label(), static::cases());
-    }
 }

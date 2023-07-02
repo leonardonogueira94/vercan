@@ -29,7 +29,7 @@
                                     <td>{{ $person->personable->company_name ?? $person->personable->name }}</td>
                                     <td>{{ $person->personable->trading_name ?? $person->personable->alias }}</td>
                                     <td>{{ $person->personable->cnpj ?? $person->personable->cpf }}</td>
-                                    <td>{{ $person->is_active }}</td>
+                                    <td>{{ App\Enums\Person\PersonStatus::tryFrom($person->is_active)->label() }}</td>
                                     <td>
                                         <x-datatable.actions-button 
                                             showRoute="{{ route('supplier.show', ['person' => $person->id]) }}" 

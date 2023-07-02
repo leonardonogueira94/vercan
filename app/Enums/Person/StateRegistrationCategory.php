@@ -30,9 +30,4 @@ enum StateRegistrationCategory: string
             self::ISENTO => false,
         };
     }
-
-    public static function labels(): array
-    {
-        return array_map(fn($case) => $case->label(), static::cases());
-    }
 }

@@ -30,9 +30,4 @@ enum PersonType: string
             self::JURIDICA => 'Pessoa Jurídica',
         };
     }
-
-    public static function labels(): array
-    {
-        return array_map(fn($case) => $case->label(), static::cases());
-    }
 }

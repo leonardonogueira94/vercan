@@ -21,4 +21,11 @@ class ListSuppliers extends Component
 
         return view('livewire.supplier.list-suppliers', ['people' => $people]);
     }
+
+    public function getPersonProperty()
+    {
+        $person = $this->person;
+
+        $person->is_active = $this->getIsActiveAttribute($person->is_active);
+    }
 }

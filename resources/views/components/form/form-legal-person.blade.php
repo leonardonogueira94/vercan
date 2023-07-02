@@ -50,7 +50,7 @@
         <div class="col-lg-3 col-12">
             <label class="control-label">Recolhimento</label><sup>•</sup>
             <select wire:model="personable.tax_type" class="form-control form-control-sm" required>
-                <option value="">Selecione</option>
+                <option hidden>Selecione</option>
                 @foreach(App\Enums\Person\TaxCollectionType::cases() as $case)
                     <option value="{{ $case->value }}">{{ $case->label() }}</option>
                 @endforeach
@@ -59,9 +59,9 @@
         <div class="col-lg-3 col-12">
             <label class="control-label">Ativo</label><sup>•</sup>
             <select wire:model="person.is_active" class="form-control form-control-sm" required>
-                <option value="">Selecione</option>
+                <option hidden>Selecione</option>
                 @foreach(App\Enums\Person\PersonStatus::cases() as $case)
-                    <option value="{{ $case->value }}">{{ $case->label() }}</option>
+                    <option value="{{ $case->value }}" @if($this->person->is_active == $case->value) {{ 'selected' }} @endif> {{ $case->label() }} </option>
                 @endforeach
             </select>
             @error('personable.is_active') <span class="error">{{ $message }}</span>@enderror
