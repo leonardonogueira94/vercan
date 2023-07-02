@@ -29,6 +29,10 @@ class Supplier extends Component
 
     public Collection $contacts;
 
+    public Collection $phones;
+
+    public array $emails;
+
     public Address $address;
 
     protected function rules(): array 
@@ -90,14 +94,46 @@ class Supplier extends Component
     {
         $this->person = $person;
         $this->personable = $this->person->personable;
-        $this->contacts = $this->person->contacts;
+        $this->contacts = $this->person->contacts ?? collect([new Contact()]);
+        $this->phones = collect([]);
+        $this->emails = collect([]);
         $this->address = $this->person->address ?? new Address();
-        if($this->contacts->count() == 0)
-            $this->contacts->add(new Contact());
     }
 
-    public function createEmail()
+    public function createEmail(int $contactIndex)
     {
-        $this->emails->push(new Email());
+        $contact = $this->contacts->offsetGet($contactIndex);
+
+        $email = new Email();
+
+        $email['contact'] = $contact;
+
+        $this->emails[] = $email;
+    }
+
+    public function createPhone(int $contactIndex)
+    {
+        $contact = $this->contacts->offsetGet($contactIndex);
+
+        $phone = new Phone();
+
+        $phone->contact = $contact;
+
+        $this->phones->add($phone);
+    }
+
+    public function createContact(bool $isDefault = false)
+    {
+        $contact = new Contact();
+
+        $contact->is_default = $isDefault;
+
+        if(!isset($this->contacts))
+            $contact->index = 0;
+
+        if(isset($this->contacts))
+            $contact->index = $this->contacts->count();
+
+        $this->contacts[] = $contact;
     }
 }

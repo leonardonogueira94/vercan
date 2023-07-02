@@ -13,57 +13,68 @@
     </x-card.card>
 
     <x-card.card title="Contato Principal">
-        <div class="row">
-            <div class="col-md-6 phones">
-                @foreach($this->contacts->where('is_default', true) as $contacts)
-                    @foreach($contacts->phones as $index => $phone)
-                        <x-phone :phone="$phone" index="{{ $index }}"/>
-                    @endforeach
-                @endforeach
-                @if(request()->route()->getName() != 'supplier.show')
-                    <button wire:click="createPhone" class="btn btn-link">Adicionar</button>
-                @endif
-            </div>
-            <div class="col-md-6 emails">
-                @foreach($this->contacts->where('is_default', true) as $index => $contacts)
-                    @foreach($contacts->emails as $email)
-                        <x-email :email="$email" index="{{ $index }}"/>
-                    @endforeach
-                @endforeach
-                @if(request()->route()->getName() != 'supplier.show')
-                    <button wire:click="createEmail" class="btn btn-link">Adicionar</button>
-                @endif
-            </div>
-        </div>
-    </x-card.card>
-
-    <button class="d-flex justify-content-end w-100 btn btn-link">ADICIONAR</button>
-    <x-card.card title="Contatos Adicionais">
-        <div class="row">
-            
-        </div>
-        <div class="row">
-            <div class="col-md-6 phones">
-                @foreach($this->contacts->where('is_default', false) as $index => $contacts)
-                    @foreach($contacts->phones as $phone)
-                        <x-phone :phone="$phone" index="{{ $index }}"/>
+        @foreach($this->contacts->where('is_default', true) as $contact)
+            <div class="row">
+                <div class="col-md-6 phones">
+                    @foreach($this->phones->filter(fn($phone) => $phone->contact ?? $phone['contact'] == $contact) as $phone)
+                        <x-phone :phone="$phone"/>
                     @endforeach
                     @if(request()->route()->getName() != 'supplier.show')
-                        <button wire:click="createEmail" class="btn btn-link">Adicionar</button>
+                        <button wire:click="createPhone({{ $contact->index ?? $contact['index'] }})" class="btn btn-link">Adicionar</button>
                     @endif
-                @endforeach
-            </div>
-            <div class="col-md-6 emails">
-                @foreach($this->contacts->where('is_default', false) as $index => $contacts)
-                    @foreach($contacts->emails as $email)
-                        <x-phone :email="$email" index="{{ $index }}"/>
+                </div>
+                <div class="col-md-6 emails">
+                    @foreach($this->emails->filter(fn($email) => $email->contact ?? $email['contact'] == $contact) as $email)
+                        <x-email :email="$email"/>
                     @endforeach
-                @endforeach
-                @if(request()->route()->getName() != 'supplier.show')
-                    <button wire:click="createEmail" class="btn btn-link">Adicionar</button>
-                @endif
+                    @if(request()->route()->getName() != 'supplier.show')
+                        <button wire:click="createEmail({{ $contact->index ?? $contact['index'] }})" class="btn btn-link">Adicionar</button>
+                    @endif
+                </div>
             </div>
-        </div>
+        @endforeach
+    </x-card.card>
+
+    <button wire:click="createContact(false)" class="d-flex justify-content-end w-100 btn btn-link">ADICIONAR</button>
+
+    <x-card.card title="Contatos Adicionais">
+        @foreach($this->contacts->where('is_default', false) as $contact)
+            <div class="row">
+                <div class="col-lg-6 col-12">
+                    <label class="control-label">Nome</label>
+                    <input wire:model="contacts.contact_name" class="form-control form-control-sm" required>
+                    @error('person.address.cep') <span class="error">{{ $message }}</span>@enderror
+                </div>
+                <div class="col-lg-3 col-12">
+                    <label class="control-label">Empresa</label>
+                    <input wire:model="person.address.address" class="form-control form-control-sm" required>
+                    @error('address.address') <span class="error">{{ $message }}</span>@enderror
+                </div>
+                <div class="col-lg-3 col-12">
+                    <label class="control-label">Cargo</label>
+                    <input wire:model="person.address.building_number" class="form-control form-control-sm" required>
+                    @error('person.address.building_number') <span class="error">{{ $message }}</span>@enderror
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 phones">
+                    @foreach($this->phones->filter(fn($phone) => $phone->contact ?? $phone['contact'] == $contact) as $phone)
+                        <x-phone :phone="$phone"/>
+                    @endforeach
+                    @if(request()->route()->getName() != 'supplier.show')
+                        <button wire:click="createPhone({{ $contact->index ?? $contact['index'] }})" class="btn btn-link">Adicionar</button>
+                    @endif
+                </div>
+                <div class="col-md-6 emails">
+                    @foreach($this->emails->filter(fn($email) => $email->contact ?? $email['contact'] == $contact) as $email)
+                        <x-email :email="$email"/>
+                    @endforeach
+                    @if(request()->route()->getName() != 'supplier.show')
+                        <button wire:click="createEmail({{ $contact->index ?? $contact['index'] }})" class="btn btn-link">Adicionar</button>
+                    @endif
+                </div>
+            </div>
+        @endforeach
     </x-card.card>
 
     <x-card.card title="Dados de Endereço">
