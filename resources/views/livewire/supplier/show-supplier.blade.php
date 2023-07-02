@@ -36,9 +36,11 @@
     <x-card.card title="Contatos Adicionais">
 
     </x-card.card>
-    <x-card.card title="Dados de Endereço">
 
+    <x-card.card title="Dados de Endereço">
+        <x-form.form-address-data/>
     </x-card.card>
+
     <x-card.card title="Observação">
 
     </x-card.card>
