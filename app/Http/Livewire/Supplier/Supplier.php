@@ -14,7 +14,6 @@ use App\Models\NaturalPerson;
 use App\Models\Person;
 use App\Models\Phone;
 use App\Services\ReceitaService;
-use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Livewire\Component;
@@ -95,9 +94,38 @@ class Supplier extends Component
         $this->person = $person;
         $this->personable = $this->person->personable;
         $this->contacts = $this->person->contacts->toArray() ?? [new Contact()];
-        $this->phones = [];
-        $this->emails = [];
+        $this->phones = $this->person->phones->toArray() ?? [new Phone()];
+        $this->emails = $this->person->emails->toArray() ?? [new Email()];
         $this->address = $this->person->address ?? new Address();
+
+        foreach($this->contacts as $index => &$contact)
+            $contact['index'] = $index;
+
+        foreach($this->emails as &$email)
+        {
+            $email['contact'] = null;
+
+            foreach($this->contacts as $contact)
+            {
+                if($email['contact_id'] == $contact['id'])
+                {
+                    $email['contact'] = $contact;
+                }
+            }
+        }
+
+        foreach($this->phones as &$phone)
+        {
+            $phone['contact'] = null;
+
+            foreach($this->contacts as $contact)
+            {
+                if($phone['contact_id'] == $contact['id'])
+                {
+                    $phone['contact'] = $contact;
+                }
+            }
+        }
     }
 
     public function createEmail(int $contactIndex)
