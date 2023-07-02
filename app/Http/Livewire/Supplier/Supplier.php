@@ -105,13 +105,11 @@ class Supplier extends Component
 
     public function createEmail()
     {
-        $this->newEmails->push(Email::make());
+        $this->emails->push(new Email());
     }
 
     public function createPhone()
     {
-        $phone = new Phone();
-
-        $this->phones->push($phone);
+        $this->phones->push(new Phone());
     }
 }

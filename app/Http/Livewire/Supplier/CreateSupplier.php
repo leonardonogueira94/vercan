@@ -6,7 +6,6 @@ use App\Models\Email;
 use App\Models\LegalPerson;
 use App\Models\Person;
 use App\Models\Phone;
-use Livewire\Component;
 
 class CreateSupplier extends Supplier
 {
