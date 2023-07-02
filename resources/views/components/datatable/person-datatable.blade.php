@@ -16,11 +16,11 @@
                     <table class="table table-hover table-bordered table-striped">
                         <thead>
                             <tr>
-                                <td>Razão Social/Nome</td>
-                                <td>Nome Fantasia/Apelido</td>
-                                <td>CNPJ/CPF</td>
-                                <td>Ativo</td>
-                                <td>Ação</td>
+                                <th>Razão Social/Nome</th>
+                                <th>Nome Fantasia/Apelido</th>
+                                <th>CNPJ/CPF</th>
+                                <th>Ativo</th>
+                                <th>Ação</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,11 +42,11 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td>Razão Social/Nome</td>
-                                <td>Nome Fantasia/Apelido</td>
-                                <td>CNPJ/CPF</td>
-                                <td>Ativo</td>
-                                <td>Ação</td>
+                                <th>Razão Social/Nome</th>
+                                <th>Nome Fantasia/Apelido</th>
+                                <th>CNPJ/CPF</th>
+                                <th>Ativo</th>
+                                <th>Ação</th>
                             </tr>
                         </tfoot>
                     </table>
