@@ -15,6 +15,9 @@ class Person extends Model
 
     public function getIsActiveAttribute($value): string
     {
+        if(in_array($value, ['Não', 'Sim']))
+            return array_search($value, ['Não', 'Sim']);
+
         return PersonStatus::tryFrom($value)->label();
     }
 
