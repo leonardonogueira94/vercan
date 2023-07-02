@@ -32,9 +32,9 @@
                                     <td>{{ $person->is_active }}</td>
                                     <td>
                                         <x-datatable.actions-button 
-                                            showRoute="{{ route('supplier.show', ['id' => $person->id]) }}" 
-                                            editRoute="{{ route('supplier.edit', ['id' => $person->id]) }}" 
-                                            deleteRoute="{{ route('supplier.delete', ['id' => $person->id]) }}"
+                                            showRoute="{{ route('supplier.show', ['person' => $person->id]) }}" 
+                                            editRoute="{{ route('supplier.edit', ['person' => $person->id]) }}" 
+                                            deleteRoute="{{ route('supplier.delete', ['person' => $person->id]) }}"
                                         />
                                     </td>
                                 </tr>

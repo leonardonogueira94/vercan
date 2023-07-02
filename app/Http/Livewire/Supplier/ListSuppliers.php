@@ -13,6 +13,12 @@ class ListSuppliers extends Component
 
     public function render()
     {
-        return view('livewire.supplier.list-suppliers', ['people' => $this->applyQueryFilter($this->filter, Person::with('personable'))->paginate($this->perPage)]);
+        $builder = $this->applyQueryFilter($this->filter, Person::with('personable'));
+
+        $builder = $this->applyQueryFilterOnRelation($this->filter, ['legal_people', 'natural_people'], 'personable', $builder);
+
+        $people = $builder->paginate($this->perPage);
+
+        return view('livewire.supplier.list-suppliers', ['people' => $people]);
     }
 }
