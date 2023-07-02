@@ -27,9 +27,9 @@ class Supplier extends Component
 
     public Person $personable;
 
-    public Collection $contacts;
+    public array $contacts;
 
-    public Collection $phones;
+    public array $phones;
 
     public array $emails;
 
@@ -94,45 +94,49 @@ class Supplier extends Component
     {
         $this->person = $person;
         $this->personable = $this->person->personable;
-        $this->contacts = $this->person->contacts ?? collect([new Contact()]);
-        $this->phones = collect([]);
-        $this->emails = collect([]);
+        $this->contacts = $this->person->contacts->toArray() ?? [new Contact()];
+        $this->phones = [];
+        $this->emails = [];
         $this->address = $this->person->address ?? new Address();
     }
 
     public function createEmail(int $contactIndex)
     {
-        $contact = $this->contacts->offsetGet($contactIndex);
+        $contact = $this->contacts[$contactIndex];
 
         $email = new Email();
 
         $email['contact'] = $contact;
+
+        $email['type'] = null;
 
         $this->emails[] = $email;
     }
 
     public function createPhone(int $contactIndex)
     {
-        $contact = $this->contacts->offsetGet($contactIndex);
+        $contact = $this->contacts[$contactIndex];
 
         $phone = new Phone();
 
-        $phone->contact = $contact;
+        $phone['contact'] = $contact;
 
-        $this->phones->add($phone);
+        $phone['type'] = null;
+
+        $this->phones[] = $phone;
     }
 
     public function createContact(bool $isDefault = false)
     {
         $contact = new Contact();
 
-        $contact->is_default = $isDefault;
+        $contact['is_default'] = $isDefault;
 
         if(!isset($this->contacts))
-            $contact->index = 0;
+            $contact['index'] = 0;
 
         if(isset($this->contacts))
-            $contact->index = $this->contacts->count();
+            $contact['index'] = count($this->contacts);
 
         $this->contacts[] = $contact;
     }
