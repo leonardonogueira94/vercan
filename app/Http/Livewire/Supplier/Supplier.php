@@ -27,11 +27,7 @@ class Supplier extends Component
 
     public Person $personable;
 
-    public Collection $emails;
-
-    public Collection $phones;
-
-    public Contact $contacts;
+    public Collection $contacts;
 
     public Address $address;
 
@@ -94,22 +90,10 @@ class Supplier extends Component
     {
         $this->person = $person;
         $this->personable = $this->person->personable;
-        $this->phones = $this->renameIdKeys($this->person->phones);
-        $this->emails = $this->renameIdKeys($this->person->emails);
+        $this->contacts = $this->person->contacts;
         $this->address = $this->person->address ?? new Address();
-        if($this->phones->count() == 0)
-            $this->phones->add(new Phone());
-        if($this->emails->count() == 0)
-            $this->emails->add(new Email());
-    }
-
-    public function renameIdKeys(Collection $models)
-    {
-        return Phone::hydrate(array_map(function($model){
-            $model['hiddenId'] = $model['id'];
-            $model['id'] = null;
-            return $model;
-        }, $models->toArray()));
+        if($this->contacts->count() == 0)
+            $this->contacts->add(new Contact());
     }
 
     public function createEmail()

@@ -12,7 +12,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             StateSeeder::class,
             PersonSeeder::class,
-            ContactSeeder::class,
         ]);
     }
 }

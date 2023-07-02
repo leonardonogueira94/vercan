@@ -16,12 +16,6 @@ class CreateSupplier extends Supplier
         $this->person->personable_type = LegalPerson::class;
         $this->address = new Address();
         $this->personable = new LegalPerson();
-        $this->phones = $this->person->phones;
-        $this->emails = $this->person->emails;
-        if($this->phones->count() == 0)
-            $this->phones->add(new Phone());
-        if($this->emails->count() == 0)
-            $this->emails->add(new Email());
     }
 
     public function render()

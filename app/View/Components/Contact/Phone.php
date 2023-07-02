@@ -15,7 +15,7 @@ class Phone extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public PhoneModel $email,
+        public PhoneModel $phone,
         public int $index
     ){}
 
