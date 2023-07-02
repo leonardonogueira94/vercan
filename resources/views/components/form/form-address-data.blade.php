@@ -35,12 +35,13 @@
             </div>
             <div class="col-lg-3 col-12"><sup>•</sup>
                 <label class="control-label">UF</label><sup>•</sup>
-                <select wire:model="person.address.city.state_id" class="form-control form-control-sm" required>
+                <input list="uf" wire:model="person.address.city.state_id" class="form-control form-control-sm" required>
+                <datalist id="uf">
                     <option value="">Selecione</option>
                     @foreach(App\Models\State::all() as $state)
-                        <option value="{{ $state->id }}">{{ "$state->acronym - $state->name" }}</option>
+                        <option value="{{ $state->acronym }}">{{ $state->name }}</option>
                     @endforeach
-                </select>
+                </datalist>
                 @error('person.address.city.state_id') <span class="error">{{ $message }}</span>@enderror
             </div>
             <div class="col-lg-3 col-12"><sup>•</sup>
