@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Supplier;
 
+use App\Models\Address;
 use App\Models\Email;
 use App\Models\LegalPerson;
 use App\Models\Person;
@@ -13,6 +14,7 @@ class CreateSupplier extends Supplier
     {
         $this->person = $person;
         $this->person->personable_type = LegalPerson::class;
+        $this->address = new Address();
         $this->personable = new LegalPerson();
         $this->phones = $this->person->phones;
         $this->emails = $this->person->emails;

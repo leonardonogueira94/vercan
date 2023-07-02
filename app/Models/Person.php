@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Concerns\HasContact;
-use App\Enums\Person\PersonStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,8 +18,8 @@ class Person extends Model
         return $this->morphTo();
     }
 
-    public function address(): BelongsTo
+    public function address(): HasOne
     {
-        return $this->belongsTo(Address::class);
+        return $this->hasOne(Address::class);
     }
 }

@@ -6,6 +6,8 @@ use App\Enums\Contact\ContactType;
 use App\Enums\Person\PersonStatus;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Enums\Person\TaxCollectionType;
+use App\Models\Address;
+use App\Models\Contact;
 use App\Models\Email;
 use App\Models\LegalPerson;
 use App\Models\NaturalPerson;
@@ -28,6 +30,10 @@ class Supplier extends Component
     public Collection $emails;
 
     public Collection $phones;
+
+    public Contact $contacts;
+
+    public Address $address;
 
     protected function rules(): array 
     {
@@ -90,8 +96,11 @@ class Supplier extends Component
         $this->personable = $this->person->personable;
         $this->phones = $this->renameIdKeys($this->person->phones);
         $this->emails = $this->renameIdKeys($this->person->emails);
+        $this->address = $this->person->address ?? new Address();
         if($this->phones->count() == 0)
             $this->phones->add(new Phone());
+        if($this->emails->count() == 0)
+            $this->emails->add(new Email());
     }
 
     public function renameIdKeys(Collection $models)
@@ -106,10 +115,5 @@ class Supplier extends Component
     public function createEmail()
     {
         $this->emails->push(new Email());
-    }
-
-    public function createPhone()
-    {
-        $this->phones->push(new Phone());
     }
 }

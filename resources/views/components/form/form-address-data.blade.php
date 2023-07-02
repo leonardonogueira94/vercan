@@ -3,13 +3,13 @@
     <div class="row">
         <div class="col-lg-3 col-12">
             <label class="control-label">CEP</label><sup>•</sup>
-            <input wire:model="person.address.cep" class="form-control form-control-sm" required>
+            <input wire:model="address.cep" class="form-control form-control-sm" required>
             @error('person.address.cep') <span class="error">{{ $message }}</span>@enderror
         </div>
         <div class="col-lg-3 col-12">
             <label class="control-label">Logradouro</label><sup>•</sup>
             <input wire:model="person.address.address" class="form-control form-control-sm" required>
-            @error('person.address.address') <span class="error">{{ $message }}</span>@enderror
+            @error('address.address') <span class="error">{{ $message }}</span>@enderror
         </div>
         <div class="col-lg-3 col-12">
             <label class="control-label">Número</label><sup>•</sup>
@@ -33,7 +33,7 @@
                 <input wire:model="person.address.reference_point" class="form-control form-control-sm" required>
                 @error('person.address.reference_point') <span class="error">{{ $message }}</span>@enderror
             </div>
-            <div class="col-lg-3 col-12"><sup>•</sup>
+            <div class="col-lg-3 col-12">
                 <label class="control-label">UF</label><sup>•</sup>
                 <input list="uf" wire:model="person.address.city.state_id" class="form-control form-control-sm" required>
                 <datalist id="uf">

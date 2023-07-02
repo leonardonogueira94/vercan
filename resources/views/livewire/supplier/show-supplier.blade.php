@@ -16,6 +16,9 @@
         <div class="row">
             <div class="col-md-6 phones">
                 @foreach($this->phones as $index => $phone)
+                    @if(isset($phone->contact) && !$phone->contact['is_default'])
+                        @break
+                    @endif
                     <x-phone :phone="$phone" index="{{ $index }}"/>
                 @endforeach
                 @if(request()->route()->getName() != 'supplier.show')
@@ -33,6 +36,7 @@
         </div>
     </x-card.card>
 
+    <button class="d-flex justify-content-end w-100 btn btn-link">ADICIONAR</button>
     <x-card.card title="Contatos Adicionais">
 
     </x-card.card>
