@@ -7,12 +7,14 @@ use App\Enums\Person\PersonStatus;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Enums\Person\TaxCollectionType;
 use App\Models\Address;
+use App\Models\City;
 use App\Models\Contact;
 use App\Models\Email;
 use App\Models\LegalPerson;
 use App\Models\NaturalPerson;
 use App\Models\Person;
 use App\Models\Phone;
+use App\Models\State;
 use App\Services\ReceitaService;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -34,6 +36,10 @@ class Supplier extends Component
 
     public Address $address;
 
+    public State $state;
+
+    public City $city;
+
     protected function rules(): array 
     {
         return [
@@ -41,9 +47,12 @@ class Supplier extends Component
             'person.is_active' => ['required', new Enum(PersonStatus::class)],
 
             'personable.cnpj' => 'required|digits:14',
+            'personable.cnpj_status' => 'max:20',
             'personable.company_name' => 'required|max:255',
+            'personable.trading_name' => 'required|max:255',
             'personable.ie_category' => ['required', new Enum(StateRegistrationCategory::class)],
             'personable.ie' => [Rule::requiredIf($this->personable->ie_category?->required()), 'max:15'],
+            'personable.im' => 'max:15',
             'personable.tax_type' => ['required', new Enum(TaxCollectionType::class)],
 
             'personable.cpf' => 'required|max:11',
@@ -56,6 +65,13 @@ class Supplier extends Component
 
             'phones.*.type' => [new Enum(ContactType::class)],
             'phones.*.phone' => 'digits:13',
+
+            'address.cep' => 'required|digits:8',
+            'address.street' => 'required|max:255',
+            'address.number' => 'required|max:15',
+            'address.complement' => 'max:255',
+            'address.area' => 'required|max:255',
+            'address.reference_point' => 'max:255',
         ];
     }
 
@@ -88,18 +104,14 @@ class Supplier extends Component
             $this->personable[$column] = $data->$field;
     }
 
-    public function mount(Person $person)
+    public function assignContactIndexes()
     {
-        $this->person = $person;
-        $this->personable = $this->person->personable;
-        $this->contacts = $this->person->contacts->toArray() ?? [new Contact()];
-        $this->phones = $this->person->phones->toArray() ?? [new Phone()];
-        $this->emails = $this->person->emails->toArray() ?? [new Email()];
-        $this->address = $this->person->address ?? new Address();
-
         foreach($this->contacts as $index => &$contact)
             $contact['index'] = $index;
+    }
 
+    public function assignContactEmails()
+    {
         foreach($this->emails as &$email)
         {
             $email['contact'] = null;
@@ -109,11 +121,15 @@ class Supplier extends Component
                 if($email['contact_id'] == $contact['id'])
                 {
                     $email['contact'] = $contact;
+
                     $contact['emails'][] = $email;
                 }
             }
         }
+    }
 
+    public function assignContactPhones()
+    {
         foreach($this->phones as &$phone)
         {
             $phone['contact'] = null;
@@ -123,10 +139,24 @@ class Supplier extends Component
                 if($phone['contact_id'] == $contact['id'])
                 {
                     $phone['contact'] = $contact;
+
                     $contact['phones'][] = $phone;
                 }
             }
         }
+    }
+    
+    public function mount(Person $person)
+    {
+        $this->person = $person;
+        $this->personable = $this->person->personable;
+        $this->contacts = $this->person->contacts->toArray() ?? [new Contact()];
+        $this->phones = $this->person->phones->toArray() ?? [new Phone()];
+        $this->emails = $this->person->emails->toArray() ?? [new Email()];
+        $this->address = $this->person->address ?? new Address();
+        $this->assignContactIndexes();
+        $this->assignContactPhones();
+        $this->assignContactEmails();
     }
 
     public function createEmail(int $contactIndex)
