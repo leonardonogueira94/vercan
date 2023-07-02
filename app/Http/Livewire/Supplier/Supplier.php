@@ -145,21 +145,8 @@ class Supplier extends Component
             }
         }
     }
-    
-    public function mount(Person $person)
-    {
-        $this->person = $person;
-        $this->personable = $this->person->personable;
-        $this->contacts = $this->person->contacts->toArray() ?? [new Contact()];
-        $this->phones = $this->person->phones->toArray() ?? [new Phone()];
-        $this->emails = $this->person->emails->toArray() ?? [new Email()];
-        $this->address = $this->person->address ?? new Address();
-        $this->assignContactIndexes();
-        $this->assignContactPhones();
-        $this->assignContactEmails();
-    }
 
-    public function createEmail(int $contactIndex = 0, string $email = null, string $type = null)
+    public function createEmail(int $contactIndex = 0, string $value = null, string $type = null)
     {
         $contact = $this->contacts[$contactIndex];
 
@@ -169,22 +156,24 @@ class Supplier extends Component
 
         $email['type'] = $type;
 
-        $email['email'] = $email;
+        $email['email'] = $value;
 
         $this->emails[] = $email;
     }
 
-    public function createPhone(int $contactIndex = 0, string $phone = null, string $type = null)
+    public function createPhone(int $contactIndex = 0, string $value = null, string $type = null)
     {
         $contact = $this->contacts[$contactIndex];
 
-        $phone = new Phone();
+        $phone = (new Phone())->toArray();
 
         $phone['contact'] = $contact;
 
         $phone['type'] = $type;
 
-        $email['phone'] = $phone;
+        $phone['phone'] = $value;
+
+        $phone['index'] = isset($this->phones) ? count($this->phones) : 0;
 
         $this->phones[] = $phone;
     }
@@ -202,5 +191,9 @@ class Supplier extends Component
             $contact['index'] = count($this->contacts);
 
         $this->contacts[] = $contact;
+
+        $this->createEmail(end($this->contacts)['index']);
+
+        $this->createPhone(end($this->contacts)['index']);
     }
 }
