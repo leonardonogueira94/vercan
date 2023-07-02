@@ -82,11 +82,10 @@ class Supplier extends Component
         $data = $this->receitaService->getLegalPersonData($this->personable->cnpj);
         
         foreach($this->receitaService->getLegalPersonDataMap() as $column => $field)
-            $this->personable->$column = $data->$field;
+            $this->personable[$column] = $data->$field;
 
         foreach($this->receitaService->getAddressDataMap() as $column => $field)
-            $this->personable->$column = $data->$field;
-        
+            $this->personable[$column] = $data->$field;
     }
 
     public function mount(Person $person)
@@ -105,11 +104,12 @@ class Supplier extends Component
         {
             $email['contact'] = null;
 
-            foreach($this->contacts as $contact)
+            foreach($this->contacts as &$contact)
             {
                 if($email['contact_id'] == $contact['id'])
                 {
                     $email['contact'] = $contact;
+                    $contact['emails'][] = $email;
                 }
             }
         }
@@ -118,11 +118,12 @@ class Supplier extends Component
         {
             $phone['contact'] = null;
 
-            foreach($this->contacts as $contact)
+            foreach($this->contacts as &$contact)
             {
                 if($phone['contact_id'] == $contact['id'])
                 {
                     $phone['contact'] = $contact;
+                    $contact['phones'][] = $phone;
                 }
             }
         }

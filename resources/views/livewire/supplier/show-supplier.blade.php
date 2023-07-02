@@ -35,7 +35,9 @@
         @endforeach
     </x-card.card>
 
-    <button wire:click="createContact(false)" class="d-flex justify-content-end w-100 btn btn-link">ADICIONAR</button>
+    @if(request()->route()->getName() != 'supplier.show')
+        <button wire:click="createContact(false)" class="d-flex justify-content-end w-100 btn btn-link">ADICIONAR</button>
+    @endif
 
     <x-card.card title="Contatos Adicionais">
         @foreach(array_filter($this->contacts, fn($contact) => $contact['is_default'] == false) as $contact)
