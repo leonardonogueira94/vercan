@@ -159,7 +159,7 @@ class Supplier extends Component
         $this->assignContactEmails();
     }
 
-    public function createEmail(int $contactIndex)
+    public function createEmail(int $contactIndex = 0, string $email = null, string $type = null)
     {
         $contact = $this->contacts[$contactIndex];
 
@@ -167,12 +167,14 @@ class Supplier extends Component
 
         $email['contact'] = $contact;
 
-        $email['type'] = null;
+        $email['type'] = $type;
+
+        $email['email'] = $email;
 
         $this->emails[] = $email;
     }
 
-    public function createPhone(int $contactIndex)
+    public function createPhone(int $contactIndex = 0, string $phone = null, string $type = null)
     {
         $contact = $this->contacts[$contactIndex];
 
@@ -180,7 +182,9 @@ class Supplier extends Component
 
         $phone['contact'] = $contact;
 
-        $phone['type'] = null;
+        $phone['type'] = $type;
+
+        $email['phone'] = $phone;
 
         $this->phones[] = $phone;
     }
