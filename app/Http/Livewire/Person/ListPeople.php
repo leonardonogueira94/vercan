@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\Supplier;
+namespace App\Http\Livewire\Person;
 
 use App\Concerns\HasFilter;
 use App\Concerns\HasPagination;
 use App\Models\Person;
 use Livewire\Component;
 
-class ListSuppliers extends Component
+class ListPeople extends Component
 {
     use HasPagination, HasFilter;
 
@@ -17,7 +17,7 @@ class ListSuppliers extends Component
 
         $people = $builder->paginate($this->perPage);
 
-        return view('livewire.supplier.list-suppliers', ['people' => $people]);
+        return view('livewire.supplier.list-people', ['people' => $people]);
     }
 
     public function getPersonProperty()

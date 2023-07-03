@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Supplier;
+namespace App\Http\Livewire\Person;
 
 use App\Enums\Contact\ContactType;
 use App\Enums\Person\PersonStatus;
@@ -12,7 +12,7 @@ use App\Models\Contact;
 use App\Models\Email;
 use App\Models\LegalPerson;
 use App\Models\NaturalPerson;
-use App\Models\Person;
+use App\Models\Person as PersonModel;
 use App\Models\Phone;
 use App\Models\State;
 use App\Services\ReceitaService;
@@ -20,7 +20,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Livewire\Component;
 
-class Supplier extends Component
+class Person extends Component
 {
     private ReceitaService $receitaService;
 

@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Livewire\Supplier;
+namespace App\Http\Livewire\Person;
 
+use App\Http\Livewire\Person\Person;
 use App\Models\Address;
 use App\Models\Contact;
 use App\Models\Email;
-use App\Models\Person;
+use App\Models\Person as PersonModel;
 use App\Models\Phone;
 
-class ShowSupplier extends Supplier
+class ShowPerson extends Person
 {
-    public function mount(Person $person)
+    public function mount(PersonModel $person)
     {
         $this->person = $person;
         $this->personable = $this->person->personable;
@@ -25,6 +26,6 @@ class ShowSupplier extends Supplier
 
     public function render()
     {
-        return view('livewire.supplier.show-supplier');
+        return view('livewire.supplier.show-person');
     }
 }

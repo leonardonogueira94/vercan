@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Livewire\Person\CreatePerson;
+use App\Http\Livewire\Person\DeletePerson;
+use App\Http\Livewire\Person\EditPerson;
+use App\Http\Livewire\Person\ListPeople;
+use App\Http\Livewire\Person\ShowPerson;
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\Supplier\CreateSupplier;
-use App\Http\Livewire\Supplier\DeleteSupplier;
-use App\Http\Livewire\Supplier\EditSupplier;
-use App\Http\Livewire\Supplier\ListSuppliers;
-use App\Http\Livewire\Supplier\ShowSupplier;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +17,9 @@ use App\Http\Livewire\Supplier\ShowSupplier;
 */
 
 Route::prefix('fornecedor')->group(function () {
-    Route::get('/listar', ListSuppliers::class)->name('supplier.list');
-    Route::get('/cadastrar', CreateSupplier::class)->name('supplier.create');
-    Route::get('/{person}/ver', ShowSupplier::class)->name('supplier.show');
-    Route::get('/{person}/editar', EditSupplier::class)->name('supplier.edit');
-    Route::delete('/{person}/deletar', DeleteSupplier::class)->name('supplier.delete');
+    Route::get('/listar', ListPeople::class)->name('person.list');
+    Route::get('/cadastrar', CreatePerson::class)->name('person.create');
+    Route::get('/{person}/ver', ShowPerson::class)->name('person.show');
+    Route::get('/{person}/editar', EditPerson::class)->name('person.edit');
+    Route::delete('/{person}/deletar', DeletePerson::class)->name('person.delete');
 });
