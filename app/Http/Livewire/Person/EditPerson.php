@@ -8,6 +8,6 @@ class EditPerson extends Component
 {
     public function render()
     {
-        return view('livewire.supplier.edit-person');
+        return view('livewire.person.edit-person');
     }
 }

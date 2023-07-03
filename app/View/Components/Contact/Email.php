@@ -16,7 +16,8 @@ class Email extends Component
      */
     public function __construct(
         public EmailModel $email,
-        public int $index
+        public int $index,
+        public bool $readonly,
     ){}
 
     /**

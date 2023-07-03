@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Person;
 
 use App\Models\Address;
 use App\Http\Livewire\Person\Person;
+use App\Http\Requests\CreatePersonRequest;
 
 class CreatePerson extends Person
 {
@@ -16,18 +17,18 @@ class CreatePerson extends Person
         $this->address = new Address();
     }
 
-    public function hydrateContacts($contacts)
+    protected function rules(): array
     {
-        return (array) $contacts;
-    }
-
-    public function dehydrateContacts($contacts)
-    {
-        return (array) $contacts;
+        return (new CreatePersonRequest())->rules();
     }
 
     public function render()
     {
         return view('livewire.supplier.create-person');
+    }
+
+    public function save()
+    {
+        $this->validate(); 
     }
 }

@@ -16,7 +16,8 @@ class Phone extends Component
      */
     public function __construct(
         public PhoneModel $phone,
-        public int $index
+        public int $index,
+        public bool $readonly,
     ){}
 
     /**

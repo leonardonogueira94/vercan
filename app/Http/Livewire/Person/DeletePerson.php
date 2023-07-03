@@ -8,6 +8,6 @@ class DeletePerson extends Component
 {
     public function render()
     {
-        return view('livewire.supplier.delete-person');
+        return view('livewire.person.delete-person');
     }
 }

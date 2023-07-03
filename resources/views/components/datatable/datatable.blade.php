@@ -22,10 +22,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($rows as $row)
-                                <tr wire:key="row-{{ $row->id }}">
+                            @foreach($readonlyws as $readonlyw)
+                                <tr wire:key="row-{{ $readonlyw->id }}">
                                     @foreach($columns as $column)
-                                        <td>{{ $row->$column }}</td>
+                                        <td>{{ $readonlyw->$column }}</td>
                                     @endforeach
                                 </tr>
                             @endforeach
@@ -39,7 +39,7 @@
         <div class="row datatable-footer">
             <div class="col-12">
                 <div class="d-flex justify-content-end">
-                    {{ $rows->links() }}
+                    {{ $readonlyws->links() }}
                 </div>
             </div>
         </div>

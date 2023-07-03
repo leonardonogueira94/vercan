@@ -17,7 +17,7 @@ class ListPeople extends Component
 
         $people = $builder->paginate($this->perPage);
 
-        return view('livewire.supplier.list-people', ['people' => $people]);
+        return view('livewire.person.list-people', ['people' => $people]);
     }
 
     public function getPersonProperty()

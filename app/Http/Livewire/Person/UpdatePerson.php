@@ -8,6 +8,6 @@ class UpdatePerson extends Component
 {
     public function render()
     {
-        return view('livewire.supplier.update-person');
+        return view('livewire.person.update-person');
     }
 }

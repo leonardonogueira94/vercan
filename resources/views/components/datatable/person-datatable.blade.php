@@ -33,9 +33,9 @@
                                     <td>{{ App\Enums\Person\PersonStatus::tryFrom($person->is_active)->label() }}</td>
                                     <td>
                                         <x-datatable.actions-button 
-                                            showRoute="{{ route('supplier.show', ['person' => $person->id]) }}" 
-                                            editRoute="{{ route('supplier.edit', ['person' => $person->id]) }}" 
-                                            deleteRoute="{{ route('supplier.delete', ['person' => $person->id]) }}"
+                                            showRoute="{{ route('person.show', ['person' => $person->id]) }}" 
+                                            editRoute="{{ route('person.edit', ['person' => $person->id]) }}" 
+                                            deleteRoute="{{ route('person.delete', ['person' => $person->id]) }}"
                                         />
                                     </td>
                                 </tr>

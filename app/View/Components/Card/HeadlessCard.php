@@ -21,6 +21,6 @@ class HeadlessCard extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.card.headless-card');
+        return view('components.headless-card');
     }
 }

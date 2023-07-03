@@ -1,23 +1,23 @@
-@forelse($this->contacts as $contact)
-    @if($contact['is_default'] != true)
+@forelse($this->person->contacts as $index => $contact)
+    @if($contact->is_default != true)
         @continue
     @endif
     <div>
         <div class="row">
             <div class="col-md-6 phones">
-                @foreach(array_filter($this->phones, fn($phone) => $phone['contact'] == $contact) as $phone)
+                @foreach($contact->phones as $phone)
                     <x-phone :phone="$phone"/>
                 @endforeach
-                @if(request()->route()->getName() != 'supplier.show')
-                    <button wire:click="createPhone({{ $contact['index'] }})" class="btn btn-link">Adicionar</button>
+                @if(request()->route()->getName() != 'person.show')
+                    <button wire:click="" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
                 @endif
             </div>
             <div class="col-md-6 emails">
-                @foreach(array_filter($this->emails, fn($email) => $email['contact'] == $contact) as $email)
+                @foreach($contact->emails as $email)
                     <x-email :email="$email"/>
                 @endforeach
                 @if(request()->route()->getName() != 'supplier.show')
-                    <button wire:click="createEmail({{ $contact['index'] }})" class="btn btn-link">Adicionar</button>
+                    <button wire:click="" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
                 @endif
             </div>
         </div>

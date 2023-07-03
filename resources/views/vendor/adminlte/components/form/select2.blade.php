@@ -86,18 +86,18 @@
         line-height: 1.7;
     }
 
-    {{-- Enhance the plugin to support readonly attribute --}}
-    select[readonly].select2-hidden-accessible + .select2-container {
+    {{-- Enhance the plugin to support readOnly attribute --}}
+    select[readOnly].select2-hidden-accessible + .select2-container {
         pointer-events: none;
         touch-action: none;
     }
 
-    select[readonly].select2-hidden-accessible + .select2-container .select2-selection {
+    select[readOnly].select2-hidden-accessible + .select2-container .select2-selection {
         background: #e9ecef;
         box-shadow: none;
     }
 
-    select[readonly].select2-hidden-accessible + .select2-container .select2-search__field {
+    select[readOnly].select2-hidden-accessible + .select2-container .select2-search__field {
         display: none;
     }
 

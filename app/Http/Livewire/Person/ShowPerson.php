@@ -2,30 +2,28 @@
 
 namespace App\Http\Livewire\Person;
 
-use App\Http\Livewire\Person\Person;
-use App\Models\Address;
-use App\Models\Contact;
-use App\Models\Email;
-use App\Models\Person as PersonModel;
-use App\Models\Phone;
+use App\Http\Requests\CreatePersonRequest;
+use App\Models\Person;
+use Livewire\Component;
 
-class ShowPerson extends Person
+class ShowPerson extends Component
 {
-    public function mount(PersonModel $person)
+    public bool $disableInputs = true;
+
+    public Person $person;
+
+    protected function rules(): array
+    {
+        return (new CreatePersonRequest($this->person))->rules();
+    }
+
+    public function mount(Person $person)
     {
         $this->person = $person;
-        $this->personable = $this->person->personable;
-        $this->contacts = $this->person->contacts->toArray() ?? [new Contact()];
-        $this->phones = $this->person->phones->toArray() ?? [new Phone()];
-        $this->emails = $this->person->emails->toArray() ?? [new Email()];
-        $this->address = $this->person->address ?? new Address();
-        /* $this->assignContactIndexes();
-        $this->assignContactPhones();
-        $this->assignContactEmails(); */
     }
 
     public function render()
     {
-        return view('livewire.supplier.show-person');
+        return view('livewire.person.show-person');
     }
 }

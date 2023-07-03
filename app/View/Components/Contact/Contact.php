@@ -15,8 +15,9 @@ class Contact extends Component
      */
     public function __construct(
         public string $company,
-        public string $role,
-        public string $value
+        public string $readonlyle,
+        public string $value,
+        public bool $readonly,
     ){}
 
     /**

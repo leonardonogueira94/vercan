@@ -17,8 +17,8 @@ return [
     */
 
     'title' => 'Desafio Vercan',
-    'title_prefix' => 'Desafio ',
-    'title_postfix' => 'Vercan',
+    'title_prefix' => '',
+    'title_postfix' => '',
 
     /*
     |--------------------------------------------------------------------------
@@ -299,7 +299,7 @@ return [
         ],
         [
             'text'        => 'Fornecedores',
-            'route'       => 'supplier.list',
+            'route'       => 'person.list',
             'icon'        => 'fas fa-users',
         ],
         [

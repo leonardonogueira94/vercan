@@ -15,8 +15,8 @@ class RadioGroupFromEnum extends Component
         public string $name,
         public array $values,
         public ?string $default = null,
-        public bool $disabled = false,
-        public bool $wired = false
+        public bool $wired = false,
+        public bool $readonly = true,
     ){}
 
     /**
@@ -24,6 +24,6 @@ class RadioGroupFromEnum extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.input.radio-group-from-enum');
+        return view('components.radio-group-from-enum');
     }
 }

@@ -13,7 +13,8 @@ class Address extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public ?AddressModel $address
+        public ?AddressModel $address,
+        public bool $readonly,
     ){}
 
     /**
