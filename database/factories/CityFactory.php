@@ -7,7 +7,36 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CityFactory extends Factory
 {
-    
+    public array $capitals = [
+        "AC" => "Rio Branco",
+        "AL" => "Maceió",
+        "AM" => "Manaus",
+        "AP" => "Macapá",
+        "BA" => "Salvador",
+        "CE" => "Fortaleza",
+        "DF" => "Brasília",
+        "ES" => "Vitória",
+        "GO" => "Goiânia",
+        "MA" => "São Luís",
+        "MG" => "Belo Horizonte",
+        "MS" => "Campo Grande",
+        "MT" => "Cuiabá",
+        "PA" => "Belém",
+        "PB" => "João Pessoa",
+        "PE" => "Recife",
+        "PI" => "Teresina",
+        "PR" => "Curitiba",
+        "RJ" => "Rio de Janeiro",
+        "RN" => "Natal",
+        "RO" => "Porto Velho",
+        "RR" => "Boa Vista",
+        "RS" => "Porto Alegre",
+        "SC" => "Florianópolis",
+        "SE" => "Aracaju",
+        "SP" => "São Paulo",
+        "TO" => "Palmas"
+    ];
+
     /**
      * Define the model's default state.
      *
@@ -15,11 +44,11 @@ class CityFactory extends Factory
      */
     public function definition(): array
     {
-        $stateIds = State::pluck('id')->toArray();
+        $capital = fake()->randomElement($this->capitals);
 
         return [
-            'state_id' => fake()->randomElement($stateIds),
-            'name' => fake()->unique()->city,
+            'uf' =>  array_search($capital, $this->capitals),
+            'name' => $capital,
         ];
     }
 }

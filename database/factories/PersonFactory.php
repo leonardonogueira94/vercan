@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Address;
-use App\Models\LegalPerson;
-use App\Models\NaturalPerson;
+use App\Enums\Person\PersonType;
+use App\Enums\Person\StateRegistrationCategory;
+use App\Enums\Person\TaxCollectionType;
 use App\Models\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,11 +20,6 @@ class PersonFactory extends Factory
      */
     protected $model = Person::class;
 
-    private array $personable = [
-        LegalPerson::class,
-        NaturalPerson::class
-    ];
-
     /**
      * Define the model's default state.
      *
@@ -32,12 +27,30 @@ class PersonFactory extends Factory
      */
     public function definition(): array
     {
-        $personableType = fake()->randomElement($this->personable);
+        $chosen = fake()->randomElement(PersonType::toArray());
 
-        return [
-            'personable_id' => $personableType::factory()->create(),
-            'personable_type' => $personableType,
-            'is_active' => fake()->boolean(85),
-        ];
+        if($chosen == 'J')
+            return [
+                'type' => $chosen,
+                'cnpj' => fake()->cnpj(false),
+                'company_name' => fake()->company(),
+                'trading_name' => fake()->company(),
+                'ie_category' => fake()->randomElement(StateRegistrationCategory::toArray()),
+                'ie' => fake()->numerify('#########'),
+                'im' => fake()->numerify('###########'),
+                'cnpj_status' => 'ATIVA',
+                'tax_type' => fake()->randomElement(TaxCollectionType::toArray()),
+                'is_active' => fake()->boolean(85),
+            ];
+
+        if($chosen == 'F')
+            return [
+                'type' => $chosen,
+                'cpf' => fake()->unique()->cpf(false),
+                'name' => fake()->name(),
+                'alias' => explode(' ', fake()->name())[0],
+                'rg' => fake()->unique()->rg(false),
+                'is_active' => fake()->boolean(85),
+            ];
     }
 }
