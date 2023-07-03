@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Person\PersonStatus;
 use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Enums\Person\TaxCollectionType;
@@ -29,7 +30,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('alias')->nullable();
             $table->string('rg', 9)->nullable();
-            $table->boolean('is_active');
+            $table->enum('is_active', PersonStatus::toArray());
             $table->timestamps();
         });
     }

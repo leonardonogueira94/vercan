@@ -13,9 +13,7 @@ class ListSuppliers extends Component
 
     public function render()
     {
-        $builder = $this->applyQueryFilter($this->filter, Person::with('personable'));
-
-        $builder = $this->applyQueryFilterOnRelation($this->filter, ['legal_people', 'natural_people'], 'personable', $builder);
+        $builder = $this->applyQueryFilter($this->filter, Person::query());
 
         $people = $builder->paginate($this->perPage);
 

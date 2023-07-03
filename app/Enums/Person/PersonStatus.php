@@ -6,12 +6,12 @@ namespace App\Enums\Person;
 
 use App\Concerns\Enumerable;
 
-enum PersonStatus: int
+enum PersonStatus: string
 {
     use Enumerable;
     
-    case INATIVA = 0;
-    case ATIVA = 1;
+    case INATIVA = 'Não';
+    case ATIVA = 'Sim';
 
     public function label()
     {

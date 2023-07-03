@@ -26,9 +26,9 @@
                         <tbody>
                             @foreach($rows as $person)
                                 <tr wire:key="row-{{ $person->id }}">
-                                    <td>{{ $person->personable->company_name ?? $person->personable->name }}</td>
-                                    <td>{{ $person->personable->trading_name ?? $person->personable->alias }}</td>
-                                    <td>{{ $person->personable->cnpj ?? $person->personable->cpf }}</td>
+                                    <td>{{ $person->company_name ?? $person->name }}</td>
+                                    <td>{{ $person->trading_name ?? $person->alias }}</td>
+                                    <td>{{ $person->cnpj ?? $person->cpf }}</td>
                                     <td>{{ App\Enums\Person\PersonStatus::tryFrom($person->is_active)->label() }}</td>
                                     <td>
                                         <x-datatable.actions-button 

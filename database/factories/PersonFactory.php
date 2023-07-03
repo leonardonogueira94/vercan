@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Person\PersonStatus;
 use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Enums\Person\TaxCollectionType;
@@ -40,7 +41,7 @@ class PersonFactory extends Factory
                 'im' => fake()->numerify('###########'),
                 'cnpj_status' => 'ATIVA',
                 'tax_type' => fake()->randomElement(TaxCollectionType::toArray()),
-                'is_active' => fake()->boolean(85),
+                'is_active' => fake()->randomElement(PersonStatus::toArray()),
             ];
 
         if($chosen == 'F')
@@ -50,7 +51,7 @@ class PersonFactory extends Factory
                 'name' => fake()->name(),
                 'alias' => explode(' ', fake()->name())[0],
                 'rg' => fake()->unique()->rg(false),
-                'is_active' => fake()->boolean(85),
+                'is_active' => fake()->randomElement(PersonStatus::toArray()),
             ];
     }
 }
