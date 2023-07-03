@@ -1,3 +1,4 @@
+@inject('maskService', 'App\Services\MaskService')
 <div>
     <x-card.headless-card>
         <div class="row datatable-header">
@@ -28,7 +29,7 @@
                                 <tr wire:key="row-{{ $person->id }}">
                                     <td>{{ $person->company_name ?? $person->name }}</td>
                                     <td>{{ $person->trading_name ?? $person->alias }}</td>
-                                    <td>{{ $person->cnpj ?? $person->cpf }}</td>
+                                    <td>{{ $maskService->maskCnpj($person->cnpj) ?? $maskService->maskCpf($person->cpf) }}</td>
                                     <td>{{ App\Enums\Person\PersonStatus::tryFrom($person->is_active)->label() }}</td>
                                     <td>
                                         <x-datatable.actions-button 
