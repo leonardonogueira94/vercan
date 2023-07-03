@@ -16,8 +16,17 @@ class CreateSupplier extends Supplier
         $this->personable = new LegalPerson();
         $this->contacts = [];
         $this->createContact(true);
-        $this->createContact(false);
         $this->address = new Address();
+    }
+
+    public function hydrateContacts($contacts)
+    {
+        return (array) $contacts;
+    }
+
+    public function dehydrateContacts($contacts)
+    {
+        return (array) $contacts;
     }
 
     public function render()

@@ -72,6 +72,10 @@ class Supplier extends Component
             'address.complement' => 'max:255',
             'address.area' => 'required|max:255',
             'address.reference_point' => 'max:255',
+
+            'contacts.*.contact_name' => 'max:5',
+            'contacts.*.company_name' => 'max:5',
+            'contacts.*.job_title' => 'max:5',
         ];
     }
 
@@ -104,7 +108,7 @@ class Supplier extends Component
             $this->personable[$column] = $data->$field;
     }
 
-    public function assignContactIndexes()
+    /* public function assignContactIndexes()
     {
         foreach($this->contacts as $index => &$contact)
             $contact['index'] = $index;
@@ -144,19 +148,21 @@ class Supplier extends Component
                 }
             }
         }
-    }
+    } */
 
     public function createEmail(int $contactIndex = 0, string $value = null, string $type = null)
     {
         $contact = $this->contacts[$contactIndex];
 
-        $email = new Email();
+        $email = (new Email())->toArray();
 
         $email['contact'] = $contact;
 
         $email['type'] = $type;
 
         $email['email'] = $value;
+
+        $email['index'] = isset($this->emails) ? count($this->emails) : 0;
 
         $this->emails[] = $email;
     }
@@ -180,9 +186,15 @@ class Supplier extends Component
 
     public function createContact(bool $isDefault = false)
     {
-        $contact = new Contact();
+        $contact = (new Contact())->toArray();
 
         $contact['is_default'] = $isDefault;
+
+        $contact['contact_name'] = null;
+
+        $contact['company_name'] = null;
+
+        $contact['job_title'] = null;
 
         if(!isset($this->contacts))
             $contact['index'] = 0;
@@ -192,8 +204,29 @@ class Supplier extends Component
 
         $this->contacts[] = $contact;
 
-        $this->createEmail(end($this->contacts)['index']);
+        $this->createEmail($contact['index']);
 
-        $this->createPhone(end($this->contacts)['index']);
+        $this->createPhone($contact['index']);
+    }
+
+    public function removePhone(int $phoneIndex = 0)
+    {
+        unset($this->phones[$phoneIndex]);
+
+        $this->phones[] = array_values($this->phones);
+    }
+
+    public function removeEmail(int $emailIndex = 0)
+    {
+        unset($this->emails[$emailIndex]);
+
+        $this->emails[] = array_values($this->emails);
+    }
+
+    public function removeContact(int $contactIndex = 0)
+    {
+        unset($this->contacts[$contactIndex]);
+
+        $this->contacts = array_values($this->contacts);
     }
 }

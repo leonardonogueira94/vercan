@@ -18,9 +18,9 @@ class ShowSupplier extends Supplier
         $this->phones = $this->person->phones->toArray() ?? [new Phone()];
         $this->emails = $this->person->emails->toArray() ?? [new Email()];
         $this->address = $this->person->address ?? new Address();
-        $this->assignContactIndexes();
+        /* $this->assignContactIndexes();
         $this->assignContactPhones();
-        $this->assignContactEmails();
+        $this->assignContactEmails(); */
     }
 
     public function render()
