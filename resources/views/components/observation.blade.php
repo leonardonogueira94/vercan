@@ -1,7 +1,8 @@
 <div>
     <div class="row">
-        <div class="col-12">
-            <textarea id="#editor" @if($this->disableInputs) disabled @endif></textarea>
+        <div class="col-12" wire:ignore>
+            <textarea wire:model="person.observation" id="#editor" @if($this->disableInputs) disabled @endif form="edit-form"></textarea>
+            @error('person.observation') <span class="error">{{ $message }}</span>@enderror
         </div>
     </div>
 </div>
@@ -12,7 +13,15 @@
     @endpush
     @push('js')
         <script>
-            CKEDITOR.replace('#editor')
+
+            CKEDITOR.replace('#editor', {
+                on: {
+                    change: function() {
+                        @this.set('person.observation', this.getData())
+                    }
+                }
+            })
+
         </script>
     @endpush
 @endonce

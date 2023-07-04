@@ -10,6 +10,8 @@ use App\Models\Person;
 use App\Services\CepService;
 use App\Services\MaskService;
 use App\Services\ReceitaService;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class EditPerson extends Component
@@ -60,5 +62,55 @@ class EditPerson extends Component
             $this->fillAddress($this->cepService->getAddressDataByCep($this->maskService->unmask($this->person->address->cep)));
     }
 
+    public function submit()
+    {
+        $this->validate();
+
+        try{
+            dd('pass');
+
+            DB::beginTransaction();
+
+            $this->person->save();
+            $this->updateContacts();
+            $this->updateAddress();
+
+            DB::commit();
+
+            session()->flash('success', 'Pessoa atualizada com sucesso!');
+            
+        }catch(Exception $e)
+        {
+            dd($e);
+            DB::rollBack();
+            session()->flash('error', $e->getMessage());
+        }
+    }
     
+    public function updateAddress()
+    {
+        $this->person->address->city->save();
+        $this->person->address->save();
+    }
+
+    public function updateContacts()
+    {
+        foreach($this->person->contacts as $contact)
+        {
+            $contact->is_registered = true;
+            $contact->save();
+        }
+
+        foreach($this->person->emails as $email)
+        {
+            $contact->is_registered = true;
+            $email->save();
+        }
+
+        foreach($this->person->phones as $phone)
+        {
+            $contact->is_registered = true;
+            $phone->save();
+        }
+    }
 }
