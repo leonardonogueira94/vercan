@@ -16,8 +16,11 @@
                 @foreach($contact->emails as $emailIndex => $email)
                     <x-email :email="$email" contactIndex="{{ $contactIndex }}" emailIndex="{{ $emailIndex }}"/>
                 @endforeach
+                @foreach($this->emails as $newEmailIndex => $email)
+                    <x-new-email :email="$email" contactIndex="{{ $contactIndex }}" newEmailIndex="{{ $emailIndex + $newEmailIndex }}"/>
+                @endforeach
                 @if(request()->route()->getName() != 'supplier.show')
-                    <button wire:click="" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
+                    <button wire:click="addEmail({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
                 @endif
             </div>
         </div>
