@@ -7,9 +7,9 @@ class MaskServiceTest extends TestCase
 {
     /**
      * @dataProvider cnpjProvider
-     * @covers \App\Services\MaskService::formatarCNPJ
+     * @covers \App\Services\MaskService::maskCnpj
      */
-    public function testFormatarCNPJ($cnpj, $expectedCnpj)
+    public function test_if_cnpj_can_be_formatted($cnpj, $expectedCnpj)
     {
         $maskService = new MaskService();
 
@@ -20,9 +20,9 @@ class MaskServiceTest extends TestCase
 
     /**
      * @dataProvider cpfProvider
-     * @covers \App\Services\MaskService::formatarCPF
+     * @covers \App\Services\MaskService::maskCpf
      */
-    public function testFormatarCPF($cpf, $expectedCpf)
+    public function test_if_cpf_can_be_formatted($cpf, $expectedCpf)
     {
         $maskService = new MaskService();
 
