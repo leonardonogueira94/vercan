@@ -27,7 +27,7 @@
     </x-card.card>
 
     <x-card.card title="Observação">
-
+        <x-observation/>
     </x-card.card>
 
     <a href="{{ route('person.edit', ['person' => $person]) }}" class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Editar</a>
