@@ -16,7 +16,7 @@
         <x-form.form-default-contact/>
     </x-card.card>
 
-    <button wire:click="createContact(false)" class="d-flex justify-content-end w-100 btn btn-link" @if($this->disableInputs) disabled @endif>ADICIONAR</button>
+    <button wire:click="addContact()" class="d-flex justify-content-end w-100 btn btn-link" @if($this->disableInputs) disabled @endif>ADICIONAR</button>
 
     <x-card.card title="Contatos Adicionais">
         <x-form.form-additional-contact/>

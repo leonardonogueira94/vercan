@@ -3,9 +3,8 @@
 namespace App\Http\Livewire\Person;
 
 use App\Http\Requests\EditPersonRequest;
-use App\Models\Email;
+use App\Models\Contact;
 use App\Models\Person;
-use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class EditPerson extends Component
@@ -14,9 +13,11 @@ class EditPerson extends Component
 
     public Person $person;
 
-    public array $emails;
+    public array $contacts;
 
-    public Collection $phones;
+    public array $phones;
+
+    public array $emails;
 
     protected function rules(): array
     {
@@ -31,12 +32,31 @@ class EditPerson extends Component
     public function mount(Person $person)
     {
         $this->person = $person;
+        $this->contacts = [];
+        $this->phones = [];
         $this->emails = [];
     }
 
     public function render()
     {
         return view('livewire.person.edit-person');
+    }
+
+    public function addContact()
+    {
+        $contact = [
+            'id' => fake()->numerify('########'),
+            'is_default' => false,
+            'contact_name' => '',
+            'company_name' => '',
+            'job_title' => '',
+        ];
+
+        $this->addPhone($contact['id']);
+
+        $this->addEmail($contact['id']);
+
+        $this->contacts[] = $contact;
     }
 
     public function addEmail(int $contactId)
@@ -48,5 +68,16 @@ class EditPerson extends Component
         ];
 
         $this->emails[] = $email;
+    }
+
+    public function addPhone(int $contactId)
+    {
+        $phone = [
+            'contact_id' => $contactId,
+            'type' => '',
+            'phone' => '',
+        ];
+
+        $this->phones[] = $phone;
     }
 }

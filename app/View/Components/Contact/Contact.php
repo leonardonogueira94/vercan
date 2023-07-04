@@ -4,6 +4,7 @@ namespace App\View\Components\Contact;
 
 use App\Enums\Contact\ContactChannel;
 use App\Enums\Contact\ContactType;
+use App\Models\Contact as ContactModel;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -14,9 +15,8 @@ class Contact extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public string $company,
-        public string $readonlyle,
-        public string $value,
+        public int $contactIndex,
+        public ContactModel|array $contact,
     ){}
 
     /**
