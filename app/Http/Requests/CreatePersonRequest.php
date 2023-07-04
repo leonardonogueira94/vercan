@@ -53,10 +53,15 @@ class CreatePersonRequest extends FormRequest
             'person.contacts.*.phones.*.type' => [new Enum(ContactType::class)],
             'person.contacts.*.phones.*.phone' => 'digits:13',
             'person.address.cep' => 'required|digits:8',
+            'person.address.address' => 'required|max:255',
+            'person.address.building_number' => 'required|digits:10',
             'person.address.street' => 'required|max:255',
             'person.address.number' => 'required|max:15',
             'person.address.complement' => 'max:255',
             'person.address.area' => 'required|max:255',
+            'person.address.city.uf' => 'required|exists:cities,uf',
+            'person.address.city.name' => 'required|exists:cities,name',
+            'person.address.is_condo' => 'required|boolean',
         ];
     }
 }
