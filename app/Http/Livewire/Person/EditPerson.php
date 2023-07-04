@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Person;
 
 use App\Http\Requests\EditPersonRequest;
+use App\Models\Contact;
+use App\Models\Email;
 use App\Models\Person;
 use App\Models\Phone;
 use App\Services\CepService;
@@ -63,9 +65,9 @@ class EditPerson extends Component
     public function mount(Person $person)
     {
         $this->person = $person;
-        $this->contacts = [];
-        $this->phones = [];
-        $this->emails = [];
+        $this->person->phones()->where('phones.is_registered', false)->delete();
+        $this->person->emails()->where('emails.is_registered', false)->delete();
+        $this->person->contacts()->where('is_registered', false)->delete();
     }
 
     public function boot(
@@ -85,33 +87,27 @@ class EditPerson extends Component
 
     public function addContact()
     {
-        $contact = [
-            'id' => fake()->numerify('########'),
+        $contact = Contact::create([
+            'person_id' => $this->person->id,
             'is_default' => false,
-            'contact_name' => '',
-            'company_name' => '',
-            'job_title' => '',
-        ];
+            'is_registered' => false,
+        ]);
 
-        $this->addPhone($contact['id']);
+        $this->addPhone($contact->id);
 
-        $this->addEmail($contact['id']);
+        $this->addEmail($contact->id);
 
-        $this->contacts[] = $contact;
+        $this->person = Person::find($this->person->id);
     }
 
     public function addEmail(int $contactId)
     {
-        $email = [
+        $email = Email::create([
+            'is_registered' => false,
             'contact_id' => $contactId,
-            'index' => count($this->emails),
-            'contact_index' => $this->getContactIndex($contactId),
-            'exists' => false,
-            'type' => '',
-            'email' => '',
-        ];
+        ]);
 
-        $this->emails[] = $email;
+        $this->person = Person::find($this->person->id);
     }
 
     public function addPhone(int $contactId)
@@ -124,14 +120,19 @@ class EditPerson extends Component
         $this->person = Person::find($this->person->id);
     }
 
-    public function getContactIndex(int $contactId)
+    public function removeContact($contactId)
     {
-        foreach($this->person->contacts as $index => $contact)
-            if($contact->id == $contactId)
-                return $index;
+        $this->person->contacts()->where('id', $contactId)->delete();
+    }
 
-        foreach($this->contacts as $index => $contact)
-            if($contact['id'] == $contactId)
-                return $index;
+    public function removeEmail(int $emailId)
+    {
+        $this->person->emails()->where('id', $emailId)->delete();
+
+    }
+
+    public function removePhone(int $phoneId)
+    {
+        $this->person->phones()->where('id', $phoneId)->delete();
     }
 }

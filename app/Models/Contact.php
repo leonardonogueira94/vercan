@@ -11,6 +11,8 @@ class Contact extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+    
     public function emails(): HasMany
     {
         return $this->hasMany(Email::class);
