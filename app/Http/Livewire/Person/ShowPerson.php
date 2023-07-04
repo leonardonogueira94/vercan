@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Person;
 
 use App\Http\Requests\CreatePersonRequest;
+use App\Http\Requests\ShowPersonRequest;
 use App\Models\Person;
 use Livewire\Component;
 
@@ -14,7 +15,7 @@ class ShowPerson extends Component
 
     protected function rules(): array
     {
-        return (new CreatePersonRequest($this->person))->rules();
+        return (new ShowPersonRequest($this->person))->rules();
     }
 
     public function mount(Person $person)
