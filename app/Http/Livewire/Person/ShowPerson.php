@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Person;
 
+use App\Concerns\Livewire\DeletesUnregisteredContact;
 use App\Http\Requests\CreatePersonRequest;
 use App\Http\Requests\ShowPersonRequest;
 use App\Models\Person;
@@ -9,6 +10,8 @@ use Livewire\Component;
 
 class ShowPerson extends Component
 {
+    use DeletesUnregisteredContact;
+
     public bool $disableInputs = true;
 
     public Person $person;
@@ -27,9 +30,7 @@ class ShowPerson extends Component
     public function mount(Person $person)
     {
         $this->person = $person;
-        $this->contacts = [];
-        $this->phones = [];
-        $this->emails = [];
+        $this->deleteUnregisteredContacts();
     }
 
     public function render()

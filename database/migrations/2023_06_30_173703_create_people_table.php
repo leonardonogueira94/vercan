@@ -18,18 +18,18 @@ return new class extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->id();
             $table->enum('type', PersonType::toArray());
-            $table->string('cnpj')->unique()->nullable();
+            $table->string('cnpj', 19)->unique()->nullable();
             $table->string('company_name')->nullable();
             $table->string('trading_name')->nullable();
             $table->enum('ie_category', StateRegistrationCategory::toArray())->nullable();
-            $table->string('ie', 15)->nullable();
-            $table->string('im', 15)->nullable();
+            $table->string('ie', 19)->nullable();
+            $table->string('im', 19)->nullable();
             $table->string('cnpj_status')->nullable();
             $table->enum('tax_type', TaxCollectionType::toArray())->nullable();
-            $table->string('cpf', 11)->unique()->nullable();
+            $table->string('cpf', 15)->unique()->nullable();
             $table->string('name')->nullable();
             $table->string('alias')->nullable();
-            $table->string('rg', 9)->nullable();
+            $table->string('rg', 12)->nullable();
             $table->enum('is_active', PersonStatus::toArray());
             $table->timestamps();
         });

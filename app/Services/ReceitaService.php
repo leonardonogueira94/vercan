@@ -14,11 +14,15 @@ class ReceitaService
 
     private string $baseUrl = 'https://receitaws.com.br/v1/cnpj';
 
-    public function getLegalPersonData(string $cnpj): object
+    public function getLegalPersonData(string $cnpj): object|false
     {
         $response = Http::get("$this->baseUrl/$cnpj");
 
         $data = (object) $response->json();
+
+        foreach($this->getAddressDataMap() as $field)
+            if(!property_exists($data, $field))
+                return false;
 
         if(!$this->cityRepository->cityAlreadyRegistered($data->uf, $data->municipio))
             $this->cityRepository->createCity($data->uf, $data->municipio);

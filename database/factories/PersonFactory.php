@@ -33,7 +33,7 @@ class PersonFactory extends Factory
         if($chosen == 'J')
             return [
                 'type' => $chosen,
-                'cnpj' => fake()->cnpj(false),
+                'cnpj' => fake()->cnpj(true),
                 'company_name' => fake()->company(),
                 'trading_name' => fake()->company(),
                 'ie_category' => fake()->randomElement(StateRegistrationCategory::toArray()),
@@ -47,10 +47,10 @@ class PersonFactory extends Factory
         if($chosen == 'F')
             return [
                 'type' => $chosen,
-                'cpf' => fake()->unique()->cpf(false),
+                'cpf' => fake()->unique()->cpf(true),
                 'name' => fake()->name(),
                 'alias' => explode(' ', fake()->name())[0],
-                'rg' => fake()->unique()->rg(false),
+                'rg' => fake()->unique()->rg(true),
                 'is_active' => fake()->randomElement(PersonStatus::toArray()),
             ];
     }

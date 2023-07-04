@@ -21,15 +21,15 @@
             @foreach($contact->phones as $phoneIndex => $phone)
                 <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" phoneIndex="{{ $phoneIndex }}"/>
             @endforeach
-            @if(request()->route()->getName() != 'supplier.show')
-                <button class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
+            @if(!$this->disableInputs)
+                <button wire:click="addPhone({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
             @endif
         </div>
         <div class="col-md-6 emails">
             @foreach($contact->emails as $emailIndex => $email)
                 <x-email :email="$email" contactIndex="{{ $contactIndex }}" emailIndex="{{ $emailIndex }}"/>
             @endforeach
-            @if(request()->route()->getName() != 'supplier.show')
+            @if(!$this->disableInputs)
                 <button wire:click="addEmail({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
             @endif
         </div>

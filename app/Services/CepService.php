@@ -13,14 +13,20 @@ class CepService
 
     private string $baseUrl = 'https://viacep.com.br/ws/';
 
-    public function getAddressDataByCep(string $cep): object
+    public function getAddressDataByCep(string $cep): object|false
     {
         $response = Http::get("$this->baseUrl/$cep/json");
 
         $data = (object) $response->json();
 
-        if(!$this->cityRepository->cityAlreadyRegistered($data->{$this->getAddressDataMap()['uf']}, $data->{$this->getAddressDataMap()['uf']}))
-            $this->cityRepository->createCity($data->{$this->getAddressDataMap()['uf']}, $data->{$this->getAddressDataMap()['uf']});
+        if(!property_exists($data, $this->getAddressDataMap()['uf']))
+            return false;
+
+        if(!property_exists($data, $this->getAddressDataMap()['city']))
+            return false;
+        
+        if(!$this->cityRepository->cityAlreadyRegistered($data->{$this->getAddressDataMap()['uf']}, $data->{$this->getAddressDataMap()['city']}))
+            $this->cityRepository->createCity($data->{$this->getAddressDataMap()['uf']}, $data->{$this->getAddressDataMap()['city']});
 
         return $data;
     }
