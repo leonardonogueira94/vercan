@@ -33,8 +33,17 @@ class EditPerson extends Component
     {
         $this->validateOnly($propertyName);
 
+        if($propertyName == 'person.cnpj' && strlen($value) == 14)
+            $this->fillPersonData($this->receitaService->getLegalPersonData($value));
+
         if($propertyName == 'person.address.cep' && strlen($value) == 8)
             $this->fillAddress($this->cepService->getAddressDataByCep($value));
+    }
+
+    public function fillPersonData($addressData)
+    {
+        foreach($this->receitaService->getLegalPersonDataMap() as $column => $field)
+            $this->person->$column = $addressData->$field;
     }
 
     public function fillAddress($addressData)
