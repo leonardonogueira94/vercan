@@ -44,6 +44,9 @@ class EditPerson extends Component
     {
         foreach($this->receitaService->getLegalPersonDataMap() as $column => $field)
             $this->person->$column = $addressData->$field;
+
+        foreach($this->receitaService->getAddressDataMap() as $column => $field)
+            $this->person->address->$column = $addressData->$field;
     }
 
     public function fillAddress($addressData)
