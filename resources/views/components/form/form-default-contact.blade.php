@@ -9,7 +9,9 @@
                     <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" phoneIndex="{{ $phoneIndex }}"/>
                 @endforeach
                 @foreach($this->phones as $newPhoneIndex => $email)
-                    <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" newPhoneIndex="{{ $phoneIndex + $newPhoneIndex }}"/>
+                    @if($phone['contact_id'] == $contact->id)
+                        <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" newPhoneIndex="{{ $phoneIndex + $newPhoneIndex }}"/>
+                    @endif
                 @endforeach
                 @if(!$this->disableInputs)
                     <button wire:click="addPhone({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
@@ -20,7 +22,9 @@
                     <x-email :email="$email" contactIndex="{{ $contactIndex }}" emailIndex="{{ $emailIndex }}"/>
                 @endforeach
                 @foreach($this->emails as $newEmailIndex => $email)
-                    <x-email :email="$email" contactIndex="{{ $contactIndex }}" newEmailIndex="{{ $emailIndex + $newEmailIndex }}"/>
+                    @if($email['contact_id'] == $contact->id)
+                        <x-email :email="$email" contactIndex="{{ $contactIndex }}" newEmailIndex="{{ $emailIndex + $newEmailIndex }}"/>
+                    @endif
                 @endforeach
                 @if(!$this->disableInputs)
                     <button wire:click="addEmail({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
