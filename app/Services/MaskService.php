@@ -27,4 +27,12 @@ class MaskService
 
         return $maskedCpf;
     }
+
+    public function unmask(string $data = null): string|null
+    {
+        if(!$data)
+            return null;
+
+        return preg_replace('/[^0-9]/', '', $data);
+    }
 }

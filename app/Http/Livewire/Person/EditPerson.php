@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Person;
 use App\Http\Requests\EditPersonRequest;
 use App\Models\Person;
 use App\Services\CepService;
+use App\Services\MaskService;
 use App\Services\ReceitaService;
 use Livewire\Component;
 
@@ -13,6 +14,8 @@ class EditPerson extends Component
     private ReceitaService $receitaService;
 
     private CepService $cepService;
+
+    private MaskService $maskService;
 
     public Person $person;
 
@@ -38,6 +41,8 @@ class EditPerson extends Component
 
         if($propertyName == 'person.address.cep' && strlen($value) == 8)
             $this->fillAddress($this->cepService->getAddressDataByCep($value));
+
+        $this->fillAddress($this->cepService->getAddressDataByCep($this->person->address->cep));
     }
 
     public function fillPersonData($addressData)
@@ -46,15 +51,16 @@ class EditPerson extends Component
             $this->person->$column = $addressData->$field;
 
         foreach($this->receitaService->getAddressDataMap() as $column => $field)
-            $this->person->address->$column = $addressData->$field;
+            $this->person->address->$column = $this->maskService->unmask($addressData->$field);
     }
 
     public function fillAddress($addressData)
     {        
         foreach($this->cepService->getAddressDataMap() as $column => $field)
-            if(property_exists($addressData, $field) && !in_array($column, ['uf', 'city']))
+            if(property_exists($addressData, $field) && !in_array($column, ['uf', 'city', 'cep']))
                 $this->person->address->$column = $addressData->$field;
 
+        $this->person->address->cep = $this->maskService->unmask($addressData->{$this->cepService->getAddressDataMap()['cep']});
         $this->person->address->city->uf = $addressData->{$this->cepService->getAddressDataMap()['uf']};
         $this->person->address->city->name = $addressData->{$this->cepService->getAddressDataMap()['city']};
     }
@@ -70,10 +76,12 @@ class EditPerson extends Component
 
     public function boot(
         ReceitaService $receitaService,
-        CepService $cepService
+        CepService $cepService,
+        MaskService $maskService
     ){
         $this->receitaService = $receitaService;
         $this->cepService = $cepService;
+        $this->maskService = $maskService;
     }
 
     public function render()
