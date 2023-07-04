@@ -35,11 +35,34 @@ class EditPerson extends Component
         $this->contacts = [];
         $this->phones = [];
         $this->emails = [];
+        $this->markContacts();
     }
 
     public function render()
     {
         return view('livewire.person.edit-person');
+    }
+
+    public function markContacts()
+    {
+        foreach($this->person->contacts as $contactIndex => $contact)
+        {
+            $contact->index = $contactIndex;
+            
+            foreach($contact->phones as $phoneIndex => $phone)
+            {
+                $phone->index = $phoneIndex;
+                $phone->exists = true;
+                $phone->contact_index = $contactIndex;
+            }
+
+            foreach($contact->emails as $emailIndex => $email)
+            {
+                $email->index = $emailIndex;
+                $email->exists = true;
+                $email->contact_index = $contactIndex;
+            }
+        }
     }
 
     public function addContact()

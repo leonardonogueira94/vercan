@@ -1,31 +1,44 @@
-@forelse($this->person->contacts as $contactIndex => $contact)
-    @if($contact->is_default != true)
+@forelse($this->person->contacts as $contact)
+
+    @if($contact->is_default == false)
         @continue
     @endif
+
     <div>
         <div class="row">
             <div class="col-md-6 phones">
-                @foreach($contact->phones as $phoneIndex => $phone)
-                    <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" phoneIndex="{{ $phoneIndex }}"/>
+                <!-- Mostra telefones que já estavam cadastrados -->
+                @foreach($contact->phones as $phone)
+                    <x-phone :phone="$phone"/>
                 @endforeach
-                @foreach($this->phones as $newPhoneIndex => $email)
-                    @if($phone['contact_id'] == $contact->id)
-                        <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" newPhoneIndex="{{ $phoneIndex + $newPhoneIndex }}"/>
+
+                <!-- Mostra telefones que estão sendo cadastrados -->
+                @foreach($this->phones as $phone)
+                    @if((object) $phone->contact_id == $contact->id)
+                        <x-phone :phone="$phone"/>
                     @endif
                 @endforeach
+
+                <!-- Mostra botões apenas na edição/criação -->
                 @if(!$this->disableInputs)
                     <button wire:click="addPhone({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
                 @endif
             </div>
+
             <div class="col-md-6 emails">
-                @foreach($contact->emails as $emailIndex => $email)
-                    <x-email :email="$email" contactIndex="{{ $contactIndex }}" emailIndex="{{ $emailIndex }}"/>
+                <!-- Mostra emails que já estavam cadastrados -->
+                @foreach($contact->emails as $email)
+                    <x-email :email="$email"/>
                 @endforeach
-                @foreach($this->emails as $newEmailIndex => $email)
-                    @if($email['contact_id'] == $contact->id)
-                        <x-email :email="$email" contactIndex="{{ $contactIndex }}" newEmailIndex="{{ $emailIndex + $newEmailIndex }}"/>
+
+                <!-- Mostra emails que estão sendo cadastrados -->
+                @foreach($this->emails as $email)
+                    @if((object) $email->contact_id) == $contact->id)
+                        <x-email :email="$email"/>
                     @endif
                 @endforeach
+
+                <!-- Mostra botões apenas na edição/criação -->
                 @if(!$this->disableInputs)
                     <button wire:click="addEmail({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
                 @endif
