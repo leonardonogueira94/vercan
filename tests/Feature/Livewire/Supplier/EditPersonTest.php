@@ -20,22 +20,23 @@ class EditPersonTest extends TestCase
     }
 
     /**
+     * @test
      * @dataProvider personProvider
-     * @covers App\Http\Livewire\Person\EditPerson::fillPersonData
      */
-    public function test_if_company_name_gets_filled_when_cnpj_is_filled(Person $person, string $cnpj)
+    public function test_if_company_name_gets_filled_when_cnpj_is_filled(string $cnpj, string $expectedCompanyName)
     {
-        $component = Livewire::test(EditPerson::class, ['person' => $person]);
-
-        $component->set('person.cnpj', $cnpj)
-        ->assertNotSet('person.company_name', )
-
+        $person = Person::factory()->make();
+        
+        $component = Livewire::test(EditPerson::class, ['person' => $person])
+        ->set('person.cnpj', $cnpj)
+        ->assertNotSet('person.company_name', $person->company_name)
+        ->assertSet('person.company_name', $expectedCompanyName);
     }
 
     public function personProvider(): array
     {
         return [
-            [Person::make(), 'cnpj' => 07019231000196],
+            ['cnpj' => '07019231000196', 'expectedCompanyName' => 'KENERSON INDUSTRIA E COMERCIO DE PRODUTOS OPTICOS LTDA'],
         ];
     }
 }
