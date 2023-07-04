@@ -14,7 +14,7 @@
 
                 <!-- Mostra telefones que estão sendo cadastrados -->
                 @foreach($this->phones as $phone)
-                    @if((object) $phone->contact_id == $contact->id)
+                    @if(((object) $phone)->contact_id == $contact->id)
                         <x-phone :phone="$phone"/>
                     @endif
                 @endforeach
@@ -33,7 +33,7 @@
 
                 <!-- Mostra emails que estão sendo cadastrados -->
                 @foreach($this->emails as $email)
-                    @if((object) $email->contact_id) == $contact->id)
+                    @if(((object) $email)->contact_id == $contact->id)
                         <x-email :email="$email"/>
                     @endif
                 @endforeach

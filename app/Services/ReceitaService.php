@@ -3,12 +3,13 @@
 namespace App\Services;
 
 use App\Repositories\AddressRepository;
+use App\Repositories\CityRepository;
 use Illuminate\Support\Facades\Http;
 
 class ReceitaService
 {
     public function __construct(
-        private AddressRepository $addressRepository
+        public CityRepository $cityRepository,
     ){}
 
     private string $baseUrl = 'https://receitaws.com.br/v1/cnpj';
@@ -19,8 +20,8 @@ class ReceitaService
 
         $data = (object) $response->json();
 
-        if(!$this->addressRepository->cityAlreadyRegistered($data->municipio))
-            $this->addressRepository->createCity($data->uf, $data->municipio);
+        if(!$this->cityRepository->cityAlreadyRegistered($data->uf, $data->municipio))
+            $this->cityRepository->createCity($data->uf, $data->municipio);
 
         return $data;
     }
@@ -38,10 +39,6 @@ class ReceitaService
     {
         return [
             'cep' => 'cep',
-            'address' => 'logradouro',
-            'building_number' => 'numero',
-            'complement' => 'complemento',
-            'area' => 'bairro',
         ];
     }
 }

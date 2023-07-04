@@ -1,3 +1,7 @@
+@php 
+    $phone = (object) $phone;
+@endphp
+
 <div clas="row">
     <div class="col-12">
         <div class="row email-row">

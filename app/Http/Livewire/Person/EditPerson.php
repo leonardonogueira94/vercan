@@ -3,13 +3,16 @@
 namespace App\Http\Livewire\Person;
 
 use App\Http\Requests\EditPersonRequest;
-use App\Models\Contact;
 use App\Models\Person;
+use App\Services\CepService;
+use App\Services\ReceitaService;
 use Livewire\Component;
 
 class EditPerson extends Component
 {
-    public bool $disableInputs = false;
+    private ReceitaService $receitaService;
+
+    private CepService $cepService;
 
     public Person $person;
 
@@ -19,14 +22,29 @@ class EditPerson extends Component
 
     public array $emails;
 
+    public bool $disableInputs = false;
+
     protected function rules(): array
     {
         return (new EditPersonRequest($this->person))->rules();
     }
 
-    public function updated($propertyName)
+    public function updated($propertyName, $value)
     {
         $this->validateOnly($propertyName);
+
+        if($propertyName == 'person.address.cep' && strlen($value) == 8)
+            $this->fillAddress($this->cepService->getAddressDataByCep($value));
+    }
+
+    public function fillAddress($addressData)
+    {        
+        foreach($this->cepService->getAddressDataMap() as $column => $field)
+            if(property_exists($addressData, $field) && !in_array($column, ['uf', 'city']))
+                $this->person->address->$column = $addressData->$field;
+
+        $this->person->address->city->uf = $addressData->{$this->cepService->getAddressDataMap()['uf']};
+        $this->person->address->city->name = $addressData->{$this->cepService->getAddressDataMap()['city']};
     }
 
     public function mount(Person $person)
@@ -36,6 +54,14 @@ class EditPerson extends Component
         $this->phones = [];
         $this->emails = [];
         $this->markContacts();
+    }
+
+    public function boot(
+        ReceitaService $receitaService,
+        CepService $cepService
+    ){
+        $this->receitaService = $receitaService;
+        $this->cepService = $cepService;
     }
 
     public function render()
@@ -86,6 +112,9 @@ class EditPerson extends Component
     {
         $email = [
             'contact_id' => $contactId,
+            'index' => count($this->emails),
+            'contact_index' => $this->getContactIndex($contactId),
+            'exists' => false,
             'type' => '',
             'email' => '',
         ];
@@ -97,10 +126,24 @@ class EditPerson extends Component
     {
         $phone = [
             'contact_id' => $contactId,
+            'index' => count($this->phones),
+            'contact_index' => $this->getContactIndex($contactId),
+            'exists' => false,
             'type' => '',
             'phone' => '',
         ];
 
         $this->phones[] = $phone;
+    }
+
+    public function getContactIndex(int $contactId)
+    {
+        foreach($this->person->contacts as $index => $contact)
+            if($contact->id == $contactId)
+                return $index;
+
+        foreach($this->contacts as $index => $contact)
+            if($contact['id'] == $contactId)
+                return $index;
     }
 }
