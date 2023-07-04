@@ -14,7 +14,6 @@ class Address extends Component
      */
     public function __construct(
         public ?AddressModel $address,
-        public bool $readonly,
     ){}
 
     /**

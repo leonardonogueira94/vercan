@@ -17,7 +17,6 @@ class Contact extends Component
         public string $company,
         public string $readonlyle,
         public string $value,
-        public bool $readonly,
     ){}
 
     /**

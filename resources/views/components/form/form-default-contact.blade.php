@@ -1,20 +1,20 @@
-@forelse($this->person->contacts as $index => $contact)
+@forelse($this->person->contacts as $contactIndex => $contact)
     @if($contact->is_default != true)
         @continue
     @endif
     <div>
         <div class="row">
             <div class="col-md-6 phones">
-                @foreach($contact->phones as $phone)
-                    <x-phone :phone="$phone"/>
+                @foreach($contact->phones as $phoneIndex => $phone)
+                    <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" phoneIndex="{{ $phoneIndex }}"/>
                 @endforeach
                 @if(request()->route()->getName() != 'person.show')
                     <button wire:click="" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
                 @endif
             </div>
             <div class="col-md-6 emails">
-                @foreach($contact->emails as $email)
-                    <x-email :email="$email"/>
+                @foreach($contact->emails as $emailIndex => $email)
+                    <x-email :email="$email" contactIndex="{{ $contactIndex }}" emailIndex="{{ $emailIndex }}"/>
                 @endforeach
                 @if(request()->route()->getName() != 'supplier.show')
                     <button wire:click="" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>

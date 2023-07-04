@@ -16,7 +16,6 @@ class RadioGroupFromEnum extends Component
         public array $values,
         public ?string $default = null,
         public bool $wired = false,
-        public bool $readonly = true,
     ){}
 
     /**
