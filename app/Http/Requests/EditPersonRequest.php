@@ -58,7 +58,7 @@ class EditPersonRequest extends FormRequest
             'person.address.number' => 'required|max:15',
             'person.address.complement' => 'max:255',
             'person.address.area' => 'required|max:255',
-            'person.address.city.uf' => 'required|exists:cities,uf',
+            'person.address.city.uf' => '',
             'person.address.city.name' => 'required|exists:cities,name',
             'person.address.is_condo' => 'required|boolean',
         ];

@@ -1,9 +1,9 @@
-@if($this->person->contacts->count() > 0 || count($this->contacts) > 0)
-    @foreach($this->person->contacts->where('is_default', false) as $contactIndex => $contact)
-        <x-contact contactIndex="{{ $contactIndex }}" :contact="$contact"/>
+@if($this->person->contacts->where('is_default', false)->count() > 0)
+    @foreach($this->person->contacts->where('is_registered', true)->where('is_default', false) as $contactIndex => $contact)
+        <x-contact :contact="$contact" contactIndex="{{ $contactIndex }}"/>
     @endforeach
-    @foreach($this->contacts as $contactIndex => $contact)
-        <x-contact wire:key="{{ fake()->numerify('#####') }}" contactIndex="{{ $contactIndex }}" :contact="$contact"/>
+    @foreach($this->person->contacts->where('is_registered', false)->where('is_default', false) as $contactIndex => $contact)
+        <x-contact :contact="$contact" contactIndex="{{ $contactIndex }}"/>
     @endforeach
 @else
     <div class="row">

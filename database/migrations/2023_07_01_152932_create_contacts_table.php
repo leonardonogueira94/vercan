@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('contact_name')->nullable();
             $table->string('company_name')->nullable();
             $table->string('job_title')->nullable();
+            $table->boolean('is_registered')->default(true);
             $table->boolean('is_default')->default(false);
             $table->timestamps();
         });

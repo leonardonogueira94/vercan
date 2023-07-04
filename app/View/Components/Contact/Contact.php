@@ -13,6 +13,7 @@ class Contact extends Component
      */
     public function __construct(
         public object $contact,
+        public int $contactIndex
     ){}
 
     /**

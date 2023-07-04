@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Person;
 
 use App\Http\Requests\EditPersonRequest;
 use App\Models\Person;
+use App\Models\Phone;
 use App\Services\CepService;
 use App\Services\MaskService;
 use App\Services\ReceitaService;
@@ -18,12 +19,6 @@ class EditPerson extends Component
     private MaskService $maskService;
 
     public Person $person;
-
-    public array $contacts;
-
-    public array $phones;
-
-    public array $emails;
 
     public bool $disableInputs = false;
 
@@ -71,7 +66,6 @@ class EditPerson extends Component
         $this->contacts = [];
         $this->phones = [];
         $this->emails = [];
-        $this->markContacts();
     }
 
     public function boot(
@@ -87,28 +81,6 @@ class EditPerson extends Component
     public function render()
     {
         return view('livewire.person.edit-person');
-    }
-
-    public function markContacts()
-    {
-        foreach($this->person->contacts as $contactIndex => $contact)
-        {
-            $contact->index = $contactIndex;
-            
-            foreach($contact->phones as $phoneIndex => $phone)
-            {
-                $phone->index = $phoneIndex;
-                $phone->exists = true;
-                $phone->contact_index = $contactIndex;
-            }
-
-            foreach($contact->emails as $emailIndex => $email)
-            {
-                $email->index = $emailIndex;
-                $email->exists = true;
-                $email->contact_index = $contactIndex;
-            }
-        }
     }
 
     public function addContact()
@@ -144,16 +116,12 @@ class EditPerson extends Component
 
     public function addPhone(int $contactId)
     {
-        $phone = [
+        $phone = Phone::create([
+            'is_registered' => false,
             'contact_id' => $contactId,
-            'index' => count($this->phones),
-            'contact_index' => $this->getContactIndex($contactId),
-            'exists' => false,
-            'type' => '',
-            'phone' => '',
-        ];
+        ]);
 
-        $this->phones[] = $phone;
+        $this->person = Person::find($this->person->id);
     }
 
     public function getContactIndex(int $contactId)

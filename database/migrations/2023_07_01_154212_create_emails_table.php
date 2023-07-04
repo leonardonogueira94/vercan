@@ -15,8 +15,9 @@ return new class extends Migration
         Schema::create('emails', function (Blueprint $table) {
             $table->id();
             $table->foreignId('contact_id')->constrained();
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->enum('type', ContactType::toArray())->nullable();
+            $table->boolean('is_registered')->default(true);
             $table->timestamps();
         });
     }

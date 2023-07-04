@@ -13,6 +13,8 @@ class Email extends Component
      */
     public function __construct(
         public object $email,
+        public int $contactIndex,
+        public int $emailIndex
     ){}
 
     /**

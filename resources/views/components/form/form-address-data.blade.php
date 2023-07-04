@@ -35,18 +35,24 @@
             </div>
             <div class="col-lg-3 col-12">
                 <label class="control-label">UF</label><sup>•</sup>
-                <input list="uf" wire:model="person.address.city.uf" value="{{ $this->person?->address?->city?->uf }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
-                <datalist id="uf">
+                <input list="ufs" wire:model="person.address.city.uf" value="{{ $this->person?->address?->city?->uf }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
+                <datalist id="ufs">
                     <option hidden>Selecione</option>
                     @foreach(App\Models\City::select('uf')->groupBy('uf') as $uf)
-                        <option>{{ $uf->uf }}</option>
+                        <option value="{{ $uf->uf }}">{{ $uf->uf }}</option>
                     @endforeach
                 </datalist>
                 @error('person.address.city.uf') <span class="error">{{ $message }}</span>@enderror
             </div>
             <div class="col-lg-3 col-12"><sup>•</sup>
                 <label class="control-label">Cidade</label>
-                <input wire:model="person.address.city.name" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
+                <input list="cities" wire:model="person.address.city.name" value="{{ $this->person?->address?->city?->name }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
+                <datalist id="cities">
+                    <option hidden>Selecione</option>
+                    @foreach(App\Models\City::where('uf', $this->person->address->uf)->get() as $city)
+                        <option>{{ $city->name }}</option>
+                    @endforeach
+                </datalist>
                 @error('person.address.city.name') <span class="error">{{ $message }}</span>@enderror
             </div>
         </div>

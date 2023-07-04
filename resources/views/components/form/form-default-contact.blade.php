@@ -1,22 +1,15 @@
-@forelse($this->person->contacts as $contact)
-
-    @if($contact->is_default == false)
-        @continue
-    @endif
-
+@forelse($this->person->contacts->where('is_default', true) as $contactIndex => $contact)
     <div>
         <div class="row">
             <div class="col-md-6 phones">
                 <!-- Mostra telefones que já estavam cadastrados -->
-                @foreach($contact->phones as $phone)
-                    <x-phone :phone="$phone"/>
+                @foreach($contact->phones->where('is_registered', true) as $phoneIndex => $phone)
+                    <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" phoneIndex="{{ $phoneIndex }}"/>
                 @endforeach
 
                 <!-- Mostra telefones que estão sendo cadastrados -->
-                @foreach($this->phones as $phone)
-                    @if(((object) $phone)->contact_id == $contact->id)
-                        <x-phone :phone="$phone"/>
-                    @endif
+                @foreach($contact->phones->where('is_registered', false) as $phoneIndex => $phone)
+                    <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" phoneIndex="{{ $phoneIndex }}"/>
                 @endforeach
 
                 <!-- Mostra botões apenas na edição/criação -->
@@ -27,15 +20,13 @@
 
             <div class="col-md-6 emails">
                 <!-- Mostra emails que já estavam cadastrados -->
-                @foreach($contact->emails as $email)
-                    <x-email :email="$email"/>
+                @foreach($contact->emails->where('is_registered', true) as $emailIndex => $email)
+                    <x-email :email="$email" contactIndex="{{ $contactIndex }}" emailIndex="{{ $emailIndex }}"/>
                 @endforeach
 
                 <!-- Mostra emails que estão sendo cadastrados -->
-                @foreach($this->emails as $email)
-                    @if(((object) $email)->contact_id == $contact->id)
-                        <x-email :email="$email"/>
-                    @endif
+                @foreach($contact->emails->where('is_registered', false) as $emailIndex => $email)
+                    <x-email :email="$email" contactIndex="{{ $contactIndex }}" emailIndex="{{ $emailIndex }}"/>
                 @endforeach
 
                 <!-- Mostra botões apenas na edição/criação -->

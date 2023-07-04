@@ -13,6 +13,8 @@ class Phone extends Component
      */
     public function __construct(
         public object $phone,
+        public int $contactIndex,
+        public int $phoneIndex
     ){}
 
     /**
