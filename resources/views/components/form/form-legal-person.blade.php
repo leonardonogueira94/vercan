@@ -1,4 +1,3 @@
-@props(['readonly' => true])
 @isset($this->person)
     @if($this->person->type == App\Enums\Person\PersonType::JURIDICA->value)
         <div class="field-set">
