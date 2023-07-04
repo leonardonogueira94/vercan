@@ -11,7 +11,7 @@
                 @foreach($this->phones as $newPhoneIndex => $email)
                     <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" newPhoneIndex="{{ $phoneIndex + $newPhoneIndex }}"/>
                 @endforeach
-                @if(request()->route()->getName() != 'person.show')
+                @if(!$this->disableInputs)
                     <button wire:click="addPhone({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
                 @endif
             </div>
@@ -22,7 +22,7 @@
                 @foreach($this->emails as $newEmailIndex => $email)
                     <x-email :email="$email" contactIndex="{{ $contactIndex }}" newEmailIndex="{{ $emailIndex + $newEmailIndex }}"/>
                 @endforeach
-                @if(request()->route()->getName() != 'supplier.show')
+                @if(!$this->disableInputs)
                     <button wire:click="addEmail({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
                 @endif
             </div>

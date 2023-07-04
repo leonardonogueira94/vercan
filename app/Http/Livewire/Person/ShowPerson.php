@@ -13,6 +13,12 @@ class ShowPerson extends Component
 
     public Person $person;
 
+    public array $contacts;
+
+    public array $phones;
+
+    public array $emails;
+
     protected function rules(): array
     {
         return (new ShowPersonRequest($this->person))->rules();
@@ -21,6 +27,9 @@ class ShowPerson extends Component
     public function mount(Person $person)
     {
         $this->person = $person;
+        $this->contacts = [];
+        $this->phones = [];
+        $this->emails = [];
     }
 
     public function render()
