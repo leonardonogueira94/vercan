@@ -17,11 +17,17 @@ class PersonSeeder extends Seeder
         ->count(30)
         ->create()
         ->each(function($person){
-            $this->createAddressForPerson($person);
-            $contact = $this->createContactForPerson($person);
-            $this->createEmailForContact($contact);
-            $this->createPhoneForContact($contact);
+            $this->createContactWithPhoneAndEmail($person, true);
+            $this->createContactWithPhoneAndEmail($person, false);
         });
+    }
+
+    public function createContactWithPhoneAndEmail(Person $person, bool $default)
+    {
+        $this->createAddressForPerson($person);
+        $contact = $this->createContactForPerson($person, $default);
+        $this->createEmailForContact($contact);
+        $this->createPhoneForContact($contact);
     }
 
     public function createAddressForPerson(Person $person): Address
@@ -32,11 +38,11 @@ class PersonSeeder extends Seeder
         return $address;
     }
 
-    public function createContactForPerson(Person $person): Contact
+    public function createContactForPerson(Person $person, bool $default = true): Contact
     {
         $contact = Contact::factory()->make();
         $contact->person_id = $person->id;
-        $contact->is_default = true;
+        $contact->is_default = $default;
         $contact->save();
         return $contact;
     }
