@@ -1,7 +1,7 @@
 <div>
     <div class="row">
         <div class="col-12" wire:ignore>
-            <textarea wire:model="person.observation" id="#editor" @if($this->disableInputs) disabled @endif form="edit-form"></textarea>
+            <textarea wire:model.debounce.500ms="person.observation" id="#editor" @if($this->disableInputs) disabled @endif form="edit-form"></textarea>
             @error('person.observation') <span class="error">{{ $message }}</span>@enderror
         </div>
     </div>

@@ -2,17 +2,17 @@
     <div class="row">
         <div class="col-lg-6 col-12">
             <label class="control-label">Nome</label>
-            <input wire:model="person.contacts.{{ $contactIndex }}.contact_name" class="form-control form-control-sm" @if($this->disableInputs) disabled @endif>
+            <input wire:model.debounce.500ms="person.contacts.{{ $contactIndex }}.contact_name" class="form-control form-control-sm" @if($this->disableInputs) disabled @endif>
             @error('person.contacts.' . $contactIndex . '.contact_name') <span class="error">{{ $message }}</span>@enderror
         </div>
         <div class="col-lg-3 col-12">
             <label class="control-label">Empresa</label>
-            <input wire:model="person.contacts.{{ $contactIndex }}.company_name" class="form-control form-control-sm" @if($this->disableInputs) disabled @endif>
+            <input wire:model.debounce.500ms="person.contacts.{{ $contactIndex }}.company_name" class="form-control form-control-sm" @if($this->disableInputs) disabled @endif>
             @error('person.contacts.' . $contactIndex . '.company_name') <span class="error">{{ $message }}</span>@enderror
         </div>
         <div class="col-lg-3 col-12">
             <label class="control-label">Cargo</label>
-            <input wire:model="person.contacts.{{ $contactIndex }}.job_title" class="form-control form-control-sm" @if($this->disableInputs) disabled @endif>
+            <input wire:model.debounce.500ms="person.contacts.{{ $contactIndex }}.job_title" class="form-control form-control-sm" @if($this->disableInputs) disabled @endif>
             @error('person.contacts.' . $contactIndex . '.job_title') <span class="error">{{ $message }}</span>@enderror
         </div>
     </div>

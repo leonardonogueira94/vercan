@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Contact\ContactType;
 use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
+use App\Enums\Person\TaxCollectionType;
 use App\Models\Person;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -37,15 +39,13 @@ class EditPersonRequest extends FormRequest
             'person.contacts.*.contact_name' => 'max:255',
             'person.contacts.*.company_name' => 'max:255',
             'person.contacts.*.job_title' => 'max:255',
-            'person.contacts.*.emails.*.type' => [new Enum(ContactType::class)],
+            'person.contacts.*.emails.*.type' => '',
             'person.contacts.*.emails.*.email' => 'email',
-            'person.contacts.*.phones.*.type' => [new Enum(ContactType::class)],
+            'person.contacts.*.phones.*.type' => '',
             'person.contacts.*.phones.*.phone' => 'max:18',
             'person.address.cep' => 'required|max:10',
             'person.address.address' => 'required|max:255',
             'person.address.building_number' => 'required|max:10',
-            'person.address.street' => 'required|max:255',
-            'person.address.number' => 'required|max:15',
             'person.address.complement' => 'max:255',
             'person.address.area' => 'required|max:255',
             'person.address.city.uf' => '',
@@ -71,7 +71,7 @@ class EditPersonRequest extends FormRequest
             'person.ie_category' => ['required', Rule::in(StateRegistrationCategory::toArray())],
             'person.ie' => ['max:15', Rule::requiredIf($this->person->ie_category->required())],
             'person.im' => 'max:15',
-            'person.tax_type' => ['required', new Enum(TaxCollectionType::class)],
+            'person.tax_type' => ['required', Rule::in(TaxCollectionType::toArray())],
         ];
     }
 

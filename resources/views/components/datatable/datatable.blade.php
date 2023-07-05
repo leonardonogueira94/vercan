@@ -23,7 +23,7 @@
                         </thead>
                         <tbody>
                             @foreach($readonlyws as $readonlyw)
-                                <tr wire:key="row-{{ $readonlyw->id }}">
+                                <tr>
                                     @foreach($columns as $column)
                                         <td>{{ $readonlyw->$column }}</td>
                                     @endforeach

@@ -63,12 +63,10 @@ class EditPerson extends Component
     }
 
     public function submit()
-    {
+    {   
         $this->validate();
-
+        
         try{
-            dd('pass');
-
             DB::beginTransaction();
 
             $this->person->save();
@@ -81,7 +79,6 @@ class EditPerson extends Component
             
         }catch(Exception $e)
         {
-            dd($e);
             DB::rollBack();
             session()->flash('error', $e->getMessage());
         }
@@ -99,18 +96,16 @@ class EditPerson extends Component
         {
             $contact->is_registered = true;
             $contact->save();
-        }
 
-        foreach($this->person->emails as $email)
-        {
-            $contact->is_registered = true;
-            $email->save();
-        }
+            $contact->phones->each(function($email){
+                $email->is_registered = true;
+                $email->save();
+            });
 
-        foreach($this->person->phones as $phone)
-        {
-            $contact->is_registered = true;
-            $phone->save();
+            $contact->emails->each(function($email){
+                $email->is_registered = true;
+                $email->save();
+            });
         }
     }
 }

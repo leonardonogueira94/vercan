@@ -14,6 +14,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "alpinejs": "^3.12.2"
+        "alpinejs": "^3.12.2",
+        "livewire-devtools": "github:beyondcode/livewire-devtools"
     }
 }

@@ -8,7 +8,7 @@
                 resultados
             </div>
             <div class="col-md-6 d-flex justify-content-end">
-                Filtro: <input wire:model="filter" type="text" class="form-control form-control-sm filter">
+                Filtro: <input wire:model.debounce.500ms="filter" type="text" class="form-control form-control-sm filter">
             </div>
         </div>
         <div class="row datatable-body">
@@ -26,7 +26,7 @@
                         </thead>
                         <tbody>
                             @foreach($rows as $person)
-                                <tr wire:key="row-{{ $person->id }}">
+                                <tr>
                                     <td>{{ $person->company_name ?? $person->name }}</td>
                                     <td>{{ $person->trading_name ?? $person->alias }}</td>
                                     <td>{{ $person->cnpj ?? $person->cpf }}</td>

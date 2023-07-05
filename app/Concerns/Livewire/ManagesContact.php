@@ -46,7 +46,11 @@ trait ManagesContact
 
     public function removeContact($contactId)
     {
+        $this->person->phones()->where('contact_id', $contactId)->delete();
+        $this->person->emails()->where('contact_id', $contactId)->delete();
         $this->person->contacts()->where('id', $contactId)->delete();
+
+        $this->person = Person::find($this->person->id);
     }
 
     public function removeEmail(int $emailId)
