@@ -1,42 +1,32 @@
-@forelse($this->person->contacts->where('is_default', true) as $contactIndex => $contact)
+@forelse(array_filter($this->contacts, fn($contact) => $contact['is_default'] == true) as $contactIndex => $contact)
     <div>
         <div class="row">
             <div class="col-md-6 phones">
                 <!-- Mostra telefones que já estavam cadastrados -->
-                @foreach($contact->phones->where('is_registered', true) as $phoneIndex => $phone)
-                    <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" phoneIndex="{{ $phoneIndex }}"/>
-                @endforeach
-
-                <!-- Mostra telefones que estão sendo cadastrados -->
-                @foreach($contact->phones->where('is_registered', false) as $phoneIndex => $phone)
+                @foreach($contact['phones'] as $phoneIndex => $phone)
                     <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" phoneIndex="{{ $phoneIndex }}"/>
                 @endforeach
 
                 <!-- Mostra botões apenas na edição/criação -->
                 @if(!$this->disableInputs)
-                    <button wire:click="addPhone({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
-                    @if($contact->phones->count() > 1)
-                        <button wire:click="removePhone({{ $phone->id }})" class="btn btn-link float-right" @if($this->disableInputs) disabled @endif>Remover</button>
+                    <button wire:click="addPhone({{ $contactIndex }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
+                    @if(count($contact['phones']) > 1)
+                        <button wire:click="removePhone({{ $contactIndex }}, {{ $phoneIndex }})" class="btn btn-link float-right" @if($this->disableInputs) disabled @endif>Remover</button>
                     @endif
                 @endif
             </div>
 
             <div class="col-md-6 emails">
                 <!-- Mostra emails que já estavam cadastrados -->
-                @foreach($contact->emails->where('is_registered', true) as $emailIndex => $email)
-                    <x-email :email="$email" contactIndex="{{ $contactIndex }}" emailIndex="{{ $emailIndex }}"/>
-                @endforeach
-
-                <!-- Mostra emails que estão sendo cadastrados -->
-                @foreach($contact->emails->where('is_registered', false) as $emailIndex => $email)
+                @foreach($contact['emails'] as $emailIndex => $email)
                     <x-email :email="$email" contactIndex="{{ $contactIndex }}" emailIndex="{{ $emailIndex }}"/>
                 @endforeach
 
                 <!-- Mostra botões apenas na edição/criação -->
                 @if(!$this->disableInputs)
-                    <button wire:click="addEmail({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
-                    @if($contact->emails->count() > 1)
-                        <button wire:click="removeEmail({{ $email->id }})" class="btn btn-link float-right" @if($this->disableInputs) disabled @endif>Remover</button>
+                    <button wire:click="addEmail({{ $contactIndex }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
+                    @if(count($contact['emails']) > 1)
+                        <button wire:click="removeEmail({{ $contactIndex }}, {{ $emailIndex }})" class="btn btn-link float-right" @if($this->disableInputs) disabled @endif>Remover</button>
                     @endif
                 @endif
             </div>

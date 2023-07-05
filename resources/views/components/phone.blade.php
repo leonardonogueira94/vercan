@@ -4,8 +4,8 @@
 
             <div class="col-6">
                 <label class="control-label">Telefone</label>
-                <input wire:model.debounce.500ms="person.contacts.{{ $contactIndex }}.phones.{{ $phoneIndex }}.phone" class="form-control form-control-sm phone-input" @if($this->disableInputs) disabled @endif>
-                @error('person.contacts.'.$contactIndex.'.phones.'.$phoneIndex.'.phone') <span class="error">{{ $message }}</span>@enderror
+                <input wire:model.debounce.500ms="contacts.{{ $contactIndex }}.phones.{{ $phoneIndex }}.phone" class="form-control form-control-sm phone-input" @if($this->disableInputs) disabled @endif>
+                @error('contacts.'.$contactIndex.'.phones.'.$phoneIndex.'.phone') <span class="error">{{ $message }}</span>@enderror
             </div>
 
             <div class="col-6">
@@ -16,7 +16,7 @@
                         <option value="{{ $case->value }}"> {{ $case->label() }} </option>
                     @endforeach
                 </select>
-                @error('person.contacts.'.$phone->contact_id.'.phones.'.$phone->id.'.type') <span class="error">{{ $message }}</span>@enderror
+                @error('contacts.'.$contactIndex.'.phones.'.$phoneIndex.'.type') <span class="error">{{ $message }}</span>@enderror
             </div>
 
         </div>

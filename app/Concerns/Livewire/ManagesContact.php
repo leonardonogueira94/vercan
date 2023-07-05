@@ -6,70 +6,69 @@ use App\Models\Contact;
 use App\Models\Email;
 use App\Models\Person;
 use App\Models\Phone;
+use stdClass;
 
 trait ManagesContact
 {
+    public ?array $contacts = [];
+
     public function addContact($isDefault = false)
     {
-        $contact = Contact::create([
-            'person_id' => $this->person->id,
+        if(!isset($this->contacts))
+            return;
+
+        $contact = [
+            'index' => count($this->contacts),
             'is_default' => $isDefault,
             'is_registered' => false,
-        ]);
+            'contact_name' => '',
+            'company_name' => '',
+            'job_title' => '',
+            'emails' => [],
+            'phones' => [],
+        ];
 
-        $this->addPhone($contact->id);
+        $this->contacts[] = $contact;
 
-        $this->addEmail($contact->id);
+        $this->addEmail($contact['index']);
 
-        $this->propertyChanged('person');
+        $this->addPhone($contact['index']);
     }
 
-    public function addEmail(int $contactId)
+    public function addEmail(int $contactIndex)
     {
-        Email::create([
-            'is_registered' => false,
-            'contact_id' => $contactId,
-        ]);
-
-        $this->propertyChanged('person');
+        $this->contacts[$contactIndex]['emails'][] = [
+            'email' => '',
+            'type' => '',
+        ];
     }
 
-    public function addPhone(int $contactId)
+    public function addPhone(int $contactIndex)
     {
-        Phone::create([
-            'is_registered' => false,
-            'contact_id' => $contactId,
-        ]);
-
-        $this->propertyChanged('person');
+        $this->contacts[$contactIndex]['phones'][] = [
+            'phone' => '',
+            'type' => '',
+        ];
     }
 
-    public function removeContact($contactId)
+    public function removeContact(int $contactIndex)
     {
-        $this->person->phones()->where('contact_id', $contactId)->delete();
-        $this->person->emails()->where('contact_id', $contactId)->delete();
-        $this->person->contacts()->where('id', $contactId)->delete();
+        unset($this->contacts[$contactIndex]);
 
-        $this->propertyChanged('person');
+        $this->contacts = array_values($this->contacts);
     }
 
-    public function removeEmail(int $emailId)
+    public function removeEmail(int $contactIndex, int $emailIndex)
     {
-        $this->person->emails()->where('emails.id', $emailId)->delete();
+        unset($this->contacts[$contactIndex]['emails'][$emailIndex]);
 
-        $this->propertyChanged('person');
+        $this->contacts[$contactIndex]['emails'] = array_values($this->contacts[$contactIndex]['emails']);
     }
 
-    public function removePhone(int $phoneId)
+    public function removePhone(int $contactIndex, int $phoneIndex)
     {
-        $this->person->phones()->where('phones.id', $phoneId)->delete();
+        unset($this->contacts[$contactIndex]['phones'][$phoneIndex]);
 
-        $this->propertyChanged('person');
+        $this->contacts[$contactIndex]['phones'] = array_values($this->contacts[$contactIndex]['phones']);
     }
-
-    public function refresh()
-    {
-        $this->propertyChanged('person');
-    }
-
 }

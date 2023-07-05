@@ -20,10 +20,10 @@ trait FillsPersonField
             return false;
 
         foreach($this->receitaService->getLegalPersonDataMap() as $column => $field)
-            $this->person->$column = $addressData->$field;
+            $this->$column = $addressData->$field;
 
         foreach($this->receitaService->getAddressDataMap() as $column => $field)
-            $this->person->address->$column = $addressData->$field;
+            $this->$column = $addressData->$field;
 
             return true;
     }
@@ -35,11 +35,11 @@ trait FillsPersonField
 
         foreach($this->cepService->getAddressDataMap() as $column => $field)
             if(property_exists($addressData, $field) && !in_array($column, ['uf', 'city', 'cep']))
-                $this->person->address->$column = $addressData->$field;
+                $this->$column = $addressData->$field;
         
-        $this->person->address->cep = $addressData->{$this->cepService->getAddressDataMap()['cep']};
-        $this->person->address->city->uf = $addressData->{$this->cepService->getAddressDataMap()['uf']};
-        $this->person->address->city->name = $addressData->{$this->cepService->getAddressDataMap()['city']};
+        $this->cep = $addressData->{$this->cepService->getAddressDataMap()['cep']};
+        $this->uf = $addressData->{$this->cepService->getAddressDataMap()['uf']};
+        $this->city->name = $addressData->{$this->cepService->getAddressDataMap()['city']};
 
         return true;
     }
