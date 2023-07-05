@@ -55,13 +55,16 @@ trait ManagesContact
 
     public function removeEmail(int $emailId)
     {
-        $this->person->emails()->where('id', $emailId)->delete();
+        $this->person->emails()->where('emails.id', $emailId)->delete();
 
+        $this->person = Person::find($this->person->id);
     }
 
     public function removePhone(int $phoneId)
     {
-        $this->person->phones()->where('id', $phoneId)->delete();
+        $this->person->phones()->where('phones.id', $phoneId)->delete();
+
+        $this->person = Person::find($this->person->id);
     }
 
 }

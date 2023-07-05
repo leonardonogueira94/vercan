@@ -75,11 +75,12 @@ class EditPerson extends Component
 
             DB::commit();
 
-            session()->flash('success', 'Pessoa atualizada com sucesso!');
+            return redirect()->route('person.show', ['person' => $this->person])->with('success', 'Pessoa atualizada com sucesso!');
             
-        }catch(Exception $e)
-        {
+        }catch(Exception $e){
+
             DB::rollBack();
+            
             session()->flash('error', $e->getMessage());
         }
     }

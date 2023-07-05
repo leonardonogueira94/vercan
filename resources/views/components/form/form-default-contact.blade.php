@@ -15,6 +15,9 @@
                 <!-- Mostra botões apenas na edição/criação -->
                 @if(!$this->disableInputs)
                     <button wire:click="addPhone({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
+                    @if($contact->phones->count() > 1)
+                        <button wire:click="removePhone({{ $phone->id }})" class="btn btn-link float-right" @if($this->disableInputs) disabled @endif>Remover</button>
+                    @endif
                 @endif
             </div>
 
@@ -32,6 +35,9 @@
                 <!-- Mostra botões apenas na edição/criação -->
                 @if(!$this->disableInputs)
                     <button wire:click="addEmail({{ $contact->id }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
+                    @if($contact->emails->count() > 1)
+                        <button wire:click="removeEmail({{ $email->id }})" class="btn btn-link float-right" @if($this->disableInputs) disabled @endif>Remover</button>
+                    @endif
                 @endif
             </div>
         </div>

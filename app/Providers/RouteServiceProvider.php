@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(function(){
                     require base_path('routes/web.php');
-                    require base_path('routes/web/supplier.php');
+                    require base_path('routes/web/person.php');
                 });
         });
     }

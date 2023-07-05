@@ -1,4 +1,5 @@
 <div>
+    <x-alerts/>
     <x-card.card title="Dados do Fornecedor">
         <div class="row">
             <div class="col-12">
