@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('complement')->nullable();
             $table->string('area');
             $table->string('reference_point')->nullable();
-            $table->boolean('is_condo');
+            $table->boolean('is_condo')->default(false);
             $table->timestamps();
         });
     }

@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Enums\Person\PersonType;
+use App\Enums\Person\StateRegistrationCategory;
+use App\Enums\Person\TaxCollectionType;
 use App\Models\Person;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -29,39 +31,56 @@ class CreatePersonRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $defaultRules = [
             'person.type' => ['required', new Enum(PersonType::class)],
-            'person.is_active' => ['required', new Enum(PersonStatus::class)],
-            'person.cnpj' => 'required|digits:14',
-            'person.cnpj_status' => 'max:20',
-            'person.company_name' => 'required|max:255',
-            'person.trading_name' => 'required|max:255',
-            'person.ie_category' => ['required', new Enum(StateRegistrationCategory::class)],
-            'person.ie' => [Rule::requiredIf($this->person->ie_category?->required()), 'max:15'],
-            'person.im' => 'max:15',
-            'person.tax_type' => ['required', new Enum(TaxCollectionType::class)],
-            'person.cpf' => 'required|max:11',
-            'person.name' => 'required|max:255',
-            'person.alias' => 'max:255',
-            'person.rg' => 'rquired|max:9',
+            'person.is_active' => ['required', Rule::in('Sim', 'Não')],
             'person.address.reference_point' => 'max:255',
             'person.contacts.*.contact_name' => 'max:255',
             'person.contacts.*.company_name' => 'max:255',
             'person.contacts.*.job_title' => 'max:255',
-            'person.contacts.*.emails.*.type' => [new Enum(ContactType::class)],
-            'person.contacts.*.emails.*.email' => 'email',
-            'person.contacts.*.phones.*.type' => [new Enum(ContactType::class)],
-            'person.contacts.*.phones.*.phone' => 'digits:13',
-            'person.address.cep' => 'required|digits:8',
+            'person.contacts.*.emails.*.type' => 'max:30',
+            'person.contacts.*.emails.*.email' => 'max:100',
+            'person.contacts.*.phones.*.type' => '',
+            'person.contacts.*.phones.*.phone' => 'max:18',
+            'person.address.cep' => 'required|max:10',
             'person.address.address' => 'required|max:255',
-            'person.address.building_number' => 'required|digits:10',
-            'person.address.street' => 'required|max:255',
-            'person.address.number' => 'required|max:15',
+            'person.address.building_number' => 'required|max:10',
             'person.address.complement' => 'max:255',
             'person.address.area' => 'required|max:255',
             'person.address.city.uf' => 'required|exists:cities,uf',
-            'person.address.city.name' => 'required|exists:cities,name',
+            'person.address.city.name' => 'required',
             'person.address.is_condo' => 'required|boolean',
+            'person.observation' => 'max:500',
+        ];
+
+        if($this->person->type == PersonType::JURIDICA->value)
+            return array_merge($defaultRules, $this->rulesForLegalPerson());
+
+        if($this->person->type == PersonType::FISICA->value)
+            return array_merge($defaultRules, $this->rulesForNaturalPerson());
+    }
+
+    public function rulesForLegalPerson(): array
+    {
+        return [
+            'person.cnpj' => 'required',
+            'person.cnpj_status' => 'max:20',
+            'person.company_name' => 'required|max:255',
+            'person.trading_name' => 'required|max:255',
+            'person.ie_category' => ['required', Rule::in(StateRegistrationCategory::toArray())],
+            'person.ie' => ['max:15', Rule::requiredIf($this->person?->ie_category?->required() ?? false)],
+            'person.im' => 'max:15',
+            'person.tax_type' => ['required', Rule::in(TaxCollectionType::toArray())],
+        ];
+    }
+
+    public function rulesForNaturalPerson(): array
+    {
+        return [
+            'person.cpf' => 'required',
+            'person.name' => 'required|max:255',
+            'person.alias' => 'max:255',
+            'person.rg' => 'required',
         ];
     }
 }

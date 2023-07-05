@@ -9,11 +9,11 @@ use App\Models\Phone;
 
 trait ManagesContact
 {
-    public function addContact()
+    public function addContact($isDefault = false)
     {
         $contact = Contact::create([
             'person_id' => $this->person->id,
-            'is_default' => false,
+            'is_default' => $isDefault,
             'is_registered' => false,
         ]);
 
@@ -21,7 +21,7 @@ trait ManagesContact
 
         $this->addEmail($contact->id);
 
-        $this->person = Person::find($this->person->id);
+        $this->propertyChanged('person');
     }
 
     public function addEmail(int $contactId)
@@ -31,7 +31,7 @@ trait ManagesContact
             'contact_id' => $contactId,
         ]);
 
-        $this->person = Person::find($this->person->id);
+        $this->propertyChanged('person');
     }
 
     public function addPhone(int $contactId)
@@ -41,7 +41,7 @@ trait ManagesContact
             'contact_id' => $contactId,
         ]);
 
-        $this->person = Person::find($this->person->id);
+        $this->propertyChanged('person');
     }
 
     public function removeContact($contactId)
@@ -50,21 +50,26 @@ trait ManagesContact
         $this->person->emails()->where('contact_id', $contactId)->delete();
         $this->person->contacts()->where('id', $contactId)->delete();
 
-        $this->person = Person::find($this->person->id);
+        $this->propertyChanged('person');
     }
 
     public function removeEmail(int $emailId)
     {
         $this->person->emails()->where('emails.id', $emailId)->delete();
 
-        $this->person = Person::find($this->person->id);
+        $this->propertyChanged('person');
     }
 
     public function removePhone(int $phoneId)
     {
         $this->person->phones()->where('phones.id', $phoneId)->delete();
 
-        $this->person = Person::find($this->person->id);
+        $this->propertyChanged('person');
+    }
+
+    public function refresh()
+    {
+        $this->propertyChanged('person');
     }
 
 }

@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-lg-3 col-12">
                     <label class="control-label">CNPJ</label><sup>•</sup>
-                    <input wire:model.defer="person.cnpj" class="form-control form-control-sm" id="cnpj" required @if($this->disableInputs) disabled @endif>
+                    <input wire:model.debounce.500ms="person.cnpj" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
                     @error('person.cnpj') <span class="error">{{ $message }}</span>@enderror
                 </div>
                 <div class="col-lg-6 col-12">

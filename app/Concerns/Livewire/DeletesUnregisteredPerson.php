@@ -4,9 +4,9 @@ namespace App\Concerns\Livewire;
 
 use App\Models\Person;
 
-trait DeletesUnregisteredContact
+trait DeletesUnregisteredPerson
 {
-    public function deleteUnregisteredContacts(){
+    public function deleteUnregisteredPersons(){
         $people = Person::where('is_registered', false);
         
         foreach($people as $person)

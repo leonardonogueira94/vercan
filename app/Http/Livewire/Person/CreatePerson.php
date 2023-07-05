@@ -4,13 +4,19 @@ namespace App\Http\Livewire\Person;
 
 use App\Concerns\Livewire\ManagesContact;
 use App\Concerns\Livewire\DeletesUnregisteredContact;
+use App\Concerns\Livewire\DeletesUnregisteredPerson;
 use App\Concerns\Livewire\FillsPersonField;
+use App\Enums\Person\PersonStatus;
 use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
+use App\Http\Requests\CreatePersonRequest;
 use App\Http\Requests\EditPersonRequest;
 use App\Models\Address;
 use App\Models\City;
+use App\Models\Contact;
+use App\Models\Email;
 use App\Models\Person;
+use App\Models\Phone;
 use App\Services\CepService;
 use App\Services\MaskService;
 use App\Services\ReceitaService;
@@ -21,7 +27,7 @@ use Livewire\Component;
 
 class CreatePerson extends Component
 {
-    use DeletesUnregisteredContact, FillsPersonField, ManagesContact;
+    use DeletesUnregisteredPerson, FillsPersonField, ManagesContact;
 
     public Person $person;
 
@@ -33,19 +39,20 @@ class CreatePerson extends Component
 
     protected function rules(): array
     {
-        return (new EditPersonRequest($this->person))->rules();
+        return (new CreatePersonRequest($this->person))->rules();
     }
 
     public function mount()
     {
-        $this->person = new Person();
-        $this->person->address = new Address();
-        $this->person->address->city = new City();
-        $this->person->type = PersonType::JURIDICA->value;
+        $this->person = Person::create(['is_registered' => false, 'type' => PersonType::JURIDICA->value, 'is_active' => PersonStatus::ATIVA->value]);
+        $this->deleteUnregisteredPersons();
+        $this->createDefaultAddress();
+        $this->addContact(true);
+        $this->refresh();
         $this->person->ie_category = StateRegistrationCategory::CONTRIBUINTE;
         $this->ufs = City::groupBy('uf')->get();
         $this->cities = City::where('uf', $this->person->address?->city?->uf)->get();
-        $this->deleteUnregisteredContacts();
+        $this->person = Person::find($this->person->id);
     }
 
     public function boot(
@@ -56,6 +63,38 @@ class CreatePerson extends Component
         $this->receitaService = $receitaService;
         $this->cepService = $cepService;
         $this->maskService = $maskService;
+    }
+
+    public function createDefaultAddress()
+    {
+        Address::create([
+            'person_id' => $this->person->id,
+            'city_id' => City::first()->id,
+            'cep' => '',
+            'address' => '',
+            'building_number' => '',
+            'complement' => '',
+            'area' => '',
+            'reference_point' => '',
+            'is_condo' => false,
+        ]);
+    }
+
+    public function resetForm()
+    {
+        $this->person->cnpj = null;
+        $this->person->company_name = null;
+        $this->person->trading_name = null;
+        $this->person->ie = null;
+        $this->person->im = null;
+        $this->person->cnpj_status = null;
+        $this->person->cpf = null;
+        $this->person->name = null;
+        $this->person->alias = null;
+        $this->person->observation = null;
+        $this->person->rg = null;
+        $this->person->rg = null;
+        $this->person->rg = null;
     }
 
     public function render()
