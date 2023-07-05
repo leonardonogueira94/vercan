@@ -18,6 +18,6 @@ class CityRepository
 
     public function cityAlreadyRegistered(string $uf, string $name): bool
     {
-        return City::where(['uf', $uf], ['name', $name])->exists();
+        return City::where(['uf' => $uf], ['name' => $name])->exists();
     }
 }

@@ -33,9 +33,9 @@ class ReceitaService
     public function getLegalPersonDataMap(): array
     {
         return [
-            'company_name' => 'nome',
-            'trading_name' => 'fantasia',
-            'cnpj_status' => 'situacao',
+            'companyName' => 'nome',
+            'tradingName' => 'fantasia',
+            'cnpjStatus' => 'situacao',
         ];
     }
 

@@ -134,16 +134,22 @@ class CreatePerson extends Component
     {
         $this->validateOnly($propertyName);
 
-        if($propertyName == 'uf')
-            $this->cities = City::where('uf', $this->uf)->get();
+        if($propertyName == 'type')
+            $this->resetForm();
 
-        if($propertyName == 'person.cnpj' && strlen($this->maskService->unmask($value)) == 14)
+        if($propertyName == 'uf')
+        {
+            $this->cities = City::where('uf', $this->uf)->get();
+            $this->city = null;
+        }
+
+        if($propertyName == 'cnpj' && strlen($this->maskService->unmask($value)) == 14)
         {
             $this->fillPersonData($this->receitaService->getLegalPersonData($value));
             $this->fillAddress($this->cepService->getAddressDataByCep($this->maskService->unmask($this->cep)));
         }
 
-        if($propertyName == 'person.address.cep' && strlen($this->maskService->unmask($value)) == 8)
+        if($propertyName == 'cep' && strlen($this->maskService->unmask($value)) == 8)
             $this->fillAddress($this->cepService->getAddressDataByCep($this->maskService->unmask($this->cep)));
     }
 

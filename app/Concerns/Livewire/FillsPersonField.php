@@ -2,6 +2,7 @@
 
 namespace App\Concerns\Livewire;
 
+use App\Models\City;
 use App\Services\CepService;
 use App\Services\MaskService;
 use App\Services\ReceitaService;
@@ -39,8 +40,9 @@ trait FillsPersonField
         
         $this->cep = $addressData->{$this->cepService->getAddressDataMap()['cep']};
         $this->uf = $addressData->{$this->cepService->getAddressDataMap()['uf']};
-        $this->city->name = $addressData->{$this->cepService->getAddressDataMap()['city']};
-
+        $this->city = $addressData->{$this->cepService->getAddressDataMap()['city']};
+        $this->cities = City::where(['uf' => $this->uf], ['name' => $this->city])->get();
+        
         return true;
     }
 }

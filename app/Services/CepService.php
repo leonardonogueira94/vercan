@@ -36,7 +36,7 @@ class CepService
         return [
             'cep' => 'cep',
             'address' => 'logradouro',
-            'building_number' => 'numero',
+            'buildingNumber' => 'numero',
             'complement' => 'complemento',
             'area' => 'bairro',
             'uf' => 'uf',
