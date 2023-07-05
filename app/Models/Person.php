@@ -17,10 +17,6 @@ class Person extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'ie_category' => StateRegistrationCategory::class,
-    ];
-
     public function address(): HasOne
     {
         return $this->hasOne(Address::class);

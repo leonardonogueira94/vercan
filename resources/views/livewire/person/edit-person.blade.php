@@ -4,12 +4,12 @@
         <x-card.card title="Dados do Fornecedor">
             <div class="row">
                 <div class="col-12">
-                    <x-input.radio-group-from-enum wired="true" name="person.type" :values="App\Enums\Person\PersonType::cases()"/>
+                    <x-input.radio-group-from-enum wired="true" name="type" :values="App\Enums\Person\PersonType::cases()"/>
                 </div>
             </div>
-            @if($person->type == App\Enums\Person\PersonType::JURIDICA->value)
+            @if($this->type == App\Enums\Person\PersonType::JURIDICA->value)
                 <x-form.form-legal-person/>
-            @elseif($person->type == App\Enums\Person\PersonType::FISICA->value)
+            @elseif($this->type == App\Enums\Person\PersonType::FISICA->value)
                 <x-form.form-natural-person/>
             @endif
         </x-card.card>

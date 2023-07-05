@@ -5,6 +5,9 @@ namespace App\Http\Livewire\Person;
 use App\Concerns\Livewire\ManagesContact;
 use App\Concerns\Livewire\DeletesUnregisteredContact;
 use App\Concerns\Livewire\FillsPersonField;
+use App\Enums\Person\PersonStatus;
+use App\Enums\Person\PersonType;
+use App\Enums\Person\StateRegistrationCategory;
 use App\Http\Requests\EditPersonRequest;
 use App\Models\City;
 use App\Models\Person;
@@ -18,27 +21,95 @@ use Livewire\Component;
 
 class EditPerson extends Component
 {
-    use DeletesUnregisteredContact, FillsPersonField, ManagesContact;
+    use FillsPersonField, ManagesContact;
 
-    public Person $person;
+    public string $type = PersonType::JURIDICA->value;
 
-    public bool $disableInputs = false;
+    public ?string $cnpj = '';
+
+    public ?string $cpf = '';
+
+    public ?string $companyName = '';
+
+    public ?string $name = '';
+
+    public ?string $tradingName = '';
+
+    public ?string $alias = '';
+
+    public ?string $rg = '';
+
+    public ?string $stateRegistrationCategory = StateRegistrationCategory::CONTRIBUINTE->value;
+
+    public ?string $ie = '';
+
+    public ?string $im = '';
+
+    public ?string $cnpjStatus = '';
+    
+    public ?string $taxCollectionType = '';
+
+    public ?string $personStatus = PersonStatus::ATIVA->value;
+
+    public ?string $cep = '';
+
+    public ?string $address = '';
+
+    public ?string $buildingNumber = '';
+
+    public ?string $complement = '';
+
+    public ?string $area = '';
+
+    public ?string $referencePoint = '';
+
+    public ?string $uf = '';
+
+    public ?string $city = '';
+
+    public ?int $isCondo = 0;
+
+    public ?string $observation = '';
 
     public Collection $ufs;
 
     public Collection $cities;
 
+    public bool $disableInputs = false;
+
     protected function rules(): array
     {
-        return (new EditPersonRequest($this->person))->rules();
+        return (new EditPersonRequest(PersonType::tryFrom($this->type), StateRegistrationCategory::tryFrom($this->stateRegistrationCategory)))->rules();
     }
 
     public function mount(Person $person)
     {
-        $this->person = $person;
+        $this->type = $person->type;
+        $this->cnpj = $person->cnpj;
+        $this->companyName = $person->company_name;
+        $this->tradingName = $person->trading_name;
+        $this->stateRegistrationCategory = $person->ie_category;
+        $this->ie = $person->ie;
+        $this->im = $person->im;
+        $this->cnpjStatus = $person->cnpj_status;
+        $this->taxCollectionType = $person->tax_type;
+        $this->personStatus = $person->is_active;
+        $this->cpf = $person->cpf;
+        $this->name = $person->name;
+        $this->alias = $person->alias;
+        $this->rg = $person->rg;
+        $this->cep = $person->address->cep;
+        $this->address = $person->address->address;
+        $this->buildingNumber = $person->address->building_number;
+        $this->complement = $person->address->complement;
+        $this->area = $person->address->area;
+        $this->referencePoint = $person->address->reference_point;
+        $this->uf = $person->address->city->uf;
+        $this->city = $person->address->city->name;
+        $this->isCondo = $person->address->is_condo;
         $this->ufs = City::groupBy('uf')->get();
-        $this->cities = City::where('uf', $person->address?->city?->uf)->get();
-        $this->deleteUnregisteredContacts();
+        $this->cities = City::where('uf', $this->uf)->get();
+        $this->retrieveContacts($person);
     }
 
     public function boot(
@@ -56,23 +127,40 @@ class EditPerson extends Component
         return view('livewire.person.edit-person');
     }
 
+    public function retrieveContacts(Person $person)
+    {
+        $personContacts = $person->contacts;
+
+        $this->contacts = $personContacts->toArray();
+
+        foreach($personContacts as $i => $contact)
+        {
+            $this->contacts[$i]['emails'] = $contact->emails;
+            $this->contacts[$i]['phones'] = $contact->phones;
+        }
+    }
+
     public function updated($propertyName, $value)
     {
         $this->validateOnly($propertyName);
 
-        if($propertyName == 'person.address.city.uf')
+        if($propertyName == 'type')
+            $this->resetForm();
+
+        if($propertyName == 'uf')
         {
-            $this->cities = City::where('uf', $value)->get();
-        }
-        
-        if($propertyName == 'person.cnpj' && strlen($this->maskService->unmask($value)) == 14)
-        {
-            $this->fillPersonData($this->receitaService->getLegalPersonData($value));
-            $this->fillAddress($this->cepService->getAddressDataByCep($this->maskService->unmask($this->person->address->cep)));
+            $this->cities = City::where('uf', $this->uf)->get();
+            $this->city = null;
         }
 
-        if($propertyName == 'person.address.cep' && strlen($this->maskService->unmask($value)) == 8)
-            $this->fillAddress($this->cepService->getAddressDataByCep($this->maskService->unmask($this->person->address->cep)));
+        if($propertyName == 'cnpj' && strlen($this->maskService->unmask($value)) == 14)
+        {
+            $this->fillPersonData($this->receitaService->getLegalPersonData($value));
+            $this->fillAddress($this->cepService->getAddressDataByCep($this->maskService->unmask($this->cep)));
+        }
+
+        if($propertyName == 'cep' && strlen($this->maskService->unmask($value)) == 8)
+            $this->fillAddress($this->cepService->getAddressDataByCep($this->maskService->unmask($this->cep)));
     }
 
     public function submit()

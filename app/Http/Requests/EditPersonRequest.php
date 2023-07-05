@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\Contact\ContactType;
 use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Enums\Person\TaxCollectionType;
-use App\Models\Person;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -14,7 +12,8 @@ use Illuminate\Validation\Rules\Enum;
 class EditPersonRequest extends FormRequest
 {
     public function __construct(
-        private Person $person,
+        public PersonType $personType,
+        public StateRegistrationCategory $stateRegistrationCategory,
     ){}
 
     /**
@@ -33,55 +32,55 @@ class EditPersonRequest extends FormRequest
     public function rules(): array
     {
         $defaultRules = [
-            'person.type' => ['required', new Enum(PersonType::class)],
-            'person.is_active' => ['required', Rule::in('Sim', 'Não')],
-            'person.address.reference_point' => 'max:255',
-            'person.contacts.*.contact_name' => 'max:255',
-            'person.contacts.*.company_name' => 'max:255',
-            'person.contacts.*.job_title' => 'max:255',
-            'person.contacts.*.emails.*.type' => 'max:30',
-            'person.contacts.*.emails.*.email' => 'max:100',
-            'person.contacts.*.phones.*.type' => '',
-            'person.contacts.*.phones.*.phone' => 'max:18',
-            'person.address.cep' => 'required|max:10',
-            'person.address.address' => 'required|max:255',
-            'person.address.building_number' => 'required|max:10',
-            'person.address.complement' => 'max:255',
-            'person.address.area' => 'required|max:255',
-            'person.address.city.uf' => 'required|exists:cities,uf',
-            'person.address.city.name' => 'required',
-            'person.address.is_condo' => 'required|boolean',
-            'person.observation' => 'max:500',
+            'type' => ['required', new Enum(PersonType::class)],
+            'personStatus' => ['required', Rule::in('Sim', 'Não')],
+            'referencePoint' => 'max:255',
+            'contacts.*.contact_name' => 'max:255',
+            'contacts.*.company_name' => 'max:255',
+            'contacts.*.job_title' => 'max:255',
+            'contacts.*.emails.*.type' => 'max:30',
+            'contacts.*.emails.*.email' => 'max:100',
+            'contacts.*.phones.*.type' => '',
+            'contacts.*.phones.*.phone' => 'max:18',
+            'cep' => 'required|max:10',
+            'address' => 'required|max:255',
+            'buildingNumber' => 'required|max:10',
+            'complement' => 'max:255',
+            'area' => 'required|max:255',
+            'uf' => 'required|exists:cities,uf',
+            'city' => 'required',
+            'isCondo' => 'required|boolean',
+            'observation' => 'max:500',
         ];
 
-        if($this->person->type == PersonType::JURIDICA->value)
+        if($this->personType == PersonType::JURIDICA)
             return array_merge($defaultRules, $this->rulesForLegalPerson());
 
-        if($this->person->type == PersonType::FISICA->value)
+        if($this->personType == PersonType::FISICA)
             return array_merge($defaultRules, $this->rulesForNaturalPerson());
     }
 
     public function rulesForLegalPerson(): array
     {
         return [
-            'person.cnpj' => 'required',
-            'person.cnpj_status' => 'max:20',
-            'person.company_name' => 'required|max:255',
-            'person.trading_name' => 'required|max:255',
-            'person.ie_category' => ['required', Rule::in(StateRegistrationCategory::toArray())],
-            'person.ie' => ['max:15', Rule::requiredIf($this->person?->ie_category?->required() ?? false)],
-            'person.im' => 'max:15',
-            'person.tax_type' => ['required', Rule::in(TaxCollectionType::toArray())],
+            'cnpj' => 'required',
+            'cnpjStatus' => 'max:20',
+            'companyName' => 'required|max:255',
+            'tradingName' => 'required|max:255',
+            'stateRegistrationCategory' => ['required', Rule::in(StateRegistrationCategory::toArray())],
+            'ie' => ['max:15', Rule::requiredIf($this->stateRegistrationCategory?->required() ?? false)],
+            'im' => 'max:15',
+            'taxCollectionType' => ['required', Rule::in(TaxCollectionType::toArray())],
         ];
     }
 
     public function rulesForNaturalPerson(): array
     {
         return [
-            'person.cpf' => 'required',
-            'person.name' => 'required|max:255',
-            'person.alias' => 'max:255',
-            'person.rg' => 'required',
+            'cpf' => 'required',
+            'name' => 'required|max:255',
+            'alias' => 'max:255',
+            'rg' => 'required',
         ];
     }
 }
