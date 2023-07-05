@@ -1,4 +1,3 @@
-@inject('maskService', 'App\Services\MaskService')
 <div>
     <x-card.headless-card>
         <div class="row datatable-header">

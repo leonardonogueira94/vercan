@@ -37,3 +37,7 @@ sup {
 .field-set > .row, .email-row {
     padding-top: 15px;
 }
+
+.btn-cadastrar {
+    margin-bottom: 10px;
+}

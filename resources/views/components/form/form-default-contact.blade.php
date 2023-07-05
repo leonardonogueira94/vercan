@@ -45,7 +45,7 @@
 @empty
     <div class="row">
         <div class="col-12 d-flex justify-content-center">
-            <h4>NÃO HÁ CONTATOS PRINCIPAIS</h4>
+            NÃO HÁ CONTATOS PRINCIPAIS
         </div>
     </div>
 @endforelse
