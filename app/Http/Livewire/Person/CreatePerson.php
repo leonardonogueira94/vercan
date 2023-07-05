@@ -43,7 +43,7 @@ class CreatePerson extends Component
 
     public ?string $rg = '';
 
-    public ?StateRegistrationCategory $stateRegistrationCategory;
+    public ?string $stateRegistrationCategory = StateRegistrationCategory::CONTRIBUINTE->value;
 
     public ?string $ie = '';
 
@@ -51,9 +51,9 @@ class CreatePerson extends Component
 
     public ?string $cnpjStatus = '';
     
-    public ?TaxCollectionType $taxCollectionType;
+    public ?string $taxCollectionType;
 
-    public ?PersonStatus $personStatus = PersonStatus::ATIVA;
+    public ?string $personStatus = PersonStatus::ATIVA->value;
 
     public ?string $cep = '';
 
@@ -83,13 +83,13 @@ class CreatePerson extends Component
 
     protected function rules(): array
     {        
-        return (new CreatePersonRequest(PersonType::tryFrom($this->type), $this->stateRegistrationCategory))->rules();
+        return (new CreatePersonRequest(PersonType::tryFrom($this->type), StateRegistrationCategory::tryFrom($this->stateRegistrationCategory)))->rules();
     }
 
     public function mount()
     {
         $this->type = PersonType::JURIDICA->value;
-        $this->stateRegistrationCategory = StateRegistrationCategory::CONTRIBUINTE;
+        $this->stateRegistrationCategory = StateRegistrationCategory::CONTRIBUINTE->value;
         $this->ufs = City::groupBy('uf')->get();
         $this->uf = $this->ufs->first()?->uf;
         $this->cities = City::where('uf', $this->uf)->get();

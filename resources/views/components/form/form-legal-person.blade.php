@@ -25,14 +25,14 @@
                     <select wire:model.debounce.500ms="stateRegistrationCategory" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
                         <option hidden>Selecione</option>
                         @foreach(App\Enums\Person\StateRegistrationCategory::cases() as $case)
-                            <option value="{{ $case }}" @if($this->stateRegistrationCategory?->value == $case->value) {{ 'selected' }} @endif>{{ $case->label() }}</option>
+                            <option value="{{ $case }}" @if($this->stateRegistrationCategory == $case->value) {{ 'selected' }} @endif>{{ $case->label() }}</option>
                         @endforeach
                     </select>
                     @error('ie_category') <span class="error">{{ $message }}</span>@enderror
                 </div>
                 <div class="col-lg-3 col-12">
-                    <label class="control-label">Inscrição Estadual</label> @if($this->stateRegistrationCategory?->required())<sup>•</sup>@endif
-                    <input wire:model.debounce.500ms="ie" class="form-control form-control-sm" @if($this->stateRegistrationCategory?->required()) {{ 'required' }} @else {{ 'disabled '}} @endif @if($this->disableInputs) disabled @endif>
+                    <label class="control-label">Inscrição Estadual</label> @if(App\Enums\Person\StateRegistrationCategory::tryFrom($this->stateRegistrationCategory)->required())<sup>•</sup>@endif
+                    <input wire:model.debounce.500ms="ie" class="form-control form-control-sm" @if(App\Enums\Person\StateRegistrationCategory::tryFrom($this->stateRegistrationCategory)->required()) {{ 'required' }} @else {{ 'disabled '}} @endif @if($this->disableInputs) disabled @endif>
                     @error('ie') <span class="error">{{ $message }}</span>@enderror
                 </div>
                 <div class="col-lg-3 col-12">
