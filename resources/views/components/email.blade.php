@@ -3,7 +3,7 @@
         <div class="row email-row">
             <div class="col-6">
                 <label class="control-label">Email</label>
-                <input wire:model.debounce.500ms="person.contacts.{{ $contactIndex }}.emails.{{ $emailIndex }}.email" class="form-control form-control-sm" @if($this->disableInputs) disabled @endif>
+                <input wire:model.debounce.500ms="person.contacts.{{ $contactIndex }}.emails.{{ $emailIndex }}.email" class="form-control form-control-sm email-input" @if($this->disableInputs) disabled @endif>
                 @error('person.contacts.'.$contactIndex.'.emails.'.$emailIndex.'.email') <span class="error">{{ $message }}</span>@enderror
             </div>
             <div class="col-6">

@@ -4,7 +4,7 @@
 
             <div class="col-6">
                 <label class="control-label">Telefone</label>
-                <input wire:model.debounce.500ms="person.contacts.{{ $contactIndex }}.phones.{{ $phoneIndex }}.phone" class="form-control form-control-sm" @if($this->disableInputs) disabled @endif>
+                <input wire:model.debounce.500ms="person.contacts.{{ $contactIndex }}.phones.{{ $phoneIndex }}.phone" class="form-control form-control-sm phone-input" @if($this->disableInputs) disabled @endif>
                 @error('person.contacts.'.$contactIndex.'.phones.'.$phoneIndex.'.phone') <span class="error">{{ $message }}</span>@enderror
             </div>
 

@@ -66,6 +66,10 @@
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
     @endif
+
+    {{-- Input Mask --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/inputmask.js" integrity="sha512-mZdA4RMHmZy00bvtVQLDLjQegPrTWuVuCnmUPryP0ggmpK4xafI9CUOcQlRIitN4K088ETPfTTlI12aaS1hhVg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     @stack('head_js')
 </head>
 
@@ -92,7 +96,7 @@
 
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
-
+    @stack('js')
 </body>
 
 </html>

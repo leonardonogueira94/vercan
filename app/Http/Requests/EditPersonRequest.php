@@ -39,8 +39,8 @@ class EditPersonRequest extends FormRequest
             'person.contacts.*.contact_name' => 'max:255',
             'person.contacts.*.company_name' => 'max:255',
             'person.contacts.*.job_title' => 'max:255',
-            'person.contacts.*.emails.*.type' => '',
-            'person.contacts.*.emails.*.email' => 'email',
+            'person.contacts.*.emails.*.type' => 'max:30',
+            'person.contacts.*.emails.*.email' => 'max:100',
             'person.contacts.*.phones.*.type' => '',
             'person.contacts.*.phones.*.phone' => 'max:18',
             'person.address.cep' => 'required|max:10',
@@ -49,9 +49,9 @@ class EditPersonRequest extends FormRequest
             'person.address.complement' => 'max:255',
             'person.address.area' => 'required|max:255',
             'person.address.city.uf' => 'required|exists:cities,uf',
-            'person.address.city.name' => 'required|exists:cities,name',
+            'person.address.city.name' => 'required',
             'person.address.is_condo' => 'required|boolean',
-            'person.observation' => 'max:10',
+            'person.observation' => 'max:500',
         ];
 
         if($this->person->type == PersonType::JURIDICA->value)

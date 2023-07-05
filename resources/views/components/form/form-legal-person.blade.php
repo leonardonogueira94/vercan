@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-lg-3 col-12">
                     <label class="control-label">CNPJ</label><sup>•</sup>
-                    <input wire:model.debounce.500ms="person.cnpj" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
+                    <input wire:model.defer="person.cnpj" class="form-control form-control-sm" id="cnpj" required @if($this->disableInputs) disabled @endif>
                     @error('person.cnpj') <span class="error">{{ $message }}</span>@enderror
                 </div>
                 <div class="col-lg-6 col-12">
@@ -71,3 +71,23 @@
         </div>
     @endif
 @endisset
+{{-- @once
+    @push('js')
+        <script>
+            var cnpj = $('#cnpj');
+            var cnpjMask = new Inputmask("99.999.999/9999-99");
+            cnpjMask.mask(cnpj);
+            cnpj.keyup((e) => {
+                let cnpj = e.target.value;
+                @this.set('person.cnpj', cnpj, true);
+            })
+
+            var phoneMask = new Inputmask("(99) 9999-9999");
+            $('body').on('keyup', '.phone-input', function(e) {
+                phoneMask.mask($(this));
+                let phone = e.target.value;
+                @this.set($(this).attr('wire:model.defer'), phone, true);
+            });
+        </script>
+    @endpush
+@endonce --}}

@@ -29,9 +29,11 @@
         </x-card.card>
 
         <x-card.card title="Observação">
-
+            <x-observation/>
         </x-card.card>
 
-        <button class="btn btn-success"><i class="fa fa-save"></i>&nbsp; Salvar</button>
+        <form wire:submit.prevent="submit" method="POST">
+            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i>&nbsp; Salvar</button>
+        </form>
     </div>
 </div>

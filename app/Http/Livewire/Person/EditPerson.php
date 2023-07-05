@@ -37,7 +37,7 @@ class EditPerson extends Component
     {
         $this->person = $person;
         $this->ufs = City::groupBy('uf')->get();
-        $this->cities = City::where('uf', $person->address?->uf)->get();
+        $this->cities = City::where('uf', $person->address?->city?->uf)->get();
         $this->deleteUnregisteredContacts();
     }
 
@@ -76,7 +76,7 @@ class EditPerson extends Component
     }
 
     public function submit()
-    {   
+    {        
         $this->validate();
         
         try{
