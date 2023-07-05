@@ -100,7 +100,9 @@ class EditPerson extends Component
     
     public function updateAddress()
     {
-        $this->person->address->city->save();
+        $city = $this->person->address->city;
+        $city = City::where(['uf' => $city->uf], ['name' => $city->name])->first();
+        $this->person->address->city_id = $city->id;
         $this->person->address->save();
     }
 

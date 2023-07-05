@@ -6,6 +6,7 @@ use App\Concerns\Livewire\DeletesUnregisteredContact;
 use App\Http\Requests\CreatePersonRequest;
 use App\Http\Requests\ShowPersonRequest;
 use App\Models\Person;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
 class ShowPerson extends Component
@@ -16,11 +17,9 @@ class ShowPerson extends Component
 
     public Person $person;
 
-    public array $contacts;
+    public Collection $ufs;
 
-    public array $phones;
-
-    public array $emails;
+    public Collection $cities;
 
     protected function rules(): array
     {

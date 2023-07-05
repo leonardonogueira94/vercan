@@ -9,11 +9,13 @@ use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Http\Requests\EditPersonRequest;
 use App\Models\Address;
+use App\Models\City;
 use App\Models\Person;
 use App\Services\CepService;
 use App\Services\MaskService;
 use App\Services\ReceitaService;
 use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -22,6 +24,10 @@ class CreatePerson extends Component
     use DeletesUnregisteredContact, FillsPersonField, ManagesContact;
 
     public Person $person;
+
+    public Collection $ufs;
+
+    public Collection $cities;
 
     public bool $disableInputs = false;
 
@@ -34,8 +40,11 @@ class CreatePerson extends Component
     {
         $this->person = new Person();
         $this->person->address = new Address();
+        $this->person->address->city = new City();
         $this->person->type = PersonType::JURIDICA->value;
         $this->person->ie_category = StateRegistrationCategory::CONTRIBUINTE;
+        $this->ufs = City::groupBy('uf')->get();
+        $this->cities = City::where('uf', $this->person->address?->city?->uf)->get();
         $this->deleteUnregisteredContacts();
     }
 
