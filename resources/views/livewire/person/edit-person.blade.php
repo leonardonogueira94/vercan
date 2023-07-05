@@ -3,7 +3,7 @@
     <x-card.card title="Dados do Fornecedor">
         <div class="row">
             <div class="col-12">
-                <x-input.radio-group-from-enum wired="true" name="person.personable_type" :values="App\Enums\Person\PersonType::cases()"/>
+                <x-input.radio-group-from-enum wired="true" name="person.type" :values="App\Enums\Person\PersonType::cases()"/>
             </div>
         </div>
         @if($person->type == App\Enums\Person\PersonType::JURIDICA->value)

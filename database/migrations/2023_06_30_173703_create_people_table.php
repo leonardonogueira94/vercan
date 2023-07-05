@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('rg', 12)->nullable();
             $table->enum('is_active', PersonStatus::toArray());
             $table->longText('observation')->nullable();
+            $table->boolean('is_registered')->default(true);
             $table->timestamps();
         });
     }
