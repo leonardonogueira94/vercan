@@ -3,15 +3,11 @@
 namespace App\Http\Livewire\Person;
 
 use App\Concerns\Livewire\ManagesContact;
-use App\Concerns\Livewire\DeletesUnregisteredContact;
-use App\Concerns\Livewire\DeletesUnregisteredPerson;
 use App\Concerns\Livewire\FillsPersonField;
 use App\Enums\Person\PersonStatus;
 use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
-use App\Enums\Person\TaxCollectionType;
 use App\Http\Requests\CreatePersonRequest;
-use App\Http\Requests\EditPersonRequest;
 use App\Models\Address;
 use App\Models\City;
 use App\Models\Person;
@@ -51,7 +47,7 @@ class CreatePerson extends Component
 
     public ?string $cnpjStatus = '';
     
-    public ?string $taxCollectionType;
+    public ?string $taxCollectionType = '';
 
     public ?string $personStatus = PersonStatus::ATIVA->value;
 
@@ -160,13 +156,13 @@ class CreatePerson extends Component
         try{
             DB::beginTransaction();
 
-            $this->person->save();
-            $this->updateContacts();
-            $this->updateAddress();
+            $person = $this->savePerson();
+            $this->saveContacts($person);
+            $this->saveAddress($person);
 
             DB::commit();
 
-            return redirect()->route('person.show', ['person' => $this->person])->with('success', 'Pessoa cadastrada com sucesso!');
+            return redirect()->route('person.show', ['person' => $person])->with('success', 'Pessoa cadastrada com sucesso!');
             
         }catch(Exception $e){
 
@@ -175,29 +171,42 @@ class CreatePerson extends Component
             session()->flash('error', $e->getMessage());
         }
     }
-    
-    public function updateAddress()
+
+    public function savePerson(): Person
     {
-        $this->person->address->city->save();
-        $this->person->address->save();
+        return Person::create([
+            'type' => $this->type,
+            'cnpj' => $this->cnpj,
+            'company_name' => $this->companyName,
+            'trading_name' => $this->tradingName,
+            'ie_category' => $this->stateRegistrationCategory,
+            'ie' => $this->ie,
+            'im' => $this->im,
+            'cnpj_status' => $this->cnpjStatus,
+            'tax_type' => $this->taxCollectionType,
+            'cpf' => $this->cpf,
+            'name' => $this->name,
+            'alias' => $this->alias,
+            'rg' => $this->rg,
+            'is_active' => $this->personStatus,
+            'observation' => $this->observation,
+        ]);
     }
-
-    public function updateContacts()
+    
+    public function saveAddress(Person $person): Address
     {
-        foreach($this->person->contacts as $contact)
-        {
-            $contact->is_registered = true;
-            $contact->save();
+        $city = City::where(['uf' => $this->uf], ['name' => $this->city])->first();
 
-            $contact->phones->each(function($email){
-                $email->is_registered = true;
-                $email->save();
-            });
-
-            $contact->emails->each(function($email){
-                $email->is_registered = true;
-                $email->save();
-            });
-        }
+        return Address::create([
+            'city_id' => $city->id,
+            'person_id' => $person->id,
+            'cep' => $this->cep,
+            'address' => $this->address,
+            'building_number' => $this->buildingNumber,
+            'complement' => $this->complement,
+            'area' => $this->area,
+            'reference_point' => $this->referencePoint,
+            'is_condo' => $this->isCondo,
+        ]);
     }
 }

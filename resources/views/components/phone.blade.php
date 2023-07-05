@@ -10,7 +10,7 @@
 
             <div class="col-6">
                 <label class="control-label">Tipo</label>
-                <select wire:model.debounce.500ms="person.contacts.{{ $contactIndex }}.phones.{{ $phoneIndex }}.type" class="form-control form-control-sm" @if($this->disableInputs) disabled @endif>
+                <select wire:model.debounce.500ms="contacts.{{ $contactIndex }}.phones.{{ $phoneIndex }}.type" class="form-control form-control-sm" @if($this->disableInputs) disabled @endif>
                     <option hidden>Selecione</option>
                     @foreach(App\Enums\Contact\ContactChannel::TELEFONE->tipos() as $case)
                         <option value="{{ $case->value }}"> {{ $case->label() }} </option>

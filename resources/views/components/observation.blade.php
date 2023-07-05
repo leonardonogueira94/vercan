@@ -16,7 +16,7 @@
                 CKEDITOR.replace('#obs-editor', {
                     on: {
                         change: function() {
-                            @this.set('person.observation', this.getData())
+                            @this.set('observation', this.getData())
                         }
                     }
                 })

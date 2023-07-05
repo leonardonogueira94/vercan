@@ -6,7 +6,6 @@ use App\Models\Contact;
 use App\Models\Email;
 use App\Models\Person;
 use App\Models\Phone;
-use stdClass;
 
 trait ManagesContact
 {
@@ -21,9 +20,9 @@ trait ManagesContact
             'index' => count($this->contacts),
             'is_default' => $isDefault,
             'is_registered' => false,
-            'contact_name' => '',
-            'company_name' => '',
-            'job_title' => '',
+            'contact_name' => null,
+            'company_name' => null,
+            'job_title' => null,
             'emails' => [],
             'phones' => [],
         ];
@@ -70,5 +69,31 @@ trait ManagesContact
         unset($this->contacts[$contactIndex]['phones'][$phoneIndex]);
 
         $this->contacts[$contactIndex]['phones'] = array_values($this->contacts[$contactIndex]['phones']);
+    }
+
+    public function saveContacts(Person $person)
+    {
+        foreach($this->contacts as $contact)
+            $contact = Contact::create([
+                'person_id' => $person->id,
+                'contact_name' => $contact['contact_name'],
+                'company_name' => $contact['company_name'],
+                'job_title' => $contact['job_title'],
+                'is_default' => $contact['is_default'],
+            ]);
+
+        foreach($contact['phones'] as $phone)
+            Phone::create([
+                'contact_id' => $contact->id,
+                'type' => $phone['type'],
+                'phone' => $phone['phone'],
+            ]);
+
+        foreach($contact['phones'] as $phone)
+            Email::create([
+                'contact_id' => $contact->id,
+                'type' => $phone['type'],
+                'email' => $phone['email'],
+            ]);
     }
 }

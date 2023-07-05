@@ -68,7 +68,7 @@ class ShowPersonRequest extends FormRequest
             'person.company_name' => 'required|max:255',
             'person.trading_name' => 'required|max:255',
             'person.ie_category' => ['required', Rule::in(StateRegistrationCategory::toArray())],
-            'person.ie' => ['max:15', Rule::requiredIf($this->person?->ie_category?->required() ?? false)],
+            'person.ie' => ['max:15', Rule::requiredIf($this->stateRegistrationCategory?->required() ?? false)],
             'person.im' => 'max:15',
             'person.tax_type' => ['required', Rule::in(TaxCollectionType::toArray())],
         ];

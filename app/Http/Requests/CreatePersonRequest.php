@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Enums\Person\TaxCollectionType;
-use App\Models\Person;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -48,8 +47,8 @@ class CreatePersonRequest extends FormRequest
             'buildingNumber' => 'required|max:10',
             'complement' => 'max:255',
             'area' => 'required|max:255',
-            'city.uf' => 'required|exists:cities,uf',
-            'city.name' => 'required',
+            'uf' => 'required|exists:cities,uf',
+            'city' => 'required',
             'isCondo' => 'required|boolean',
             'observation' => 'max:500',
         ];

@@ -2,8 +2,6 @@
 
 use App\Enums\Person\PersonStatus;
 use App\Enums\Person\PersonType;
-use App\Enums\Person\StateRegistrationCategory;
-use App\Enums\Person\TaxCollectionType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,18 +19,17 @@ return new class extends Migration
             $table->string('cnpj', 19)->unique()->nullable();
             $table->string('company_name')->nullable();
             $table->string('trading_name')->nullable();
-            $table->enum('ie_category', StateRegistrationCategory::toArray())->nullable();
+            $table->char('ie_category', 2)->nullable();
             $table->string('ie', 19)->nullable();
             $table->string('im', 19)->nullable();
             $table->string('cnpj_status')->nullable();
-            $table->enum('tax_type', TaxCollectionType::toArray())->nullable();
+            $table->char('tax_type', 2)->nullable();
             $table->string('cpf', 15)->unique()->nullable();
             $table->string('name')->nullable();
             $table->string('alias')->nullable();
             $table->string('rg', 12)->nullable();
             $table->enum('is_active', PersonStatus::toArray());
             $table->longText('observation')->nullable();
-            $table->boolean('is_registered')->default(true);
             $table->timestamps();
         });
     }
