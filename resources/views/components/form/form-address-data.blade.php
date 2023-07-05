@@ -35,24 +35,22 @@
             </div>
             <div class="col-lg-3 col-12">
                 <label class="control-label">UF</label><sup>•</sup>
-                <input list="ufs" wire:model.debounce.500ms="person.address.city.uf" value="{{ $this->person?->address?->city?->uf }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
-                <datalist id="ufs">
+                <select wire:model.debounce.500ms="person.address.city.uf" value="{{ $this->person->address->city->uf }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
                     <option hidden>Selecione</option>
-                    @foreach(App\Models\City::select('uf')->groupBy('uf') as $uf)
-                        <option value="{{ $uf->uf }}">{{ $uf->uf }}</option>
+                    @foreach($this->ufs as $uf)
+                        <option value="{{ $uf->uf }}" @if($this->person->address->city->uf == $uf->uf) selected @endif>{{ $uf->uf }}</option>
                     @endforeach
-                </datalist>
+                </select>
                 @error('person.address.city.uf') <span class="error">{{ $message }}</span>@enderror
             </div>
             <div class="col-lg-3 col-12"><sup>•</sup>
                 <label class="control-label">Cidade</label>
-                <input list="cities" wire:model.debounce.500ms="person.address.city.name" value="{{ $this->person?->address?->city?->name }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
-                <datalist id="cities">
+                <select wire:model.debounce.500ms="person.address.city.name" value="{{ $this->person->address->city->name }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
                     <option hidden>Selecione</option>
-                    @foreach(App\Models\City::where('uf', $this->person->address->uf)->get() as $city)
-                        <option>{{ $city->name }}</option>
-                    @endforeach
-                </datalist>
+                        @foreach($this->cities as $city)
+                            <option value="{{ $city->name }}" @if($this->person->address->city->name == $city->name) selected @endif>{{ $city->name }}</option>
+                        @endforeach
+                </select>
                 @error('person.address.city.name') <span class="error">{{ $message }}</span>@enderror
             </div>
         </div>

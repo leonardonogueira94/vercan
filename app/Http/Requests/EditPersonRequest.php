@@ -48,8 +48,8 @@ class EditPersonRequest extends FormRequest
             'person.address.building_number' => 'required|max:10',
             'person.address.complement' => 'max:255',
             'person.address.area' => 'required|max:255',
-            'person.address.city.uf' => '',
-            'person.address.city.name' => '',
+            'person.address.city.uf' => 'required|exists:cities,uf',
+            'person.address.city.name' => 'required|exists:cities,name',
             'person.address.is_condo' => 'required|boolean',
             'person.observation' => 'max:10',
         ];
@@ -69,7 +69,7 @@ class EditPersonRequest extends FormRequest
             'person.company_name' => 'required|max:255',
             'person.trading_name' => 'required|max:255',
             'person.ie_category' => ['required', Rule::in(StateRegistrationCategory::toArray())],
-            'person.ie' => ['max:15', Rule::requiredIf($this->person->ie_category->required())],
+            'person.ie' => ['max:15', Rule::requiredIf($this->person?->ie_category?->required() ?? false)],
             'person.im' => 'max:15',
             'person.tax_type' => ['required', Rule::in(TaxCollectionType::toArray())],
         ];

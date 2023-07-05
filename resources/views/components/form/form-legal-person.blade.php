@@ -25,7 +25,7 @@
                     <select wire:model.debounce.500ms="person.ie_category" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
                         <option hidden>Selecione</option>
                         @foreach(App\Enums\Person\StateRegistrationCategory::cases() as $case)
-                            <option value="{{ $case }}" @if($this->person->ie_category->value == $case->value) {{ 'selected' }} @endif>{{ $case->label() }}</option>
+                            <option value="{{ $case }}" @if($this->person?->ie_category?->value == $case->value) {{ 'selected' }} @endif>{{ $case->label() }}</option>
                         @endforeach
                     </select>
                     @error('person.ie_category') <span class="error">{{ $message }}</span>@enderror

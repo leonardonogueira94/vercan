@@ -6,11 +6,13 @@ use App\Concerns\Livewire\ManagesContact;
 use App\Concerns\Livewire\DeletesUnregisteredContact;
 use App\Concerns\Livewire\FillsPersonField;
 use App\Http\Requests\EditPersonRequest;
+use App\Models\City;
 use App\Models\Person;
 use App\Services\CepService;
 use App\Services\MaskService;
 use App\Services\ReceitaService;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -22,6 +24,10 @@ class EditPerson extends Component
 
     public bool $disableInputs = false;
 
+    public Collection $ufs;
+
+    public Collection $cities;
+
     protected function rules(): array
     {
         return (new EditPersonRequest($this->person))->rules();
@@ -30,6 +36,8 @@ class EditPerson extends Component
     public function mount(Person $person)
     {
         $this->person = $person;
+        $this->ufs = City::groupBy('uf')->get();
+        $this->cities = City::where('uf', $person->address?->uf)->get();
         $this->deleteUnregisteredContacts();
     }
 
@@ -52,6 +60,11 @@ class EditPerson extends Component
     {
         $this->validateOnly($propertyName);
 
+        if($propertyName == 'person.address.city.uf')
+        {
+            $this->cities = City::where('uf', $value)->get();
+        }
+        
         if($propertyName == 'person.cnpj' && strlen($this->maskService->unmask($value)) == 14)
         {
             $this->fillPersonData($this->receitaService->getLegalPersonData($value));

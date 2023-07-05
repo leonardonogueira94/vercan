@@ -44,7 +44,7 @@ class CityFactory extends Factory
      */
     public function definition(): array
     {
-        $capital = fake()->randomElement($this->capitals);
+        $capital = fake()->unique()->randomElement($this->capitals);
 
         return [
             'uf' =>  array_search($capital, $this->capitals),
