@@ -25,12 +25,12 @@ class EditPersonTest extends TestCase
      */
     public function test_if_company_name_gets_filled_when_cnpj_is_filled(string $cnpj, string $expectedCompanyName)
     {
-        $person = Person::factory()->make();
+        $person = Person::first();
         
         $component = Livewire::test(EditPerson::class, ['person' => $person])
-        ->set('person.cnpj', $cnpj)
-        ->assertNotSet('person.company_name', $person->company_name)
-        ->assertSet('person.company_name', $expectedCompanyName);
+        ->set('cnpj', $cnpj)
+        ->assertNotSet('companyName', $person->company_name)
+        ->assertSet('companyName', $expectedCompanyName);
     }
 
     public function personProvider(): array

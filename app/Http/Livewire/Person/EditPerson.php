@@ -10,7 +10,10 @@ use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Http\Requests\EditPersonRequest;
 use App\Models\City;
+use App\Models\Contact;
+use App\Models\Email;
 use App\Models\Person;
+use App\Models\Phone;
 use App\Services\CepService;
 use App\Services\MaskService;
 use App\Services\ReceitaService;
@@ -22,6 +25,8 @@ use Livewire\Component;
 class EditPerson extends Component
 {
     use FillsPersonField, ManagesContact;
+
+    public ?Person $person;
 
     public string $type = PersonType::JURIDICA->value;
 
@@ -84,6 +89,7 @@ class EditPerson extends Component
 
     public function mount(Person $person)
     {
+        $this->person = $person;
         $this->type = $person->type;
         $this->cnpj = $person->cnpj;
         $this->companyName = $person->company_name;
@@ -135,8 +141,13 @@ class EditPerson extends Component
 
         foreach($personContacts as $i => $contact)
         {
-            $this->contacts[$i]['emails'] = $contact->emails;
-            $this->contacts[$i]['phones'] = $contact->phones;
+            $contact->emails->each(function($email) use($i){
+                $this->contacts[$i]['emails'][] = $email->toArray();
+            });
+
+            $contact->phones->each(function($phone) use($i){
+                $this->contacts[$i]['phones'][] = $phone->toArray();
+            });
         }
     }
 
@@ -183,9 +194,11 @@ class EditPerson extends Component
         try{
             DB::beginTransaction();
 
-            $this->person->save();
-            $this->updateContacts();
-            $this->updateAddress();
+            $person = $this->updatePersonData();
+
+            $this->updateAddressData($this->person);
+
+            $this->updateContactsData($this->person);
 
             DB::commit();
 
@@ -195,34 +208,45 @@ class EditPerson extends Component
 
             DB::rollBack();
             
-            session()->flash('error', $e->getMessage());
+            session()->flash('error', "{$e->getMessage()} | {$e->getFile()} | {$e->getLine()}");
         }
     }
-    
-    public function updateAddress()
+
+    public function updatePersonData()
     {
-        $city = $this->person->address->city;
-        $city = City::where(['uf' => $city->uf], ['name' => $city->name])->first();
-        $this->person->address->city_id = $city->id;
-        $this->person->address->save();
+        $this->person->update([
+            'type' => $this->type,
+            'cnpj' => $this->cnpj,
+            'company_name' => $this->companyName,
+            'trading_name' => $this->tradingName,
+            'ie_category' => $this->stateRegistrationCategory,
+            'ie' => $this->ie,
+            'im' => $this->im,
+            'cnpj_status' => $this->cnpjStatus,
+            'tax_type' => $this->taxCollectionType,
+            'cpf' => $this->cpf,
+            'name' => $this->name,
+            'alias' => $this->alias,
+            'rg' => $this->rg,
+            'is_active' => $this->personStatus,
+            'observation' => $this->observation,
+        ]);
     }
 
-    public function updateContacts()
+    public function updateAddressData(Person $person)
     {
-        foreach($this->person->contacts as $contact)
-        {
-            $contact->is_registered = true;
-            $contact->save();
+        $city = City::where(['uf' => $this->uf], ['name' => $this->city])->first();
 
-            $contact->phones->each(function($email){
-                $email->is_registered = true;
-                $email->save();
-            });
-
-            $contact->emails->each(function($email){
-                $email->is_registered = true;
-                $email->save();
-            });
-        }
+        $this->person->address->update([
+            'city_id' => $city->id,
+            'person_id' => $person->id,
+            'cep' => $this->cep,
+            'address' => $this->address,
+            'building_number' => $this->buildingNumber,
+            'complement' => $this->complement,
+            'area' => $this->area,
+            'reference_point' => $this->referencePoint,
+            'is_condo' => $this->isCondo,
+        ]);
     }
 }

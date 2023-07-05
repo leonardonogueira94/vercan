@@ -89,11 +89,56 @@ trait ManagesContact
                 'phone' => $phone['phone'],
             ]);
 
-        foreach($contact['phones'] as $phone)
+        foreach($contact['emails'] as $email)
             Email::create([
                 'contact_id' => $contact->id,
-                'type' => $phone['type'],
-                'email' => $phone['email'],
+                'type' => $email['type'],
+                'email' => $email['email'],
             ]);
+    }
+
+    public function updateContactsData(Person $person)
+    {   $contactIds = [];
+        $phoneIds = [];
+        $emailIds = [];
+
+        foreach($this->contacts as $contact)
+        {
+            $contact['id'] = Contact::updateOrCreate(['id' => $contact['id'] ?? null],[
+                'person_id' => $person->id,
+                'contact_name' => $contact['contact_name'],
+                'company_name' => $contact['company_name'],
+                'job_title' => $contact['job_title'],
+                'is_default' => $contact['is_default'],
+            ])->id;
+
+            $contactIds[] = $contact['id'];
+
+            foreach($contact['emails'] as $email)
+            {
+                $email['id'] = Email::updateOrCreate(['id' => $email['id'] ?? null],[
+                    'contact_id' => $contact['id'],
+                    'type' => $email['type'],
+                    'email' => $email['email'],
+                ])->id;
+
+                $emailIds[] = $email['id'];
+            }
+
+            foreach($contact['phones'] as $phone)
+            {
+                $phone['id'] = Phone::updateOrCreate(['id' => $phone['id'] ?? null],[
+                    'contact_id' => $contact['id'],
+                    'type' => $phone['type'],
+                    'phone' => $phone['phone'],
+                ])->id;
+
+                $phoneIds[] = $phone['id'];
+            }
+
+            $this->person->phones()->whereNotIn('phones.id', $phoneIds)->delete();
+            $this->person->emails()->whereNotIn('emails.id', $emailIds)->delete();
+            $this->person->contacts()->whereNotIn('contacts.id', $contactIds)->delete();
+        }
     }
 }
