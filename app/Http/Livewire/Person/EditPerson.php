@@ -163,6 +163,19 @@ class EditPerson extends Component
             $this->fillAddress($this->cepService->getAddressDataByCep($this->maskService->unmask($this->cep)));
     }
 
+    public function resetForm()
+    {
+        $this->cnpj = null;
+        $this->companyName = null;
+        $this->tradingName = null;
+        $this->ie = null;
+        $this->im = null;
+        $this->cnpjStatus = null;
+        $this->cpf = null;
+        $this->name = null;
+        $this->alias = null;
+    }
+
     public function submit()
     {        
         $this->validate();
