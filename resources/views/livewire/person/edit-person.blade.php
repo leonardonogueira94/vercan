@@ -7,11 +7,8 @@
                     <x-input.radio-group-from-enum wired="true" name="type" :values="App\Enums\Person\PersonType::cases()"/>
                 </div>
             </div>
-            @if($this->type == App\Enums\Person\PersonType::JURIDICA->value)
-                <x-form.form-legal-person/>
-            @elseif($this->type == App\Enums\Person\PersonType::FISICA->value)
-                <x-form.form-natural-person/>
-            @endif
+            <x-form.form-legal-person/>
+            <x-form.form-natural-person/>
         </x-card.card>
 
         <x-card.card title="Contato Principal">

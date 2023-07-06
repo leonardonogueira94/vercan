@@ -35,9 +35,17 @@ sup {
 }
 
 .field-set > .row, .email-row {
-    padding-top: 15px;
+    padding-top: 0px;
 }
 
 .btn-cadastrar {
     margin-bottom: 10px;
+}
+
+.radio-group-enum {
+    margin-block-end: -10px;
+}
+
+.control-label {
+    padding-top: 20px;
 }
