@@ -17,6 +17,7 @@ class PersonSeeder extends Seeder
         ->count(30)
         ->create()
         ->each(function($person){
+            $this->createAddressForPerson($person);
             $this->createContactWithPhoneAndEmail($person, true);
             $this->createContactWithPhoneAndEmail($person, false);
         });
@@ -24,7 +25,6 @@ class PersonSeeder extends Seeder
 
     public function createContactWithPhoneAndEmail(Person $person, bool $default)
     {
-        $this->createAddressForPerson($person);
         $contact = $this->createContactForPerson($person, $default);
         $this->createEmailForContact($contact);
         $this->createPhoneForContact($contact);

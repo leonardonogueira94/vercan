@@ -12,8 +12,8 @@ use Illuminate\Validation\Rules\Enum;
 class EditPersonRequest extends FormRequest
 {
     public function __construct(
-        public PersonType $personType,
-        public StateRegistrationCategory $stateRegistrationCategory,
+        public ?PersonType $personType = null,
+        public ?StateRegistrationCategory $stateRegistrationCategory = null,
     ){}
 
     /**

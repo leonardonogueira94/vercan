@@ -32,6 +32,6 @@
             <x-observation/>
         </x-card.card>
 
-        <a href="{{ route('person.edit', ['person' => $person->id]) }}" class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Editar</a>
+        <a href="{{ route('person.edit', ['person' => $person->id]) }}" class="btn btn-success"><i class="fa fa-edit"></i>&nbsp; Editar</a>
     </div>
 </div>

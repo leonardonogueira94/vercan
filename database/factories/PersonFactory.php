@@ -42,6 +42,7 @@ class PersonFactory extends Factory
                 'cnpj_status' => 'ATIVA',
                 'tax_type' => fake()->randomElement(TaxCollectionType::toArray()),
                 'is_active' => fake()->randomElement(PersonStatus::toArray()),
+                'observation' => fake()->sentence(30),
             ];
 
         if($chosen == 'F')
@@ -52,6 +53,7 @@ class PersonFactory extends Factory
                 'alias' => explode(' ', fake()->name())[0],
                 'rg' => fake()->unique()->rg(true),
                 'is_active' => fake()->randomElement(PersonStatus::toArray()),
+                'observation' => fake()->sentence(30),
             ];
     }
 }

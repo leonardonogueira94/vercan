@@ -97,8 +97,26 @@ trait ManagesContact
             ]);
     }
 
+    public function retrieveContacts(Person $person)
+    {
+        $personContacts = $person->contacts;
+
+        $this->contacts = $personContacts->toArray();
+
+        foreach($personContacts as $i => $contact)
+        {
+            $contact->emails->each(function($email) use($i){
+                $this->contacts[$i]['emails'][] = $email->toArray();
+            });
+
+            $contact->phones->each(function($phone) use($i){
+                $this->contacts[$i]['phones'][] = $phone->toArray();
+            });
+        }
+    }
+
     public function updateContactsData(Person $person): void
-    {   
+    {
         $contactIds = [];
         $phoneIds = [];
         $emailIds = [];

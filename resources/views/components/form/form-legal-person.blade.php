@@ -28,11 +28,13 @@
             </select>
             @error('ie_category') <span class="error">{{ $message }}</span>@enderror
         </div>
-        <div class="col-lg-3 col-12">
-            <label class="control-label">Inscrição Estadual</label> @if(App\Enums\Person\StateRegistrationCategory::tryFrom($this->stateRegistrationCategory)->required())<sup>•</sup>@endif
-            <input wire:model.debounce.500ms="ie" class="form-control form-control-sm" @if(App\Enums\Person\StateRegistrationCategory::tryFrom($this->stateRegistrationCategory)->required()) {{ 'required' }} @else {{ 'disabled '}} @endif @if($this->disableInputs) disabled @endif>
-            @error('ie') <span class="error">{{ $message }}</span>@enderror
-        </div>
+        @if($this->type == App\Enums\Person\PersonType::JURIDICA->value)
+            <div class="col-lg-3 col-12">
+                <label class="control-label">Inscrição Estadual</label> @if(App\Enums\Person\StateRegistrationCategory::tryFrom($this->stateRegistrationCategory)->required())<sup>•</sup>@endif
+                <input wire:model.debounce.500ms="ie" class="form-control form-control-sm" @if(App\Enums\Person\StateRegistrationCategory::tryFrom($this->stateRegistrationCategory)->required()) {{ 'required' }} @else {{ 'disabled '}} @endif @if($this->disableInputs) disabled @endif>
+                @error('ie') <span class="error">{{ $message }}</span>@enderror
+            </div>
+        @endif
         <div class="col-lg-3 col-12">
             <label class="control-label">Inscrição Municipal</label>
             <input wire:model.debounce.500ms="im" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
