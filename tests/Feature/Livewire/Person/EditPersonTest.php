@@ -141,10 +141,10 @@ class EditPersonTest extends TestCase
 
         foreach($people as $person)
         {
-            $component = Livewire::test(EditPerson::class, ['person' => $person]);
-
             foreach($person->contacts as $contactIndex => $oldContact)
             {
+                $component = Livewire::test(EditPerson::class, ['person' => $person]);
+
                 if($oldContact->is_default == 1)
                     continue;
                     
@@ -153,15 +153,49 @@ class EditPersonTest extends TestCase
                 $component->set("contacts.$contactIndex.contact_name", $newContact->contact_name)
                 ->set("contacts.$contactIndex.company_name", $newContact->company_name)
                 ->set("contacts.$contactIndex.job_title", $newContact->job_title)
+                ->call('submit')
                 ->assertSeeHtml('value="'.e($newContact->contact_name).'"')
                 ->assertSeeHtml('value="'.e($newContact->company_name).'"')
                 ->assertSeeHtml('value="'.e($newContact->job_title).'"')
-                ->assertDontSee('value="'.e($oldContact->contact_name).'"')
-                ->assertDontSee('value="'.e($oldContact->company_name).'"')
-                ->assertDontSee('value="'.e($oldContact->job_title).'"');
+                ->assertDontSeeHtml('value="'.e($oldContact->contact_name).'"')
+                ->assertDontSeeHtml('value="'.e($oldContact->company_name).'"')
+                ->assertDontSeeHtml('value="'.e($oldContact->job_title).'"');
             }
         }
     }
+
+    /**
+     * @test
+     * @large
+     * @covers \App\Http\Livewire\EditPerson::updateContactsData
+     * @covers \App\Http\Livewire\EditPerson::submit
+     */
+    public function if_it_is_able_to_update_emails()
+    {
+        $people = Person::with('contacts.emails')->limit(20)->get();
+
+        foreach($people as $person)
+        {
+            foreach($person->contacts as $contactIndex => $contact)
+            {
+                foreach($contact->emails as $emailIndex => $oldEmail)
+                {
+                    $component = Livewire::test(EditPerson::class, ['person' => $person]);
+
+                    $oldEmailValue = $component->get("contacts.$contactIndex.emails.$emailIndex.email");
+
+                    $newEmail = Email::factory()->make();
+
+                    $component->set("contacts.$contactIndex.emails.$emailIndex.email", $newEmail->email)
+                    ->set("contacts.$contactIndex.emails.$emailIndex.type", $newEmail->type->value)
+                    ->call('submit')
+                    ->assertSeeHtml('value="'.$newEmail->email.'"')
+                    ->assertSeeHtml('value="'.e($newEmail->type).'"');
+                }
+            }
+        }
+    }
+
 
     /**
      * @test
