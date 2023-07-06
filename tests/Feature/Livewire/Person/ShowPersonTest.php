@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Livewire\Person;
 
+use App\Enums\Person\PersonType;
 use App\Http\Livewire\Person\ShowPerson;
 use App\Models\Person;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -52,10 +53,66 @@ class ShowPersonTest extends TestCase
         }
     }
 
-    public function personProvider(): array
+    /**
+     * @test
+     * @medium
+     * @covers \App\Http\Livewire\ShowPerson::mount
+     */
+    public function if_form_gets_filled_with_person_data()
     {
-        return [
-            [Person::with('contacts.phones')->with('contacts.emails')->inRandomOrder()->first()]
-        ];
+        $people = Person::limit(30)->get();
+
+        foreach($people as $person)
+        {            
+            $component = Livewire::test(EditPerson::class, ['person' => $person])->assertSet('type', $person->type)
+            ->assertSet('person', $person);
+
+            if($person->type == PersonType::JURIDICA->value)
+            {
+                $component->assertSee($person->company_name)
+                ->assertSee($person->trading_name)
+                ->assertSee($person->ie_category)
+                ->assertSee($person->ie)
+                ->assertSee($person->im)
+                ->assertSee($person->cnpj_status)
+                ->assertSee($person->tax_type)
+                ->assertSee($person->is_active)
+                ->assertSee($person->observation);
+            }
+
+            if($person->type == PersonType::FISICA->value)
+            {
+                $component->assertSee($person->name)
+                ->assertSee($person->alias)
+                ->assertSee($person->cpf)
+                ->assertSee($person->name)
+                ->assertSee($person->alias)
+                ->assertSee($person->rg);
+            }
+        }
+    }
+
+    /**
+     * @test
+     * @medium
+     * @covers \App\Http\Livewire\ShowPerson::mount
+     */
+    public function if_address_gets_displayed()
+    {
+        $people = Person::with('address.city')->limit(30)->get();
+
+        foreach($people as $person)
+        {            
+            $component = Livewire::test(EditPerson::class, ['person' => $person])
+            ->assertSee($person->address->city->uf)
+            ->assertSee($person->address->city->name)
+            ->assertSee($person->cep)
+            ->assertSee($person->address->address)
+            ->assertSee($person->address->building_number)
+            ->assertSee($person->address->complement)
+            ->assertSee($person->address->area)
+            ->assertSee($person->address->reference_point)
+            ->assertSee($person->address->is_condo);
+        }
     }
 }
