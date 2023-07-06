@@ -48,7 +48,7 @@ class EditPersonTest extends TestCase
     /**
      * @test
      * @medium
-     * @dataProvider cnpjProvider
+     * @dataProvider razaoProvider
      * @covers \App\Http\Livewire\EditPerson::updated
      * @covers \App\Services\ReceitaService::getLegalPersonData
      * @covers \App\Services\ReceitaService::getLegalPersonDataMap

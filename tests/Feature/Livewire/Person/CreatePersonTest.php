@@ -44,7 +44,7 @@ class CreatePersonTest extends TestCase
     /**
      * @test
      * @medium
-     * @dataProvider cnpjProvider
+     * @dataProvider razaoProvider
      * @covers \App\Http\Livewire\CreatePerson::updated
      * @covers \App\Services\ReceitaService::getLegalPersonData
      * @covers \App\Services\ReceitaService::getLegalPersonDataMap
@@ -62,7 +62,7 @@ class CreatePersonTest extends TestCase
 
     /**
      * @test
-     * @medium
+     * @small
      */
     public function if_city_dropdown_shows_cities_from_chosen_uf()
     {
