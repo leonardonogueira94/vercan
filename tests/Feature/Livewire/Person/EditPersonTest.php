@@ -216,10 +216,10 @@ class EditPersonTest extends TestCase
                     $newPhone = Phone::factory()->make();
 
                     $component->set("contacts.$contactIndex.phones.$phoneIndex.phone", $newPhone->phone)
-                    ->set("contacts.$contactIndex.phones.$phoneIndex.type", $newPhone->type->value)
+                    ->set("contacts.$contactIndex.phones.$phoneIndex.type", $newPhone->type)
                     ->call('submit')
                     ->assertSeeHtml('value="'.$newPhone->phone.'"')
-                    ->assertSeeHtml('value="'.$newPhone->type.'"');
+                    ->assertSeeHtml('value="'.$newPhone->type->value.'"');
                 }
             }
         }
