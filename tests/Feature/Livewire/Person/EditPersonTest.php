@@ -112,17 +112,23 @@ class EditPersonTest extends TestCase
 
     public function if_it_is_able_to_add_contacts()
     {
-        $people = Person::with('contacts.phones')->with('contacts.emails')->limit(20)->get();
+        $people = Person::with('contacts')->limit(20)->get();
 
         foreach($people as $person)
         {
+            $newContact = Contact::factory()->make();
 
+            $component = Livewire::test(EditPerson::class, ['person' => $person])
+            ->call('addContact')
+            ->set("contact.{$person->contacts->count()}.contact_name", $newContact->contact_name)
+            ->set("contact.{$person->contacts->count()}.company_name", $newContact->company_name)
+            ->set("contact.{$person->contacts->count()}.job_title", $newContact->job_title);
         }
     }
 
     public function if_it_is_able_to_remove_contacts()
     {
-        $people = Person::with('contacts.phones')->with('contacts.emails')->limit(20)->get();
+        $people = Person::with('contacts')->limit(20)->get();
 
         foreach($people as $person)
         {
