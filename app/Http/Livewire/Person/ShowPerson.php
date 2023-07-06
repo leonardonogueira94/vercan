@@ -98,6 +98,7 @@ class ShowPerson extends Component
         $this->uf = $person->address->city->uf;
         $this->city = $person->address->city->name;
         $this->isCondo = $person->address->is_condo;
+        $this->observation = $person->observation;
         $this->ufs = City::groupBy('uf')->get();
         $this->cities = City::where('uf', $this->uf)->get();
         $this->retrieveContacts($person);
