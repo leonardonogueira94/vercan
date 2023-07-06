@@ -137,46 +137,29 @@ class EditPersonTest extends TestCase
      */
     public function if_it_is_able_to_update_contacts()
     {
-        $people = Person::with('contacts.phones')->with('contacts.emails')->limit(20)->get();
-
-        $newContacts = [];
-
-        $newPhones = [];
-
-        $newEmails = [];
+        $people = Person::with('contacts')->limit(20)->get();
 
         foreach($people as $person)
         {
             $component = Livewire::test(EditPerson::class, ['person' => $person]);
 
-            foreach($person->contacts->where('is_default', false) as $contactIndex => $contact)
+            foreach($person->contacts as $contactIndex => $oldContact)
             {
-                $newContacts[] = Contact::factory()->make()->toArray();
+                if($oldContact->is_default == 1)
+                    continue;
+                    
+                $newContact = Contact::factory()->make();
 
-                end($newContacts)['id'] = $contact->id;
-
-                $component->set("contacts.$contactIndex", end($newContacts));
-
-                foreach($contact->phones as $phoneIndex => $phone)
-                {
-                    $newPhones[] = Phone::factory()->make()->toArray();
-
-                    end($newPhones)['id'] = $phone->id;
-
-                    $component->set("contacts.$contactIndex.phones.$phoneIndex", end($newPhones));
-                }
-
-                foreach($contact->emails as $emailIndex => $email)
-                {
-                    $newEmails[] = Email::factory()->make()->toArray();
-
-                    end($newEmails)['id'] = $email->id;
-
-                    $component->set("contacts.$contactIndex.phones.$emailIndex", end($newEmails));
-                }
+                $component->set("contacts.$contactIndex.contact_name", $newContact->contact_name)
+                ->set("contacts.$contactIndex.company_name", $newContact->company_name)
+                ->set("contacts.$contactIndex.job_title", $newContact->job_title)
+                ->assertSeeHtml('value="'.e($newContact->contact_name).'"')
+                ->assertSeeHtml('value="'.e($newContact->company_name).'"')
+                ->assertSeeHtml('value="'.e($newContact->job_title).'"')
+                ->assertDontSee('value="'.e($oldContact->contact_name).'"')
+                ->assertDontSee('value="'.e($oldContact->company_name).'"')
+                ->assertDontSee('value="'.e($oldContact->job_title).'"');
             }
-
-            $component->call('submit');
         }
     }
 

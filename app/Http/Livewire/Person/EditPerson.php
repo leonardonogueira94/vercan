@@ -3,17 +3,13 @@
 namespace App\Http\Livewire\Person;
 
 use App\Concerns\Livewire\ManagesContact;
-use App\Concerns\Livewire\DeletesUnregisteredContact;
 use App\Concerns\Livewire\FillsPersonField;
 use App\Enums\Person\PersonStatus;
 use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Http\Requests\EditPersonRequest;
 use App\Models\City;
-use App\Models\Contact;
-use App\Models\Email;
 use App\Models\Person;
-use App\Models\Phone;
 use App\Services\CepService;
 use App\Services\MaskService;
 use App\Services\ReceitaService;
