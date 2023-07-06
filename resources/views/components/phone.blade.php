@@ -3,7 +3,7 @@
         <div class="row email-row">
 
             <div class="col-6">
-                <label class="control-label">Telefone</label>
+                <label class="control-label">Telefone</label>@if($contactIndex == 0 && $phoneIndex == 0) <sup>•</sup>@endif
                 <input wire:model.defer="contacts.{{ $contactIndex }}.phones.{{ $phoneIndex }}.phone" class="form-control form-control-sm phone {{ $this->contacts[$contactIndex]['phones'][$phoneIndex]['type'] }}" @if($this->disableInputs) disabled @endif>
                 @error('contacts.'.$contactIndex.'.phones.'.$phoneIndex.'.phone') <span class="error">{{ $message }}</span>@enderror
             </div>
