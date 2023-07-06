@@ -126,19 +126,44 @@ class EditPersonTest extends TestCase
         }
     }
 
-    /* public function if_cnpj_input_gets_masked()
+    public function if_it_is_able_to_update_person_data()
     {
-        $people = Person::limit(30)->get();
+        $people = Person::orderByAsc(10)->get();
 
-        $maskService = app('App\Services\MaskService');
+        $otherPeople = Person::with('contacts.phones')
+        ->with('contacts.emails')
+        ->with('address.city')
+        ->orderByDesc(10)
+        ->get();
 
-        foreach($people as $person)
+        foreach($people as $i => $person)
         {
-            $cep = $maskService->unmask(fake()->postcode());
+            $component = Livewire::test(EditPerson::class, ['person' => $person]);
 
-            $component = Livewire::test(EditPerson::class, ['person' => $person])
-            ->set('cep', $cep)
-            ->assertSee($maskService->maskCep($cep));
+            if($person->type == PersonType::JURIDICA->value)
+            {
+                $component
+                ->set('companyName', $person->company_name)
+                ->set('tradingName', $person->trading_name)
+                ->set('StateRegistrationCategory', $person->ie_category)
+                ->set('ie', $person->ie)
+                ->set('im', $person->im)
+                ->set('cnpjStatus', $person->cnpj_status)
+                ->set('taxCollectionType', $person->tax_type)
+                ->set('personStatus', $person->is_active)
+                ->set('observation', $person->observation);
+            }
+
+            if($person->type == PersonType::FISICA->value)
+            {
+                $component
+                ->assertSee('name', $person->name)
+                ->assertSee('alias', $person->alias)
+                ->assertSee('cpf', $person->cpf)
+                ->assertSee('name', $person->name)
+                ->assertSee('alias', $person->alias)
+                ->assertSee('rg', $person->rg);
+            }
         }
-    } */
+    }
 }
