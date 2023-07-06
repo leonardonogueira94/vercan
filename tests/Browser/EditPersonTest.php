@@ -21,24 +21,9 @@ class EditPersonTest extends DuskTestCase
      */
     protected $seed = true;
 
-    protected static ?Browser $browser = null;
-
     protected function hasHeadlessDisabled(): bool
     {
         return true;
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        if (is_null(static::$browser)) {
-            $this->browse(function (Browser $browser) {
-                $browser->resize(1024, 800);
-                $browser->loginAs(1);
-                static::$browser = $browser;
-            });
-        }
     }
 
     /**

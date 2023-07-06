@@ -18,17 +18,21 @@
     </div>
     <div class="row">
         <div class="col-md-6 phones">
-            @foreach($contact['phones'] as $phoneIndex => $phone)
-                <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" phoneIndex="{{ $phoneIndex }}"/>
-            @endforeach
+            @if(array_key_exists('phones', $contact))
+                @foreach($contact['phones'] as $phoneIndex => $phone)
+                    <x-phone :phone="$phone" contactIndex="{{ $contactIndex }}" phoneIndex="{{ $phoneIndex }}"/>
+                @endforeach
+            @endif
             @if(!$this->disableInputs)
                 <button wire:click="addPhone({{ $contactIndex }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
             @endif
         </div>
         <div class="col-md-6 emails">
-            @foreach($contact['emails'] as $emailIndex => $email)
-                <x-email :email="$email" contactIndex="{{ $contactIndex }}" emailIndex="{{ $emailIndex }}"/>
-            @endforeach
+            @if(array_key_exists('phones', $contact))
+                @foreach($contact['emails'] as $emailIndex => $email)
+                    <x-email :email="$email" contactIndex="{{ $contactIndex }}" emailIndex="{{ $emailIndex }}"/>
+                @endforeach
+            @endif
             @if(!$this->disableInputs)
                 <button wire:click="addEmail({{ $contactIndex }})" class="btn btn-link" @if($this->disableInputs) disabled @endif>Adicionar</button>
             @endif

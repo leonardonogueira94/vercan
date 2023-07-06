@@ -26,7 +26,6 @@ class CreatePersonTest extends TestCase
      * @test
      * @medium
      * @dataProvider cepProvider
-     * @covers \App\Http\Livewire\CreatePerson::updated
      * @covers \App\Http\Livewire\CreatePerson::fillAddress
      * @covers \App\Services\CepService::getAddressDataByCep
      * @covers \App\Services\CepService::getAddressDataMap
@@ -45,7 +44,6 @@ class CreatePersonTest extends TestCase
      * @test
      * @medium
      * @dataProvider razaoProvider
-     * @covers \App\Http\Livewire\CreatePerson::updated
      * @covers \App\Services\ReceitaService::getLegalPersonData
      * @covers \App\Services\ReceitaService::getLegalPersonDataMap
      * @covers \App\Http\Livewire\CreatePerson::fillPersonData
@@ -87,5 +85,10 @@ class CreatePersonTest extends TestCase
                 ->assertSeeHtml($city->uf);
             }
         }
+    }
+
+    public function if_cannot_register_person_until_at_least_one_phone_is_filled()
+    {
+
     }
 }

@@ -139,34 +139,40 @@ class EditPersonTest extends TestCase
     {
         $people = Person::with('contacts.phones')->with('contacts.emails')->limit(20)->get();
 
+        $newContacts = [];
+
+        $newPhones = [];
+
+        $newEmails = [];
+
         foreach($people as $person)
         {
             $component = Livewire::test(EditPerson::class, ['person' => $person]);
 
             foreach($person->contacts->where('is_default', false) as $contactIndex => $contact)
             {
-                $newContact = Contact::factory()->make()->toArray();
+                $newContacts[] = Contact::factory()->make()->toArray();
 
-                $newContact['id'] = $contact->id;
+                end($newContacts)['id'] = $contact->id;
 
-                $component->set("contacts.$contactIndex", $newContact);
+                $component->set("contacts.$contactIndex", end($newContacts));
 
                 foreach($contact->phones as $phoneIndex => $phone)
                 {
-                    $newPhone = Phone::factory()->make()->toArray();
+                    $newPhones[] = Phone::factory()->make()->toArray();
 
-                    $newPhone['id'] = $phone->id;
+                    end($newPhones)['id'] = $phone->id;
 
-                    $component->set("contacts.$contactIndex.phones.$phoneIndex", $newPhone);
+                    $component->set("contacts.$contactIndex.phones.$phoneIndex", end($newPhones));
                 }
 
                 foreach($contact->emails as $emailIndex => $email)
                 {
-                    $newEmail = Email::factory()->make()->toArray();
+                    $newEmails[] = Email::factory()->make()->toArray();
 
-                    $newEmail['id'] = $email->id;
+                    end($newEmails)['id'] = $email->id;
 
-                    $component->set("contacts.$contactIndex.phones.$emailIndex", $newEmail);
+                    $component->set("contacts.$contactIndex.phones.$emailIndex", end($newEmails));
                 }
             }
 
