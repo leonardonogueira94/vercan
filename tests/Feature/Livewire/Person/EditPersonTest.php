@@ -8,7 +8,6 @@ use App\Models\Contact;
 use App\Models\Email;
 use App\Models\Person;
 use App\Models\Phone;
-use App\Services\MaskService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
@@ -19,8 +18,6 @@ use Tests\Utils\HasProvider;
 class EditPersonTest extends TestCase
 {
     use HasProvider, RefreshDatabase;
-
-    private MaskService $maskService;
 
     /**
      * Indicates whether the default seeder should run before each test.
