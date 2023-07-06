@@ -82,27 +82,12 @@ class EditPersonTest extends TestCase
             ->assertSet('person', $person);
 
             if($person->type == PersonType::JURIDICA->value)
-            {
-                $component->assertSee($person->company_name)
-                ->assertSee($person->trading_name)
-                ->assertSee($person->ie_category)
-                ->assertSee($person->ie)
-                ->assertSee($person->im)
-                ->assertSee($person->cnpj_status)
-                ->assertSee($person->tax_type)
-                ->assertSee($person->is_active)
-                ->assertSee($person->observation);
-            }
+                foreach(FieldMap::LEGAL_PERSON_FIELDS as $property => $column)
+                    $component->assertSee($person->$column);
 
             if($person->type == PersonType::FISICA->value)
-            {
-                $component->assertSee($person->name)
-                ->assertSee($person->alias)
-                ->assertSee($person->cpf)
-                ->assertSee($person->name)
-                ->assertSee($person->alias)
-                ->assertSee($person->rg);
-            }
+                foreach(FieldMap::NATURAL_PERSON_FIELDS as $property => $column)
+                    $component->assertSee($person->$column);
         }
     }
 
@@ -129,12 +114,22 @@ class EditPersonTest extends TestCase
 
     public function if_it_is_able_to_add_contacts()
     {
+        $people = Person::with('contacts.phones')->with('contacts.emails')->limit(20)->get();
 
+        foreach($people as $person)
+        {
+
+        }
     }
 
     public function if_it_is_able_to_remove_contacts()
     {
-        
+        $people = Person::with('contacts.phones')->with('contacts.emails')->limit(20)->get();
+
+        foreach($people as $person)
+        {
+
+        }
     }
 
     /**
