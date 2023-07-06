@@ -117,17 +117,24 @@ class EditPersonTest extends TestCase
 
         foreach($people as $person)
         {            
-            $component = Livewire::test(EditPerson::class, ['person' => $person])
-            ->assertSee($person->address->city->uf)
-            ->assertSee($person->address->city->name)
-            ->assertSee($person->address->cep)
-            ->assertSee($person->address->address)
-            ->assertSee($person->address->building_number)
-            ->assertSee($person->address->complement)
-            ->assertSee($person->address->area)
-            ->assertSee($person->address->reference_point)
-            ->assertSee($person->address->is_condo);
+            $component = Livewire::test(EditPerson::class, ['person' => $person]);
+
+            foreach(FieldMap::ADDRESS_FIELDS as $column)
+                $component->assertSee($person->address->$column);
+
+            $component->assertSee($person->address->city->uf)
+            ->assertSee($person->address->city->name);
         }
+    }
+
+    public function if_it_is_able_to_add_contacts()
+    {
+
+    }
+
+    public function if_it_is_able_to_remove_contacts()
+    {
+        
     }
 
     /**
