@@ -3,6 +3,7 @@
 namespace Tests\Feature\Livewire\Person;
 
 use App\Http\Livewire\Person\CreatePerson;
+use App\Models\City;
 use App\Models\Person;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -57,5 +58,34 @@ class CreatePersonTest extends TestCase
         ->set('cnpj', $cnpj)
         ->assertNotSet('companyName', $person->company_name)
         ->assertSet('companyName', $expectedCompanyName);
+    }
+
+    /**
+     * @test
+     * @medium
+     */
+    public function if_city_dropdown_shows_cities_from_chosen_uf()
+    {
+        $ufs = City::groupBy('uf')->get();
+
+        $component = Livewire::test(CreatePerson::class);
+
+        foreach($ufs as $uf)
+        {
+            $uf = $uf->uf;
+
+            $cities = City::where('uf', $uf)->get();
+
+            $component->assertSeeHtml($uf)
+            ->set('uf', $uf)
+            ->assertSeeHtml($uf);
+
+            foreach($cities as $city)
+            {
+                $component
+                ->assertSeeHtml($city->name)
+                ->assertSeeHtml($city->uf);
+            }
+        }
     }
 }
