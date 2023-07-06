@@ -11,6 +11,13 @@ class CitySeeder extends Seeder
     {
         City::factory()
         ->count(27)
-        ->create();
+        ->create()
+        ->each(function($city){
+            foreach(range(1,10) as $time)
+                City::create([
+                    'uf' => $city->uf,
+                    'name' => fake()->city(),
+                ]);
+        });
     }
 }
