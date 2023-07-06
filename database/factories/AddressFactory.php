@@ -21,7 +21,7 @@ class AddressFactory extends Factory
 
         return [
             'city_id' => fake()->randomElement($cityIds),
-            'cep' => fake()->postcode(),
+            'cep' => fake()->numerify('#####-###'),
             'address' => fake()->streetSuffix() . ' ' . fake()->streetName(),
             'building_number' => fake()->buildingNumber(),
             'complement' => fake()->secondaryAddress(),
