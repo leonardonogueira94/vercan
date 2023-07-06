@@ -147,61 +147,38 @@ class EditPersonTest extends TestCase
 
             if($person->type == PersonType::JURIDICA->value)
                 foreach(FieldMap::LEGAL_PERSON_FIELDS as $property => $column)
-                $component
-                ->set('companyName', $otherPeople->get($i)->company_name)
-                ->set('tradingName', $otherPeople->get($i)->trading_name)
-                ->set('stateRegistrationCategory', $otherPeople->get($i)->ie_category)
-                ->set('ie', $otherPeople->get($i)->ie)
-                ->set('im', $otherPeople->get($i)->im)
-                ->set('cnpjStatus', $otherPeople->get($i)->cnpj_status)
-                ->set('taxCollectionType', $otherPeople->get($i)->tax_type);
+                    $component->set($property, $otherPeople->get($i)->$column);
 
             if($person->type == PersonType::FISICA->value)
-                $component
-                ->set('name', $otherPeople->get($i)->name)
-                ->set('alias', $otherPeople->get($i)->alias)
-                ->set('cpf', $otherPeople->get($i)->cpf)
-                ->set('name', $otherPeople->get($i)->name)
-                ->set('alias', $otherPeople->get($i)->alias)
-                ->set('rg', $otherPeople->get($i)->rg);
+                foreach(FieldMap::LEGAL_PERSON_FIELDS as $property => $column)
+                    $component->set($property, $otherPeople->get($i)->$column);
 
-            $component
-            ->set('personStatus', $otherPeople->get($i)->is_active)
-            ->set('observation', $otherPeople->get($i)->observation)
-            ->set('uf', $otherPeople->get($i)->address->city->uf)
-            ->set('city', $otherPeople->get($i)->address->city->name)
-            ->set('cep', $otherPeople->get($i)->address->cep)
-            ->set('address', $otherPeople->get($i)->address->address)
-            ->set('buildingNumber', $otherPeople->get($i)->address->building_number)
-            ->set('complement', $otherPeople->get($i)->address->complement)
-            ->set('area', $otherPeople->get($i)->address->area)
-            ->set('referencePoint', $otherPeople->get($i)->address->reference_point)
-            ->set('isCondo', $otherPeople->get($i)->address->is_condo);
+            foreach(FieldMap::PERSON_COMMON_FIELDS as $property => $column)
+                $component->set($property, $otherPeople->get($i)->$column);
+
+            foreach(FieldMap::ADDRESS_FIELDS as $property => $column)
+                if(!in_array($property, ['uf', 'city']))
+                    $component->set($property, $otherPeople->get($i)->$column);
+                else
+                    $component->set($property, $otherPeople->get($i)->address->$column);
             
             $component->call('submit');
 
-            $legalPersonData = [
-                'company_name' => $otherPeople->get($i)->company_name,
-                'trading_name' => $otherPeople->get($i)->trading_name,
-                'ie_category' => $otherPeople->get($i)->ie_category,
-                'ie' => $otherPeople->get($i)->ie,
-                'im' => $otherPeople->get($i)->im,
-                'cnpj_status' => $otherPeople->get($i)->cnpj_status,
-                'tax_type' => $otherPeople->get($i)->tax_type,
-            ];
+            $legalPersonData = [];
 
-            $naturalPersonData = [
-                'name' => $otherPeople->get($i)->name,
-                'alias' => $otherPeople->get($i)->alias,
-                'cpf' => $otherPeople->get($i)->cpf,
-                'rg' => $otherPeople->get($i)->rg,
-            ];
+            $naturalPersonData = [];
 
             $commonData = [
                 'id' => $person->id,
                 'is_active' => $otherPeople->get($i)->is_active,
                 'observation' => $otherPeople->get($i)->observation,
             ];
+
+            foreach(FieldMap::LEGAL_PERSON_FIELDS as $property => $column)
+                $legalPersonData[$column] = $otherPeople->get($i)->$column;
+
+            foreach(FieldMap::NATURAL_PERSON_FIELDS as $property => $column)
+                $legalPersonData[$column] = $otherPeople->get($i)->$column;
 
             if($person->type == PersonType::JURIDICA->value)
                 $this->assertDatabaseHas('people', $legalPersonData + $commonData);
@@ -210,26 +187,15 @@ class EditPersonTest extends TestCase
                 $this->assertDatabaseHas('people', $naturalPersonData + $commonData);
 
             if($person->type == PersonType::JURIDICA->value)
-                $component
-                ->assertSeeHtml($otherPeople->get($i)->company_name)
-                ->assertSeeHtml($otherPeople->get($i)->trading_name)
-                ->assertSeeHtml($otherPeople->get($i)->ie_category)
-                ->assertSeeHtml($otherPeople->get($i)->ie)
-                ->assertSeeHtml($otherPeople->get($i)->im)
-                ->assertSeeHtml($otherPeople->get($i)->cnpj_status)
-                ->assertSeeHtml($otherPeople->get($i)->tax_type);
+                foreach(FieldMap::LEGAL_PERSON_FIELDS as $property => $column)
+                    $component->assertSeeHtml($otherPeople->get($i)->$column);
 
             if($person->type == PersonType::FISICA->value)
-                $component
-                ->assertSeeHtml($otherPeople->get($i)->name)
-                ->assertSeeHtml($otherPeople->get($i)->alias)
-                ->assertSeeHtml($otherPeople->get($i)->cpf)
-                ->assertSeeHtml($otherPeople->get($i)->name)
-                ->assertSeeHtml($otherPeople->get($i)->alias)
-                ->assertSeeHtml($otherPeople->get($i)->rg);
+                foreach(FieldMap::NATURAL_PERSON_FIELDS as $property => $column)
+                    $component->assertSeeHtml($otherPeople->get($i)->$column);
 
-            $component->assertSeeHtml($otherPeople->get($i)->is_active)
-            ->assertSeeHtml($otherPeople->get($i)->observation);
+            foreach(FieldMap::PERSON_COMMON_FIELDS as $property => $column)
+                $component->assertSeeHtml($otherPeople->get($i)->$column);
         }
     }
 }

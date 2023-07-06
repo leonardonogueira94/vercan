@@ -36,5 +36,5 @@ class FieldMap
         'area' => 'area',
         'referencePoint' => 'reference_point',
         'isCondo' => 'is_condo',
-    ]
+    ];
 }
