@@ -206,9 +206,7 @@ class EditPersonTest extends TestCase
         $people = Person::with('contacts.phones')->limit(20)->get();
 
         foreach($people as $person)
-        {
             foreach($person->contacts as $contactIndex => $contact)
-            {
                 foreach($contact->phones as $phoneIndex => $oldPhone)
                 {
                     $component = Livewire::test(EditPerson::class, ['person' => $person]);
@@ -221,8 +219,6 @@ class EditPersonTest extends TestCase
                     ->assertSeeHtml('value="'.$newPhone->phone.'"')
                     ->assertSeeHtml('value="'.$newPhone->type->value.'"');
                 }
-            }
-        }
     }
 
     /**
