@@ -34,7 +34,7 @@ class CreatePersonTest extends TestCase
     {
         $person = Person::first();
         
-        $component = Livewire::test(CreatePerson::class, ['person' => $person])
+        $component = Livewire::test(CreatePerson::class)
         ->set('cep', $cep)
         ->assertNotSet('address', $person->address->address)
         ->assertSet('address', $expectedCompanyName);
@@ -53,7 +53,7 @@ class CreatePersonTest extends TestCase
     {
         $person = Person::first();
         
-        $component = Livewire::test(CreatePerson::class, ['person' => $person])
+        $component = Livewire::test(CreatePerson::class)
         ->set('cnpj', $cnpj)
         ->assertNotSet('companyName', $person->company_name)
         ->assertSet('companyName', $expectedCompanyName);
