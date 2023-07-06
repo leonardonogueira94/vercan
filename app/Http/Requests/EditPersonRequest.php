@@ -42,6 +42,7 @@ class EditPersonRequest extends FormRequest
             'contacts.*.emails.*.email' => 'max:100',
             'contacts.*.phones.*.type' => '',
             'contacts.*.phones.*.phone' => 'max:18',
+            'contacts.0.phones.*.phone' => 'required|max:18',
             'cep' => 'required|max:10',
             'address' => 'required|max:255',
             'buildingNumber' => 'required|max:10',
