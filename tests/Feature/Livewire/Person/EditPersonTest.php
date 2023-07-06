@@ -110,6 +110,11 @@ class EditPersonTest extends TestCase
         }
     }
 
+     /**
+     * @test
+     * @medium
+     * @covers \App\Http\Livewire\EditPerson::addContact
+     */
     public function if_it_is_able_to_add_contacts()
     {
         $people = Person::with('contacts')->limit(20)->get();
@@ -119,10 +124,16 @@ class EditPersonTest extends TestCase
             $newContact = Contact::factory()->make();
 
             $component = Livewire::test(EditPerson::class, ['person' => $person])
-            ->call('addContact')
-            ->set("contact.{$person->contacts->count()}.contact_name", $newContact->contact_name)
-            ->set("contact.{$person->contacts->count()}.company_name", $newContact->company_name)
-            ->set("contact.{$person->contacts->count()}.job_title", $newContact->job_title);
+            ->call('addContact', fake()->boolean(50))
+            ->set("contacts.{$person->contacts->count()}.contact_name", $newContact->contact_name)
+            ->set("contacts.{$person->contacts->count()}.company_name", $newContact->company_name)
+            ->set("contacts.{$person->contacts->count()}.job_title", $newContact->job_title)
+            ->call('submit')
+            ->assertSee($newContact->contact_name)
+            ->assertSee($newContact->company_name)
+            ->assertSee($newContact->job_title);
+
+            $this->assertDatabaseHas('contacts', $newContact->toArray());
         }
     }
 
