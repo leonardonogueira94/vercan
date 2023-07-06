@@ -2,6 +2,8 @@
 
 namespace Tests\Utils;
 
+use App\Models\Person;
+
 trait HasProvider
 {
     public function cepProvider(): array
@@ -16,10 +18,5 @@ trait HasProvider
         return [
             ['cnpj' => '07019231000196', 'expectedCompanyName' => 'KENERSON INDUSTRIA E COMERCIO DE PRODUTOS OPTICOS LTDA'],
         ];
-    }
-
-    public function personProvider(): array
-    {
-        return [];
     }
 }

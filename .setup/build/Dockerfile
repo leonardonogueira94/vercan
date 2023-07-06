@@ -16,6 +16,8 @@ RUN apt-get update && \
 
 COPY .setup/build/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 RUN a2enmod rewrite
 
 EXPOSE 80
@@ -27,6 +29,9 @@ ENV APP_DEBUG=true
 
 RUN composer install --dev --optimize-autoloader && \
     php artisan key:generate
+
+RUN php artisan migrate
+RUN php artisan db:seed
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 

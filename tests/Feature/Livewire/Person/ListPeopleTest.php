@@ -12,9 +12,14 @@ use Tests\Utils\HasProvider;
 
 class ListPeopleTest extends TestCase
 {
-    use HasProvider;
+    use HasProvider, RefreshDatabase;
 
-    public $component;
+    /**
+     * Indicates whether the default seeder should run before each test.
+     *
+     * @var bool
+     */
+    protected $seed = true;
 
     /**
      * @test
@@ -24,7 +29,7 @@ class ListPeopleTest extends TestCase
      * @covers \App\Services\CepService::getAddressDataByCep
      * @covers \App\Services\CepService::getAddressDataMap
      */
-    public function test_if_people_can_be_listed()
+    public function if_people_can_be_listed()
     {
         $people = Person::limit(50)->get();
         
@@ -41,7 +46,7 @@ class ListPeopleTest extends TestCase
         }
     }
 
-    public function test_if_people_can_be_searched_by_name_or_company_name()
+    public function if_people_can_be_searched_by_name_or_company_name()
     {
         $people = Person::limit(10)->get();
         
@@ -60,7 +65,7 @@ class ListPeopleTest extends TestCase
         }
     }
 
-    public function test_if_number_of_rows_per_page_can_be_expended()
+    public function if_number_of_rows_per_page_can_be_expended()
     {
 
     }

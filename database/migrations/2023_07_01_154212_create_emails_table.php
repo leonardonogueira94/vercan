@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('contact_id')->constrained();
             $table->string('email')->nullable();
             $table->enum('type', ContactType::toArray())->nullable();
-            $table->boolean('is_registered')->default(true);
             $table->timestamps();
         });
     }
