@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Repositories\AddressRepository;
 use App\Repositories\CityRepository;
 use Illuminate\Support\Facades\Http;
 
