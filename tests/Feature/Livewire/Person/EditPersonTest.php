@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
 use Tests\TestCase;
+use Tests\Utils\FieldMap;
 use Tests\Utils\HasProvider;
 
 class EditPersonTest extends TestCase
@@ -116,7 +117,7 @@ class EditPersonTest extends TestCase
             $component = Livewire::test(EditPerson::class, ['person' => $person])
             ->assertSee($person->address->city->uf)
             ->assertSee($person->address->city->name)
-            ->assertSee($person->cep)
+            ->assertSee($person->address->cep)
             ->assertSee($person->address->address)
             ->assertSee($person->address->building_number)
             ->assertSee($person->address->complement)
@@ -126,14 +127,18 @@ class EditPersonTest extends TestCase
         }
     }
 
+    /**
+     * @test
+     * @large
+     */
     public function if_it_is_able_to_update_person_data()
     {
-        $people = Person::orderByAsc(10)->get();
+        $people = Person::orderBy(1)->get();
 
         $otherPeople = Person::with('contacts.phones')
         ->with('contacts.emails')
         ->with('address.city')
-        ->orderByDesc(10)
+        ->orderByDesc(1)
         ->get();
 
         foreach($people as $i => $person)
@@ -141,29 +146,90 @@ class EditPersonTest extends TestCase
             $component = Livewire::test(EditPerson::class, ['person' => $person]);
 
             if($person->type == PersonType::JURIDICA->value)
-            {
+                foreach(FieldMap::LEGAL_PERSON_FIELDS as $property => $column)
                 $component
-                ->set('companyName', $person->company_name)
-                ->set('tradingName', $person->trading_name)
-                ->set('StateRegistrationCategory', $person->ie_category)
-                ->set('ie', $person->ie)
-                ->set('im', $person->im)
-                ->set('cnpjStatus', $person->cnpj_status)
-                ->set('taxCollectionType', $person->tax_type)
-                ->set('personStatus', $person->is_active)
-                ->set('observation', $person->observation);
-            }
+                ->set('companyName', $otherPeople->get($i)->company_name)
+                ->set('tradingName', $otherPeople->get($i)->trading_name)
+                ->set('stateRegistrationCategory', $otherPeople->get($i)->ie_category)
+                ->set('ie', $otherPeople->get($i)->ie)
+                ->set('im', $otherPeople->get($i)->im)
+                ->set('cnpjStatus', $otherPeople->get($i)->cnpj_status)
+                ->set('taxCollectionType', $otherPeople->get($i)->tax_type);
 
             if($person->type == PersonType::FISICA->value)
-            {
                 $component
-                ->assertSee('name', $person->name)
-                ->assertSee('alias', $person->alias)
-                ->assertSee('cpf', $person->cpf)
-                ->assertSee('name', $person->name)
-                ->assertSee('alias', $person->alias)
-                ->assertSee('rg', $person->rg);
-            }
+                ->set('name', $otherPeople->get($i)->name)
+                ->set('alias', $otherPeople->get($i)->alias)
+                ->set('cpf', $otherPeople->get($i)->cpf)
+                ->set('name', $otherPeople->get($i)->name)
+                ->set('alias', $otherPeople->get($i)->alias)
+                ->set('rg', $otherPeople->get($i)->rg);
+
+            $component
+            ->set('personStatus', $otherPeople->get($i)->is_active)
+            ->set('observation', $otherPeople->get($i)->observation)
+            ->set('uf', $otherPeople->get($i)->address->city->uf)
+            ->set('city', $otherPeople->get($i)->address->city->name)
+            ->set('cep', $otherPeople->get($i)->address->cep)
+            ->set('address', $otherPeople->get($i)->address->address)
+            ->set('buildingNumber', $otherPeople->get($i)->address->building_number)
+            ->set('complement', $otherPeople->get($i)->address->complement)
+            ->set('area', $otherPeople->get($i)->address->area)
+            ->set('referencePoint', $otherPeople->get($i)->address->reference_point)
+            ->set('isCondo', $otherPeople->get($i)->address->is_condo);
+            
+            $component->call('submit');
+
+            $legalPersonData = [
+                'company_name' => $otherPeople->get($i)->company_name,
+                'trading_name' => $otherPeople->get($i)->trading_name,
+                'ie_category' => $otherPeople->get($i)->ie_category,
+                'ie' => $otherPeople->get($i)->ie,
+                'im' => $otherPeople->get($i)->im,
+                'cnpj_status' => $otherPeople->get($i)->cnpj_status,
+                'tax_type' => $otherPeople->get($i)->tax_type,
+            ];
+
+            $naturalPersonData = [
+                'name' => $otherPeople->get($i)->name,
+                'alias' => $otherPeople->get($i)->alias,
+                'cpf' => $otherPeople->get($i)->cpf,
+                'rg' => $otherPeople->get($i)->rg,
+            ];
+
+            $commonData = [
+                'id' => $person->id,
+                'is_active' => $otherPeople->get($i)->is_active,
+                'observation' => $otherPeople->get($i)->observation,
+            ];
+
+            if($person->type == PersonType::JURIDICA->value)
+                $this->assertDatabaseHas('people', $legalPersonData + $commonData);
+
+            if($person->type == PersonType::FISICA->value)
+                $this->assertDatabaseHas('people', $naturalPersonData + $commonData);
+
+            if($person->type == PersonType::JURIDICA->value)
+                $component
+                ->assertSeeHtml($otherPeople->get($i)->company_name)
+                ->assertSeeHtml($otherPeople->get($i)->trading_name)
+                ->assertSeeHtml($otherPeople->get($i)->ie_category)
+                ->assertSeeHtml($otherPeople->get($i)->ie)
+                ->assertSeeHtml($otherPeople->get($i)->im)
+                ->assertSeeHtml($otherPeople->get($i)->cnpj_status)
+                ->assertSeeHtml($otherPeople->get($i)->tax_type);
+
+            if($person->type == PersonType::FISICA->value)
+                $component
+                ->assertSeeHtml($otherPeople->get($i)->name)
+                ->assertSeeHtml($otherPeople->get($i)->alias)
+                ->assertSeeHtml($otherPeople->get($i)->cpf)
+                ->assertSeeHtml($otherPeople->get($i)->name)
+                ->assertSeeHtml($otherPeople->get($i)->alias)
+                ->assertSeeHtml($otherPeople->get($i)->rg);
+
+            $component->assertSeeHtml($otherPeople->get($i)->is_active)
+            ->assertSeeHtml($otherPeople->get($i)->observation);
         }
     }
 }
