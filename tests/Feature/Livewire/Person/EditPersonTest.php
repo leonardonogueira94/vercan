@@ -5,6 +5,7 @@ namespace Tests\Feature\Livewire\Person;
 use App\Enums\Person\PersonType;
 use App\Http\Livewire\Person\EditPerson;
 use App\Models\Person;
+use App\Services\MaskService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
@@ -14,6 +15,8 @@ use Tests\Utils\HasProvider;
 class EditPersonTest extends TestCase
 {
     use HasProvider, RefreshDatabase;
+
+    private MaskService $maskService;
 
     /**
      * Indicates whether the default seeder should run before each test.
@@ -123,53 +126,19 @@ class EditPersonTest extends TestCase
         }
     }
 
-    public function test_if_cnpj_input_gets_masked()
+    /* public function if_cnpj_input_gets_masked()
     {
+        $people = Person::limit(30)->get();
 
-    }
+        $maskService = app('App\Services\MaskService');
 
-    public function test_if_cep_input_gets_masked()
-    {
-        
-    }
+        foreach($people as $person)
+        {
+            $cep = $maskService->unmask(fake()->postcode());
 
-    public function test_if_cellphone_input_gets_masked()
-    {
-        
-    }
-
-    public function test_if_phone_input_gets_masked()
-    {
-        
-    }
-
-    public function test_if_new_inputs_appears_when_contact_is_added()
-    {
-        
-    }
-
-    public function test_if_new_inputs_appears_when_phone_is_added()
-    {
-        
-    }
-
-    public function test_if_new_inputs_appears_when_email_is_added()
-    {
-        
-    }
-
-    public function test_if_inputs_disappears_when_contact_is_removed()
-    {
-        
-    }
-
-    public function test_if_inputs_disappears_when_phone_is_removed()
-    {
-        
-    }
-
-    public function test_if_inputs_disappears_when_email_is_removed()
-    {
-        
-    }
+            $component = Livewire::test(EditPerson::class, ['person' => $person])
+            ->set('cep', $cep)
+            ->assertSee($maskService->maskCep($cep));
+        }
+    } */
 }

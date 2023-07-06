@@ -3,12 +3,12 @@
     <div class="row">
         <div class="col-lg-3 col-12">
             <label class="control-label">CEP</label><sup>•</sup>
-            <input wire:model.debounce.500ms="cep" value="{{ $this->cep }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
+            <input wire:model.debounce.500ms="cep" value="{{ $this->cep }}" class="form-control form-control-sm cep" required @if($this->disableInputs) disabled @endif>
             @error('cep') <span class="error">{{ $message }}</span>@enderror
         </div>
         <div class="col-lg-3 col-12">
             <label class="control-label">Logradouro</label><sup>•</sup>
-            <input wire:model.debounce.500ms="address" value="{{ $this->address }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
+            <input wire:model.debounce.500ms="address" value="{{ $this->address }}" class="form-control form-control-sm address" required @if($this->disableInputs) disabled @endif>
             @error('address') <span class="error">{{ $message }}</span>@enderror
         </div>
         <div class="col-lg-3 col-12">
@@ -67,3 +67,18 @@
         </div>
     </div>
 </div>
+@once
+    @push('js')
+        <script>
+            $('body').on('keyup', '.cep', function(e) {
+                var cep = $(this);
+                var cepMask = new Inputmask("99999-999");
+                cepMask.mask(cep);
+                cep.keyup((e) => {
+                    let cep = e.target.value;
+                    @this.set('cep', cep, true);
+                })
+            })
+        </script>
+    @endpush
+@endonce

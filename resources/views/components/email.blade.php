@@ -8,7 +8,7 @@
             </div>
             <div class="col-6">
                 <label class="control-label">Tipo</label>
-                <select wire:model.debounce.500ms="contacts.{{ $contactIndex }}.emails.{{ $emailIndex }}.type" value="{{ $this->contacts[$contactIndex]['emails'][$emailIndex]['type'] }}" class="form-control form-control-sm" @if($this->disableInputs) disabled @endif>
+                <select wire:model.debounce.500ms="contacts.{{ $contactIndex }}.emails.{{ $emailIndex }}.type" value="{{ $this->contacts[$contactIndex]['emails'][$emailIndex]['type'] }}" class="form-control form-control-sm phone-type" @if($this->disableInputs) disabled @endif>
                     <option hidden>Selecione</option>
                     @foreach(App\Enums\Contact\ContactChannel::EMAIL->tipos() as $case)
                         <option value="{{ $case->value }}" @if($email['type'] == $case->value) selected @endif> {{ $case->label() }} </option>

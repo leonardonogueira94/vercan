@@ -64,7 +64,7 @@ class ShowPersonTest extends TestCase
 
         foreach($people as $person)
         {            
-            $component = Livewire::test(EditPerson::class, ['person' => $person])->assertSet('type', $person->type)
+            $component = Livewire::test(ShowPerson::class, ['person' => $person])->assertSet('type', $person->type)
             ->assertSet('person', $person);
 
             if($person->type == PersonType::JURIDICA->value)
@@ -103,7 +103,7 @@ class ShowPersonTest extends TestCase
 
         foreach($people as $person)
         {            
-            $component = Livewire::test(EditPerson::class, ['person' => $person])
+            $component = Livewire::test(ShowPerson::class, ['person' => $person])
             ->assertSee($person->address->city->uf)
             ->assertSee($person->address->city->name)
             ->assertSee($person->cep)

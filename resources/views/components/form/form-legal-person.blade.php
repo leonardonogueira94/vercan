@@ -7,7 +7,7 @@
         </div>
         <div class="col-lg-6 col-12">
             <label class="control-label">Razão Social</label><sup>•</sup>
-            <input wire:model.debounce.500ms="companyName" value="{{ $this->companyName }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
+            <input wire:model.debounce.500ms="companyName" value="{{ $this->companyName }}" class="form-control form-control-sm company-name" required @if($this->disableInputs) disabled @endif>
             @error('companyName') <span class="error">{{ $message }}</span>@enderror
         </div>
         <div class="col-lg-3 col-12">

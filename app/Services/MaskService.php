@@ -28,11 +28,39 @@ class MaskService
         return $maskedCpf;
     }
 
+    function maskCep(string $cep = null): string|null
+    {
+        if(!$cep)
+            return null;
+
+        $cep = preg_replace('/[^0-9]/', '', $cep);
+    
+        if (strlen($cep) != 8)
+            return null;
+    
+        $maskedCep = substr($cep, 0, 5) . '-' . substr($cep, 5, 3);
+    
+        return $maskedCep;
+    }
+
     public function unmask(string $data = null): string|null
     {
         if(!$data)
             return null;
 
         return preg_replace('/[^0-9]/', '', $data);
+    }
+
+    function maskCellphone($cellNumber): string|null
+    {
+        if(!$cellNumber)
+            return null;
+
+        $cellNumber = preg_replace('/\D/', '', $cellNumber);
+
+        if (strlen($cellNumber) !== 11)
+            return null;
+
+        return '(' . substr($cellNumber, 0, 2) . ') ' . substr($cellNumber, 2, 5) . '-' . substr($cellNumber, 7);
     }
 }
