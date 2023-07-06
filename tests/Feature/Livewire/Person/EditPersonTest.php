@@ -67,7 +67,7 @@ class EditPersonTest extends TestCase
      */
     public function if_form_gets_filled_with_person_data()
     {
-        $people = Person::with('address.city')->limit(30)->get();
+        $people = Person::limit(30)->get();
 
         foreach($people as $person)
         {            
@@ -96,14 +96,31 @@ class EditPersonTest extends TestCase
                 ->assertSee($person->alias)
                 ->assertSee($person->rg);
             }
-
-            
         }
     }
 
+    /**
+     * @test
+     * @medium
+     * @covers \App\Http\Livewire\EditPerson::mount
+     */
     public function if_address_gets_displayed()
     {
-        
+        $people = Person::with('address.city')->limit(30)->get();
+
+        foreach($people as $person)
+        {            
+            $component = Livewire::test(EditPerson::class, ['person' => $person])
+            ->assertSee($person->address->city->uf)
+            ->assertSee($person->address->city->name)
+            ->assertSee($person->cep)
+            ->assertSee($person->address->address)
+            ->assertSee($person->address->building_number)
+            ->assertSee($person->address->complement)
+            ->assertSee($person->address->area)
+            ->assertSee($person->address->reference_point)
+            ->assertSee($person->address->is_condo);
+        }
     }
 
     public function test_if_cnpj_input_gets_masked()
