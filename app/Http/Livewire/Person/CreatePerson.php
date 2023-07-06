@@ -15,9 +15,11 @@ use App\Services\CepService;
 use App\Services\MaskService;
 use App\Services\ReceitaService;
 use Exception;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class CreatePerson extends Component
 {
@@ -82,7 +84,7 @@ class CreatePerson extends Component
         return (new CreatePersonRequest(PersonType::tryFrom($this->type), StateRegistrationCategory::tryFrom($this->stateRegistrationCategory)))->rules();
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->type = PersonType::JURIDICA->value;
         $this->stateRegistrationCategory = StateRegistrationCategory::CONTRIBUINTE->value;
@@ -97,18 +99,19 @@ class CreatePerson extends Component
         ReceitaService $receitaService,
         CepService $cepService,
         MaskService $maskService
-    ){
+    ): void
+    {
         $this->receitaService = $receitaService;
         $this->cepService = $cepService;
         $this->maskService = $maskService;
     }
 
-    public function updatingType($value)
+    public function updatingType(mixed $value): void
     {
         $value = PersonType::tryFrom($value);
     }
 
-    public function resetForm()
+    public function resetForm(): void
     {
         $this->cnpj = null;
         $this->companyName = null;
@@ -121,12 +124,12 @@ class CreatePerson extends Component
         $this->alias = null;
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.person.create-person');
     }
 
-    public function updated($propertyName, $value)
+    public function updated($propertyName, $value): void
     {
         $this->validateOnly($propertyName);
 
@@ -149,7 +152,7 @@ class CreatePerson extends Component
             $this->fillAddress($this->cepService->getAddressDataByCep($this->maskService->unmask($this->cep)));
     }
 
-    public function submit()
+    public function submit(): RedirectResponse
     {   
         $this->validate();
         

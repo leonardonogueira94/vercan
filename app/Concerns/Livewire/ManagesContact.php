@@ -11,7 +11,7 @@ trait ManagesContact
 {
     public ?array $contacts = [];
 
-    public function addContact($isDefault = false)
+    public function addContact(bool $isDefault = false): void
     {
         if(!isset($this->contacts))
             return;
@@ -34,7 +34,7 @@ trait ManagesContact
         $this->addPhone($contact['index']);
     }
 
-    public function addEmail(int $contactIndex)
+    public function addEmail(int $contactIndex): void
     {
         $this->contacts[$contactIndex]['emails'][] = [
             'email' => '',
@@ -42,7 +42,7 @@ trait ManagesContact
         ];
     }
 
-    public function addPhone(int $contactIndex)
+    public function addPhone(int $contactIndex): void
     {
         $this->contacts[$contactIndex]['phones'][] = [
             'phone' => '',
@@ -50,28 +50,28 @@ trait ManagesContact
         ];
     }
 
-    public function removeContact(int $contactIndex)
+    public function removeContact(int $contactIndex): void
     {
         unset($this->contacts[$contactIndex]);
 
         $this->contacts = array_values($this->contacts);
     }
 
-    public function removeEmail(int $contactIndex, int $emailIndex)
+    public function removeEmail(int $contactIndex, int $emailIndex): void
     {
         unset($this->contacts[$contactIndex]['emails'][$emailIndex]);
 
         $this->contacts[$contactIndex]['emails'] = array_values($this->contacts[$contactIndex]['emails']);
     }
 
-    public function removePhone(int $contactIndex, int $phoneIndex)
+    public function removePhone(int $contactIndex, int $phoneIndex): void
     {
         unset($this->contacts[$contactIndex]['phones'][$phoneIndex]);
 
         $this->contacts[$contactIndex]['phones'] = array_values($this->contacts[$contactIndex]['phones']);
     }
 
-    public function saveContacts(Person $person)
+    public function saveContacts(Person $person): void
     {
         foreach($this->contacts as $contact)
             $contact = Contact::create([
@@ -97,14 +97,15 @@ trait ManagesContact
             ]);
     }
 
-    public function updateContactsData(Person $person)
-    {   $contactIds = [];
+    public function updateContactsData(Person $person): void
+    {   
+        $contactIds = [];
         $phoneIds = [];
         $emailIds = [];
 
         foreach($this->contacts as $contact)
         {
-            $contact['id'] = Contact::updateOrCreate(['id' => $contact['id'] ?? null],[
+            $contact['id'] = Contact::updateOrCreate(['id' => $contact['id'] ?? null], [
                 'person_id' => $person->id,
                 'contact_name' => $contact['contact_name'],
                 'company_name' => $contact['company_name'],
@@ -116,7 +117,7 @@ trait ManagesContact
 
             foreach($contact['emails'] as $email)
             {
-                $email['id'] = Email::updateOrCreate(['id' => $email['id'] ?? null],[
+                $email['id'] = Email::updateOrCreate(['id' => $email['id'] ?? null], [
                     'contact_id' => $contact['id'],
                     'type' => $email['type'],
                     'email' => $email['email'],
@@ -127,7 +128,7 @@ trait ManagesContact
 
             foreach($contact['phones'] as $phone)
             {
-                $phone['id'] = Phone::updateOrCreate(['id' => $phone['id'] ?? null],[
+                $phone['id'] = Phone::updateOrCreate(['id' => $phone['id'] ?? null], [
                     'contact_id' => $contact['id'],
                     'type' => $phone['type'],
                     'phone' => $phone['phone'],
