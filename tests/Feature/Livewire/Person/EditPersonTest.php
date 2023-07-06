@@ -182,8 +182,6 @@ class EditPersonTest extends TestCase
                 {
                     $component = Livewire::test(EditPerson::class, ['person' => $person]);
 
-                    $oldEmailValue = $component->get("contacts.$contactIndex.emails.$emailIndex.email");
-
                     $newEmail = Email::factory()->make();
 
                     $component->set("contacts.$contactIndex.emails.$emailIndex.email", $newEmail->email)
@@ -191,6 +189,36 @@ class EditPersonTest extends TestCase
                     ->call('submit')
                     ->assertSeeHtml('value="'.$newEmail->email.'"')
                     ->assertSeeHtml('value="'.e($newEmail->type).'"');
+                }
+            }
+        }
+    }
+
+    /**
+     * @test
+     * @large
+     * @covers \App\Http\Livewire\EditPerson::updateContactsData
+     * @covers \App\Http\Livewire\EditPerson::submit
+     */
+    public function if_it_is_able_to_update_phones()
+    {
+        $people = Person::with('contacts.phones')->limit(20)->get();
+
+        foreach($people as $person)
+        {
+            foreach($person->contacts as $contactIndex => $contact)
+            {
+                foreach($contact->phones as $phoneIndex => $oldPhone)
+                {
+                    $component = Livewire::test(EditPerson::class, ['person' => $person]);
+
+                    $newPhone = Phone::factory()->make();
+
+                    $component->set("contacts.$contactIndex.phones.$phoneIndex.phone", $newPhone->phone)
+                    ->set("contacts.$contactIndex.phones.$phoneIndex.type", $newPhone->type->value)
+                    ->call('submit')
+                    ->assertSeeHtml('value="'.$newPhone->phone.'"')
+                    ->assertSeeHtml('value="'.$newPhone->type.'"');
                 }
             }
         }
