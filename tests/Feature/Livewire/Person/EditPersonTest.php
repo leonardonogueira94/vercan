@@ -4,7 +4,10 @@ namespace Tests\Feature\Livewire\Person;
 
 use App\Enums\Person\PersonType;
 use App\Http\Livewire\Person\EditPerson;
+use App\Models\Contact;
+use App\Models\Email;
 use App\Models\Person;
+use App\Models\Phone;
 use App\Services\MaskService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -130,6 +133,54 @@ class EditPersonTest extends TestCase
     /**
      * @test
      * @large
+     * @covers \App\Http\Livewire\EditPerson::updateContactsData
+     * @covers \App\Http\Livewire\EditPerson::submit
+     */
+    public function if_it_is_able_to_update_contacts()
+    {
+        $people = Person::with('contacts.phones')->with('contacts.emails')->limit(20)->get();
+
+        foreach($people as $person)
+        {
+            $component = Livewire::test(EditPerson::class, ['person' => $person]);
+
+            foreach($person->contacts->where('is_default', false) as $contactIndex => $contact)
+            {
+                $newContact = Contact::factory()->make()->toArray();
+
+                $newContact['id'] = $contact->id;
+
+                $component->set("contacts.$contactIndex", $newContact);
+
+                foreach($contact->phones as $phoneIndex => $phone)
+                {
+                    $newPhone = Phone::factory()->make()->toArray();
+
+                    $newPhone['id'] = $phone->id;
+
+                    $component->set("contacts.$contactIndex.phones.$phoneIndex", $newPhone);
+                }
+
+                foreach($contact->emails as $emailIndex => $email)
+                {
+                    $newEmail = Email::factory()->make()->toArray();
+
+                    $newEmail['id'] = $email->id;
+
+                    $component->set("contacts.$contactIndex.phones.$emailIndex", $newEmail);
+                }
+            }
+
+            $component->call('submit');
+        }
+    }
+
+    /**
+     * @test
+     * @large
+     * @covers \App\Http\Livewire\EditPerson::updatePersonData
+     * @covers \App\Http\Livewire\EditPerson::updateAddressData
+     * @covers \App\Http\Livewire\EditPerson::submit
      */
     public function if_it_is_able_to_update_person_data()
     {
