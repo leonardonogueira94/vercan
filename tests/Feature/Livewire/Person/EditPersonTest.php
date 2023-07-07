@@ -132,7 +132,6 @@ class EditPersonTest extends TestCase
             ->assertSee($newContact->contact_name)
             ->assertSee($newContact->company_name)
             ->assertSee($newContact->job_title);
-
         }
     }
 
