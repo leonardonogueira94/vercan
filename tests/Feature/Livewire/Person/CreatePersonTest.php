@@ -80,8 +80,8 @@ class CreatePersonTest extends TestCase
             foreach($cities as $city)
             {
                 $component
-                ->assertSeeHtml($city->name)
-                ->assertSeeHtml($city->uf);
+                ->assertSeeHtml(e($city->name))
+                ->assertSeeHtml(e($city->uf));
             }
         }
     }
