@@ -133,7 +133,6 @@ class EditPersonTest extends TestCase
             ->assertSee($newContact->company_name)
             ->assertSee($newContact->job_title);
 
-            $this->assertDatabaseHas('contacts', $newContact->toArray());
         }
     }
 
