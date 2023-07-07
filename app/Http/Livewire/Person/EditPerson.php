@@ -155,15 +155,22 @@ class EditPerson extends Component
 
     public function resetForm()
     {
-        $this->cnpj = null;
-        $this->companyName = null;
-        $this->tradingName = null;
-        $this->ie = null;
-        $this->im = null;
-        $this->cnpjStatus = null;
-        $this->cpf = null;
-        $this->name = null;
-        $this->alias = null;
+        if($this->type == PersonType::JURIDICA->value)
+        {
+            $this->cpf = null;
+            $this->name = null;
+            $this->alias = null;
+        }
+
+        if($this->type == PersonType::FISICA->value)
+        {
+            $this->cnpj = null;
+            $this->companyName = null;
+            $this->tradingName = null;
+            $this->ie = null;
+            $this->im = null;
+            $this->cnpjStatus = null;
+        }
     }
 
     public function submit()

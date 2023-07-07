@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('contact_id')->constrained();
             $table->string('phone', 20)->nullable();
-            $table->enum('type', ContactType::toArray())->nullable();
+            $table->enum('type', array_merge([null], ContactType::toArray()))->nullable();
             $table->timestamps();
         });
     }

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth')->prefix('fornecedor')->group(function () {
+Route::middleware(['auth', 'web'])->prefix('fornecedor')->group(function () {
     Route::get('/listar', ListPeople::class)->name('person.list');
     Route::get('/cadastrar', CreatePerson::class)->name('person.create');
     Route::get('/{person}/ver', ShowPerson::class)->name('person.show');

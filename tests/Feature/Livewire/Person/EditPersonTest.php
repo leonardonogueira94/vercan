@@ -124,7 +124,7 @@ class EditPersonTest extends TestCase
             $newContact = Contact::factory()->make();
 
             $component = Livewire::test(EditPerson::class, ['person' => $person])
-            ->call('addContact', fake()->boolean(50))
+            ->call('addContact', fake()->boolean(false))
             ->set("contacts.{$person->contacts->count()}.contact_name", $newContact->contact_name)
             ->set("contacts.{$person->contacts->count()}.company_name", $newContact->company_name)
             ->set("contacts.{$person->contacts->count()}.job_title", $newContact->job_title)
@@ -168,16 +168,22 @@ class EditPersonTest extends TestCase
                     
                 $newContact = Contact::factory()->make();
 
-                $component->set("contacts.$contactIndex.contact_name", $newContact->contact_name)
-                ->set("contacts.$contactIndex.company_name", $newContact->company_name)
-                ->set("contacts.$contactIndex.job_title", $newContact->job_title)
-                ->call('submit')
-                ->assertSeeHtml('value="'.e($newContact->contact_name).'"')
-                ->assertSeeHtml('value="'.e($newContact->company_name).'"')
-                ->assertSeeHtml('value="'.e($newContact->job_title).'"')
-                ->assertDontSeeHtml('value="'.e($oldContact->contact_name).'"')
-                ->assertDontSeeHtml('value="'.e($oldContact->company_name).'"')
-                ->assertDontSeeHtml('value="'.e($oldContact->job_title).'"');
+                $newContact->is_default = 0;
+
+                $newContact->person_id = $oldContact->person_id;
+
+                $component->set("contacts.$contactIndex.contact_name", $newContact->contact_name);
+                $component->set("contacts.$contactIndex.company_name", $newContact->company_name);
+                $component->set("contacts.$contactIndex.job_title", $newContact->job_title);
+                $component->call('submit');
+                $component->assertSeeHtml('value="'.e($newContact->contact_name).'"');
+                $component->assertSeeHtml('value="'.e($newContact->company_name).'"');
+                $component->assertSeeHtml('value="'.e($newContact->job_title).'"');
+                $component->assertDontSeeHtml('value="'.e($oldContact->contact_name).'"');
+                $component->assertDontSeeHtml('value="'.e($oldContact->company_name).'"');
+                $component->assertDontSeeHtml('value="'.e($oldContact->job_title).'"');
+
+                $this->assertDatabaseHas('contacts', $newContact->toArray());
             }
         }
     }
@@ -207,6 +213,11 @@ class EditPersonTest extends TestCase
                     ->call('submit')
                     ->assertSeeHtml('value="'.$newEmail->email.'"')
                     ->assertSeeHtml('value="'.e($newEmail->type).'"');
+
+                    $this->assertDatabaseHas('emails', [
+                        'contact_id' => $contact->id,
+                        'email' => $newEmail->email,
+                    ]);
                 }
             }
         }

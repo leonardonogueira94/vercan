@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Person\PersonStatus;
 use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Enums\Person\TaxCollectionType;
@@ -64,10 +65,10 @@ class EditPersonRequest extends FormRequest
     public function rulesForLegalPerson(): array
     {
         return [
-            'cnpj' => 'required',
+            'cnpj' => [Rule::requiredIf($this->personType == PersonType::JURIDICA), 'min:18'],
             'cnpjStatus' => 'max:20',
-            'companyName' => 'required|max:255',
-            'tradingName' => 'required|max:255',
+            'companyName' => [Rule::requiredIf($this->personType == PersonType::JURIDICA), 'max:255'],
+            'tradingName' => [Rule::requiredIf($this->personType == PersonType::JURIDICA), 'min:255'],
             'stateRegistrationCategory' => ['required', Rule::in(StateRegistrationCategory::toArray())],
             'ie' => ['max:15', Rule::requiredIf($this->stateRegistrationCategory?->required() ?? false)],
             'im' => 'max:15',
@@ -78,10 +79,10 @@ class EditPersonRequest extends FormRequest
     public function rulesForNaturalPerson(): array
     {
         return [
-            'cpf' => 'required',
-            'name' => 'required|max:255',
+            'cpf' => [Rule::requiredIf($this->personType == PersonType::FISICA), 'min:11', 'max:14'],
+            'name' => [Rule::requiredIf($this->personType == PersonType::FISICA), 'min:3', 'max:255'],
             'alias' => 'max:255',
-            'rg' => 'required',
+            'rg' => [Rule::requiredIf($this->personType == PersonType::FISICA), 'min:8', 'max:14'],
         ];
     }
 }
