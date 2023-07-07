@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use App\Enums\Person\PersonType;
 use App\Enums\Person\StateRegistrationCategory;
 use App\Enums\Person\TaxCollectionType;
+use App\Rules\CnpjFormat;
+use App\Rules\CpfFormat;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -42,6 +44,7 @@ class CreatePersonRequest extends FormRequest
             'contacts.*.emails.*.email' => 'max:100',
             'contacts.*.phones.*.type' => '',
             'contacts.*.phones.*.phone' => 'max:18',
+            'contacts.0.phones.0.phone' => 'required|max:18',
             'cep' => 'required|max:10',
             'address' => 'required|max:255',
             'buildingNumber' => 'required|max:10',
@@ -63,10 +66,10 @@ class CreatePersonRequest extends FormRequest
     public function rulesForLegalPerson(): array
     {
         return [
-            'cnpj' => 'required',
+            'cnpj' => [Rule::requiredIf($this->personType == PersonType::JURIDICA), new CnpjFormat],
             'cnpjStatus' => 'max:20',
-            'companyName' => 'required|max:255',
-            'tradingName' => 'required|max:255',
+            'companyName' => [Rule::requiredIf($this->personType == PersonType::JURIDICA), 'max:255'],
+            'tradingName' => [Rule::requiredIf($this->personType == PersonType::JURIDICA), 'max:255'],
             'stateRegistrationCategory' => ['required', Rule::in(StateRegistrationCategory::toArray())],
             'ie' => ['max:15', Rule::requiredIf($this->stateRegistrationCategory?->required() ?? false)],
             'im' => 'max:15',
@@ -77,10 +80,10 @@ class CreatePersonRequest extends FormRequest
     public function rulesForNaturalPerson(): array
     {
         return [
-            'cpf' => 'required',
-            'name' => 'required|max:255',
+            'cpf' => [Rule::requiredIf($this->personType == PersonType::FISICA), new CpfFormat()],
+            'name' => [Rule::requiredIf($this->personType == PersonType::FISICA), 'min:3', 'max:255'],
             'alias' => 'max:255',
-            'rg' => 'required',
+            'rg' => [Rule::requiredIf($this->personType == PersonType::FISICA), 'min:8', 'max:14'],
         ];
     }
 }

@@ -18,19 +18,19 @@
         </div>
         <div class="col-lg-3 col-12">
             <label class="control-label">Complemento</label>
-            <input wire:model.debounce.500ms="complement" value={{ $this->complement }} class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
+            <input wire:model.debounce.500ms="complement" value="{{ $this->complement }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
             @error('complement') <span class="error">{{ $message }}</span>@enderror
         </div>
     </div>
         <div class="row">
             <div class="col-lg-3 col-12">
                 <label class="control-label">Bairro</label><sup>•</sup>
-                <input wire:model.debounce.500ms="area" value={{ $this->area }} class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
+                <input wire:model.debounce.500ms="area" value="{{ $this->area }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
                 @error('area') <span class="error">{{ $message }}</span>@enderror
             </div>
             <div class="col-lg-3 col-12">
                 <label class="control-label">Ponto de Referência</label>
-                <input wire:model.debounce.500ms="referencePoint" value={{ $this->referencePoint }} class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
+                <input wire:model.debounce.500ms="referencePoint" value="{{ $this->referencePoint }}" class="form-control form-control-sm" required @if($this->disableInputs) disabled @endif>
                 @error('referencePoint') <span class="error">{{ $message }}</span>@enderror
             </div>
             <div class="col-lg-3 col-12">

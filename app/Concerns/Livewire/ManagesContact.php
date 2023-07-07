@@ -74,7 +74,8 @@ trait ManagesContact
     public function saveContacts(Person $person): void
     {
         foreach($this->contacts as $contact)
-            $contact = Contact::create([
+        {
+            $createdContact = Contact::create([
                 'person_id' => $person->id,
                 'contact_name' => $contact['contact_name'],
                 'company_name' => $contact['company_name'],
@@ -82,19 +83,20 @@ trait ManagesContact
                 'is_default' => $contact['is_default'],
             ]);
 
-        foreach($contact['phones'] as $phone)
-            Phone::create([
-                'contact_id' => $contact->id,
-                'type' => $phone['type'],
-                'phone' => $phone['phone'],
-            ]);
+            foreach($contact['phones'] as $phone)
+                Phone::create([
+                    'contact_id' => $createdContact->id,
+                    'type' => $phone['type'],
+                    'phone' => $phone['phone'],
+                ]);
 
-        foreach($contact['emails'] as $email)
-            Email::create([
-                'contact_id' => $contact->id,
-                'type' => $email['type'],
-                'email' => $email['email'],
-            ]);
+            foreach($contact['emails'] as $email)
+                Email::create([
+                    'contact_id' => $createdContact->id,
+                    'type' => $email['type'],
+                    'email' => $email['email'],
+                ]);
+        }
     }
 
     public function retrieveContacts(Person $person)

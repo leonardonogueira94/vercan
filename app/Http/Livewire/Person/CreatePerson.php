@@ -111,17 +111,24 @@ class CreatePerson extends Component
         $value = PersonType::tryFrom($value);
     }
 
-    public function resetForm(): void
+    public function resetForm()
     {
-        $this->cnpj = null;
-        $this->companyName = null;
-        $this->tradingName = null;
-        $this->ie = null;
-        $this->im = null;
-        $this->cnpjStatus = null;
-        $this->cpf = null;
-        $this->name = null;
-        $this->alias = null;
+        if($this->type == PersonType::JURIDICA->value)
+        {
+            $this->cpf = null;
+            $this->name = null;
+            $this->alias = null;
+        }
+
+        if($this->type == PersonType::FISICA->value)
+        {
+            $this->cnpj = null;
+            $this->companyName = null;
+            $this->tradingName = null;
+            $this->ie = null;
+            $this->im = null;
+            $this->cnpjStatus = null;
+        }
     }
 
     public function render(): View
@@ -152,7 +159,7 @@ class CreatePerson extends Component
             $this->fillAddress($this->cepService->getAddressDataByCep($this->maskService->unmask($this->cep)));
     }
 
-    public function submit(): RedirectResponse
+    public function submit()
     {   
         $this->validate();
         
@@ -177,7 +184,7 @@ class CreatePerson extends Component
 
     public function savePerson(): Person
     {
-        return Person::create([
+        $data = [
             'type' => $this->type,
             'cnpj' => $this->cnpj,
             'company_name' => $this->companyName,
@@ -193,7 +200,15 @@ class CreatePerson extends Component
             'rg' => $this->rg,
             'is_active' => $this->personStatus,
             'observation' => $this->observation,
-        ]);
+        ];
+
+        foreach ($data as $key => $value)
+        {
+            if($value === '')
+                $data[$key] = null;
+        }
+
+        return Person::create($data);
     }
     
     public function saveAddress(Person $person): Address

@@ -13,7 +13,7 @@ class CepService
 
     private string $baseUrl = 'https://viacep.com.br/ws/';
 
-    public function getAddressDataByCep(string $cep): object|false
+    public function getAddressDataByCep(string|null $cep): object|false
     {
         $response = Http::get("$this->baseUrl/$cep/json");
 

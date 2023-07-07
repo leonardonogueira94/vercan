@@ -200,7 +200,7 @@ class EditPerson extends Component
 
     public function updatePersonData()
     {
-        $this->person->update([
+        $data = [
             'type' => $this->type,
             'cnpj' => $this->cnpj,
             'company_name' => $this->companyName,
@@ -216,7 +216,15 @@ class EditPerson extends Component
             'rg' => $this->rg,
             'is_active' => $this->personStatus,
             'observation' => $this->observation,
-        ]);
+        ];
+
+        foreach ($data as $key => $value)
+        {
+            if($value === '')
+                $data[$key] = null;
+        }
+    
+        $this->person->update($data);
     }
 
     public function updateAddressData(Person $person)

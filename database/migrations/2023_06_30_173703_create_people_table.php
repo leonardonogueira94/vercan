@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->id();
             $table->enum('type', PersonType::toArray());
-            $table->string('cnpj', 19)->unique()->nullable();
+            $table->string('cnpj', 19)->nullable();
             $table->string('company_name')->nullable();
             $table->string('trading_name')->nullable();
             $table->char('ie_category', 2)->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('im', 19)->nullable();
             $table->string('cnpj_status')->nullable();
             $table->char('tax_type', 2)->nullable();
-            $table->string('cpf', 15)->unique()->nullable();
+            $table->string('cpf', 15)->nullable();
             $table->string('name')->nullable();
             $table->string('alias')->nullable();
             $table->string('rg', 12)->nullable();
