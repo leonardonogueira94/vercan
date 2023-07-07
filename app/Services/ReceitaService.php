@@ -9,12 +9,15 @@ class ReceitaService
 {
     public function __construct(
         public CityRepository $cityRepository,
+        public MaskService $maskService,
     ){}
 
     private string $baseUrl = 'https://receitaws.com.br/v1/cnpj';
 
     public function getLegalPersonData(string $cnpj): object|false
     {
+        $cnpj = $this->maskService->unmask($cnpj);
+
         $response = Http::get("$this->baseUrl/$cnpj");
 
         $data = (object) $response->json();

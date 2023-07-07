@@ -9,12 +9,15 @@ class CepService
 {
     public function __construct(
         public CityRepository $cityRepository,
+        public MaskService $maskService,
     ){}
 
     private string $baseUrl = 'https://viacep.com.br/ws/';
 
     public function getAddressDataByCep(string|null $cep): object|false
     {
+        $cep = $this->maskService->unmask($cep);
+
         $response = Http::get("$this->baseUrl/$cep/json");
 
         $data = (object) $response->json();
